@@ -1,17 +1,27 @@
-# Fios & Artes — v4.12.22
+# Fios & Artes — v4.12.23
 
-Correções desta versão:
-- Produto suspenso pela Gestão permanece bloqueado e invisível no catálogo.
-- Se o vendedor corrigir um produto suspenso, ele passa para `Em análise` (`pending_review`) e continua fora do catálogo até a Gestão aprovar.
-- A Gestão agora possui `Reativar` para produtos suspensos por decisão administrativa. A reativação aprova o produto, ativa-o e remove o destaque automaticamente; o produto só volta ao catálogo se estiver publicado e com estoque.
-- Destaque continua condicionado a produto publicado, aprovado, ativo e com estoque; a interface de Gestão usa o valor real de `featured`.
-- Produtos suspensos/em análise que já estejam na sacola permanecem visíveis, identificados como indisponíveis e sem possibilidade de aumentar quantidade ou comprar pelo WhatsApp. O cliente pode removê-los da sacola.
-- A compra pelo WhatsApp considera somente itens atualmente disponíveis, mesmo que a sacola contenha outro item suspenso.
-- O detalhe do produto informa quando ele está suspenso ou aguardando análise.
-- Mantidas as correções anteriores de perfil, usuários, solicitações, notificações e organização responsiva.
+## Correção: usuário excluído pela Gestão não permanece visualmente logado
 
-## Banco
-Foi criada a função `public.admin_reactivate_product(uuid)`, protegida por `public.is_admin()`. Ela reativa somente produtos suspensos, limpa o motivo da suspensão, remove destaque e registra uma notificação para o vendedor.
+Quando a Gestão exclui uma conta, o Supabase pode ainda manter no navegador do usuário excluído uma sessão JWT válida até sua expiração. Isso fazia o cabeçalho continuar mostrando o nome/perfil, mesmo que o cadastro já não existisse e as operações da conta falhassem.
 
-## Publicação
-O `index.html` precisa ser publicado no GitHub Pages do projeto. Esta sessão não possui acesso de escrita ao repositório GitHub, portanto o push não foi realizado automaticamente.
+### Correção implementada
+
+- O aplicativo verifica se o registro do usuário ainda existe em `public.profiles`.
+- Se o perfil foi excluído, a sessão local é encerrada imediatamente.
+- O estado local de perfil, favoritos, notificações, solicitação de vendedor e sacola é limpo.
+- O usuário volta para a página inicial como visitante, com `Entrar` no cabeçalho.
+- A verificação ocorre:
+  - na inicialização;
+  - ao retornar ao navegador/aba;
+  - ao recuperar o foco da janela;
+  - automaticamente a cada 30 segundos enquanto a página estiver visível.
+- A exclusão administrativa continua sendo feita pela função existente `admin_delete_user`, que remove o usuário de `auth.users`.
+
+## Preservado
+
+A interface, catálogo, Gestão, Área do vendedor, moderação, destaques, sacola e demais funções da versão anterior foram mantidos.
+
+## Validação
+
+- JavaScript validado com `node --check`.
+- Nenhuma alteração destrutiva foi feita nas tabelas ou nos dados existentes.
