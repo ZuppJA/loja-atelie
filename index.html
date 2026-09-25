@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.27.2">
-<link rel="manifest" href="/loja-atelie/manifest.json?v=3">
+<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.33.0">
+<link rel="manifest" href="/loja-atelie/manifest.json?v=4">
 <link rel="icon" type="image/png" sizes="16x16" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-16.png?v=1">
 <link rel="icon" type="image/png" sizes="32x32" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-32.png?v=1">
 <link rel="apple-touch-icon" sizes="180x180" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-180.png?v=1">
@@ -314,6 +314,303 @@ html[data-theme="dark"] .profile-hero{background:linear-gradient(135deg,#30292b,
 .image-thumb-remove:hover{background:var(--danger)}.image-thumb-index{position:absolute;left:5px;bottom:5px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;display:grid;place-items:center;background:rgba(255,253,249,.9);color:var(--text);font-size:.68rem;font-weight:900;border:1px solid var(--line)}
 </style>
 
+
+<style>
+/* V4.32.0 — Atendimento: suporte separado de conversas privadas */
+.chat-container{max-width:1380px;padding-top:16px;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+.chat-page{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0;flex:1}
+.chat-page-head{display:flex;align-items:center;justify-content:space-between;gap:18px;flex:none}
+.chat-page-head h1{margin:0 0 3px;font-size:clamp(1.8rem,3.2vw,2.35rem);letter-spacing:-.035em}
+.chat-page-head p{margin:0;color:#625866;font-size:.94rem}.chat-page-head .eyebrow{display:none}
+.chat-workspace{display:grid;grid-template-columns:minmax(300px,340px) minmax(0,1fr);height:auto;flex:1;min-height:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:var(--card);box-shadow:var(--shadow)}
+.chat-list-panel{min-width:0;border-right:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column}
+.chat-list-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 16px 11px}
+.chat-list-head h2{margin:2px 0 0;font-size:1.35rem}
+.chat-list-count{min-width:30px;height:30px;display:grid;place-items:center;padding:0 8px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--muted);font-size:.75rem;font-weight:850}
+.chat-search-wrap{display:flex;align-items:center;gap:8px;margin:0 14px 10px;padding:0 12px;height:44px;border:1px solid var(--line);border-radius:13px;background:var(--card)}
+.chat-search-wrap:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px rgba(117,86,111,.1)}
+.chat-search-wrap .icon{width:18px;height:18px;color:var(--muted);flex:none}
+.chat-search-wrap input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:var(--text);padding:0}
+.chat-search-wrap input::placeholder{color:var(--muted)}
+.chat-filters{display:flex;gap:7px;overflow-x:auto;padding:0 14px 12px;scrollbar-width:none}
+.chat-filters::-webkit-scrollbar{display:none}
+.chat-filter{flex:none;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:8px 10px;font-size:.73rem;font-weight:820;white-space:nowrap}
+.chat-filter.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.chat-list-scroll{min-height:0;overflow:auto;padding:0 8px 10px}
+.chat-conversation-row{position:relative;width:100%;display:block;text-align:left;border:1px solid transparent;border-radius:14px;background:transparent;color:var(--text);padding:12px 10px;margin:1px 0;cursor:pointer}
+.chat-conversation-row:hover,.chat-conversation-row:focus-visible{background:var(--card);outline:none}
+.chat-conversation-row.selected{background:var(--card);border-color:var(--line);box-shadow:inset 3px 0 0 var(--brand)}
+.chat-conversation-row.unread strong{font-weight:950}
+.chat-conversation-main{display:block;min-width:0}
+.chat-conversation-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;min-width:0}
+.chat-conversation-top strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.9rem}
+.chat-conversation-top time{flex:none;color:#625866;font-size:.69rem;font-weight:680}
+.chat-conversation-preview{display:block;margin-top:4px;color:#625866;font-size:.8rem;font-weight:520;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-conversation-context{display:block;margin-top:3px;color:#625866;font-size:.69rem;line-height:1.25;font-weight:560}.chat-page-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.admin-support-page{margin-top:0}.admin-support-page .chat-workspace{height:auto}
+.chat-conversation-meta{display:flex;align-items:center;gap:7px;margin-top:7px}
+.chat-status{display:inline-flex;align-items:center;gap:5px;width:max-content;padding:4px 8px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:.67rem;font-weight:850;line-height:1}
+.chat-status:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.7}
+.chat-status.open{color:var(--ok)}.chat-status.waiting{color:var(--warn)}.chat-status.closed{color:#625866}
+.chat-unread-dot{width:8px;height:8px;border-radius:50%;background:var(--brand);display:inline-block;flex:none}
+.chat-list-state{display:grid;place-items:center;text-align:center;gap:8px;padding:44px 20px;color:var(--muted);font-size:.82rem}
+.chat-list-state strong{color:var(--text);font-size:.9rem;max-width:260px}.chat-list-state span{max-width:260px;line-height:1.45}
+.chat-empty-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:var(--surface);color:var(--brand);border:1px solid var(--line)}
+.chat-empty-icon .icon{width:22px;height:22px}
+.chat-load-more{width:calc(100% - 8px);margin:8px 4px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--brand);padding:10px;font-size:.78rem;font-weight:850}
+.chat-main-pane{min-width:0;min-height:0;background:var(--card)}
+.chat-conversation-empty{height:100%;display:grid;place-items:center;text-align:center;padding:28px;color:#625866;align-content:center;gap:8px}
+.chat-conversation-empty h2{display:none}.chat-conversation-empty p{margin:0;max-width:420px;line-height:1.5;font-size:.98rem}
+.chat-conversation-panel{height:100%;min-width:0;display:flex;flex-direction:column}
+.chat-conversation-head{display:flex;align-items:center;gap:11px;padding:13px 15px;border-bottom:1px solid var(--line);background:var(--card);position:relative;z-index:5}
+.chat-back-button{display:none;width:40px;height:40px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text)}
+.chat-back-button .icon{width:19px;height:19px}.chat-conversation-title{min-width:0;display:grid;gap:5px}.chat-conversation-title strong{font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-conversation-actions{margin-left:auto;position:relative;display:flex;align-items:center}.chat-conversation-actions .iconbtn{width:40px;height:40px;padding:0;display:grid;place-items:center}.chat-conversation-actions .icon{width:19px;height:19px}
+.chat-context-menu,.chat-message-menu{position:absolute;right:0;top:46px;z-index:20;min-width:210px;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--card);box-shadow:0 14px 30px rgba(55,40,35,.13)}
+.chat-context-menu button,.chat-message-menu button{width:100%;display:flex;align-items:center;gap:9px;border:0;border-radius:9px;background:transparent;color:var(--text);text-align:left;padding:10px 11px;font-size:.8rem;font-weight:740}.chat-context-menu button:hover,.chat-message-menu button:hover{background:var(--surface)}
+.chat-context-menu button.destructive,.chat-message-menu button.destructive{color:var(--danger)}.chat-context-menu .icon,.chat-message-menu .icon{width:17px;height:17px;flex:none}
+.chat-message-scroll{min-height:0;flex:1;overflow:auto;padding:16px 18px 12px;outline:none;scroll-behavior:smooth}.chat-history-load{display:flex;justify-content:center;padding:0 0 12px}.chat-history-load button{padding:8px 12px;font-size:.74rem}
+.chat-message-list{display:flex;flex-direction:column;gap:10px}.chat-history-empty{padding:26px}.chat-message{position:relative;display:flex;max-width:78%;align-self:flex-start;align-items:flex-start;gap:5px}.chat-message.mine{align-self:flex-end;flex-direction:row-reverse}
+.chat-message-bubble{position:relative;min-width:0;padding:9px 12px;border:1px solid var(--line);border-radius:14px 14px 14px 5px;background:var(--surface);color:var(--text);box-shadow:0 1px 0 rgba(255,255,255,.55)}
+.chat-message.mine .chat-message-bubble{background:#eee5ef;border-radius:14px 14px 5px 14px}.chat-message.from-admin .chat-message-bubble{background:rgba(117,86,111,.12)}
+html[data-theme="dark"] .chat-message.mine .chat-message-bubble{background:#3b3139}
+.chat-message-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px;font-size:.65rem;color:#625866;font-weight:780}.chat-message-meta time{font-weight:620}
+.chat-message-content{font-size:.88rem;line-height:1.48;white-space:pre-wrap;overflow-wrap:anywhere}.chat-edited{display:block;margin-top:3px;color:#625866;font-size:.63rem}.chat-deleted-label{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-style:italic}.chat-deleted-label .icon{width:13px;height:13px}
+.chat-message-actions{position:absolute;right:-39px;top:4px;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--muted);opacity:0;transition:opacity .12s ease}.chat-message:hover .chat-message-actions,.chat-message:focus-within .chat-message-actions{opacity:1}.chat-message.mine .chat-message-actions{right:auto;left:-39px}
+.chat-message-menu{top:39px;right:auto;left:calc(100% + 3px)}.chat-message.mine .chat-message-menu{right:calc(100% + 3px);left:auto}
+.chat-message-editing{width:min(520px,70vw);padding:9px;border:1px solid var(--brand);border-radius:14px;background:var(--card);box-shadow:0 0 0 3px rgba(117,86,111,.1)}
+.chat-message-editing textarea{width:100%;min-height:88px;resize:vertical;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text);padding:10px;outline:none}.chat-message-edit-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:8px}.chat-message-edit-actions button{padding:8px 11px;font-size:.76rem}
+.chat-composer-wrap{border-top:1px solid var(--line);padding:12px 14px;background:var(--card);position:relative;z-index:4}.chat-composer{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:9px}.chat-composer textarea{width:100%;min-height:48px;max-height:140px;resize:vertical;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--text);padding:11px 12px;outline:none;line-height:1.4}.chat-composer textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(117,86,111,.1)}.chat-composer button{min-width:92px;height:48px;display:flex;align-items:center;justify-content:center;gap:7px}.chat-composer button .icon{width:16px;height:16px}
+.chat-closed-notice{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;font-size:.82rem;color:#625866}.chat-closed-notice button{padding:9px 12px;font-size:.75rem}
+.chat-confirm-back{align-items:center;padding:18px}.chat-confirm-modal{width:min(470px,100%);border-radius:20px;max-height:none}.chat-confirm-text{margin:0 0 18px;color:var(--muted);line-height:1.55}.chat-confirm-actions{justify-content:flex-end}.chat-confirm-actions button{min-width:100px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media ((max-width:880px) and (orientation:portrait)), (max-width:600px){.chat-container{padding-top:10px}.chat-page-head{align-items:flex-start}.chat-workspace{grid-template-columns:1fr;border-radius:18px}.chat-list-panel{border-right:0}.chat-main-pane{display:none}.chat-workspace.has-selection .chat-list-panel{display:none}.chat-workspace.has-selection .chat-main-pane{display:block}.chat-back-button{display:grid;place-items:center}.chat-message{max-width:88%}.chat-message-actions{opacity:1}.chat-message-editing{width:min(100%,76vw)}}
+@media(max-width:600px){.chat-page-head{flex-direction:column;gap:8px}.chat-page-actions{width:100%;align-items:stretch}.chat-page-actions>*{flex:1 1 auto}
+.chat-page-head .chat-back-area{align-self:flex-start}.chat-workspace{height:calc(100dvh - 151px);min-height:480px;border-radius:16px}.chat-list-head{padding:13px 12px 9px}.chat-list-scroll{padding-left:5px;padding-right:5px}.chat-conversation-head{padding:10px}.chat-message-scroll{padding:12px 10px 8px}.chat-message{max-width:92%}.chat-message-actions{display:grid;right:-4px;top:-13px;width:30px;height:30px;border-radius:50%;opacity:1}.chat-message.mine .chat-message-actions{left:-4px;right:auto}.chat-message-menu{left:auto;right:-3px;top:37px}.chat-message.mine .chat-message-menu{left:auto;right:-3px}.chat-composer-wrap{padding:9px 9px calc(9px + env(safe-area-inset-bottom,0px))}.chat-composer{grid-template-columns:minmax(0,1fr) auto;gap:7px}.chat-composer textarea{min-height:48px}.chat-composer button{min-width:52px;padding:0 12px}.chat-composer button span{display:none}.chat-closed-notice{align-items:stretch;flex-direction:column}.chat-closed-notice button{width:100%}.chat-context-menu{right:-2px}}
+@media(prefers-reduced-motion:reduce){.chat-message-scroll{scroll-behavior:auto}.chat-message-actions{transition:none}}
+</style>
+
+
+<style>
+/* V4.33.0 — Atendimento por seções verticais + Central de Suporte */
+.chat-section-wrap{padding:9px 10px 0;border-bottom:1px solid var(--line);background:var(--surface)}
+.chat-section-nav{display:flex;flex-direction:column;gap:4px;padding:0 0 9px}
+.chat-section-item{position:relative;width:100%;min-height:42px;display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:8px;padding:8px 10px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--muted);text-align:left;font-weight:800;font-size:.78rem;cursor:pointer}
+.chat-section-item:hover,.chat-section-item:focus-visible{background:var(--card);outline:none}
+.chat-section-item.active{background:#f1e8f4;color:var(--text);border-color:#d9cadb;box-shadow:inset 4px 0 0 var(--brand),0 1px 0 rgba(60,40,70,.03)}
+.chat-section-icon{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:rgba(117,86,111,.08);color:var(--muted)}
+.chat-section-item.active .chat-section-icon{color:var(--brand);background:rgba(117,86,111,.16)}
+.chat-section-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.chat-section-count{min-width:21px;height:21px;padding:0 6px;border-radius:999px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:.65rem;font-weight:900}
+.chat-filter-control{position:relative}.chat-filter-button{position:relative}.chat-filter-button.has-filter{color:var(--brand);background:rgba(117,86,111,.09)}.chat-filter-active-dot{position:absolute;right:7px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--brand);border:2px solid var(--card)}
+.chat-filter-popover{position:absolute;right:0;top:46px;z-index:25;width:205px;padding:8px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 15px 34px rgba(55,40,35,.15)}
+.chat-filter-popover-title{padding:8px 9px 6px;font-size:.74rem;font-weight:900;color:var(--text)}.chat-filter-option{width:100%;display:grid;grid-template-columns:20px 1fr;gap:8px;align-items:center;border:0;border-radius:9px;background:transparent;color:var(--muted);padding:9px;text-align:left;font-size:.76rem;font-weight:760}.chat-filter-option:hover,.chat-filter-option.active{background:var(--surface);color:var(--text)}
+.chat-filter-radio{width:18px;height:18px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--brand)}.chat-filter-option.active .chat-filter-radio{border-color:var(--brand)}.chat-filter-radio .icon{width:11px;height:11px}
+.chat-send-loading{width:15px;height:15px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;display:block;animation:chatspin .75s linear infinite}@keyframes chatspin{to{transform:rotate(360deg)}}
+.chat-new-messages{position:absolute;right:16px;bottom:78px;z-index:6;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--brand);padding:8px 11px;font-size:.72rem;font-weight:860;box-shadow:0 8px 18px rgba(55,40,35,.12)}
+.chat-new-messages .icon{transform:rotate(-90deg);width:13px;height:13px}.skeleton-line{height:46px;margin:7px;border-radius:11px;background:linear-gradient(90deg,var(--surface),var(--card),var(--surface));background-size:200% 100%;animation:chatshimmer 1.2s infinite}.skeleton-line.short{width:65%}@keyframes chatshimmer{to{background-position:-200% 0}}
+.admin-user-message-btn{white-space:nowrap}
+@media ((max-width:880px) and (orientation:portrait)), (max-width:600px){.chat-section-wrap{padding-top:7px}.chat-section-nav{flex-direction:column;overflow:visible;padding-bottom:7px}.chat-section-item{width:100%;min-width:0;grid-template-columns:26px minmax(0,1fr) auto}.chat-filter-popover{right:0}.chat-new-messages{right:10px;bottom:78px}}
+@media(max-width:600px){.chat-section-item{min-width:112px;padding:7px 8px}.chat-section-label{font-size:.74rem}.chat-list-head h2{font-size:1.12rem}.chat-filter-popover{width:190px}.chat-new-messages{bottom:76px}}
+@media(prefers-reduced-motion:reduce){.chat-send-loading,.skeleton-line{animation:none}}
+</style>
+
+<style>
+/* V4.33.3 — Atendimento: layout estável, duas colunas em telas largas e viewport protegido */
+html.chat-layout-active,body.chat-layout-active{height:100%;overflow:hidden;overscroll-behavior:none}
+body.chat-layout-active #app{height:var(--fios-chat-vh,100svh);min-height:0;overflow:hidden}
+body.chat-layout-active footer{display:none}
+body.chat-layout-active .chat-container{height:calc(var(--fios-chat-vh,100svh) - var(--fios-chat-top,62px));max-height:calc(var(--fios-chat-vh,100svh) - var(--fios-chat-top,62px));min-height:0;padding-bottom:12px;overflow:hidden}
+body.chat-layout-active .chat-page{min-height:0;flex:1}
+body.chat-layout-active .chat-workspace{height:auto!important;max-height:none!important;min-height:0!important;flex:1;overflow:hidden}
+body.chat-layout-active .chat-list-panel,.chat-main-pane{min-height:0}
+body.chat-layout-active .chat-list-scroll,.chat-message-scroll{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+@media ((max-width:880px) and (orientation:portrait)), (max-width:600px){
+  body.chat-layout-active .chat-container{padding-top:8px}
+}
+html[data-theme="dark"] .chat-conversation-top time,
+html[data-theme="dark"] .chat-conversation-preview,
+html[data-theme="dark"] .chat-conversation-context,
+html[data-theme="dark"] .chat-message-meta,
+html[data-theme="dark"] .chat-edited,
+html[data-theme="dark"] .chat-closed-notice{color:#c4b9c6}
+html[data-theme="dark"] .chat-section-item.active{background:#3b3139;border-color:#584a56}
+</style>
+<style>
+/* V4.33.4 — Atendimento: workspace full-bleed, abas horizontais e alinhamento estável */
+body.chat-layout-active .chat-container{
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:18px 18px 20px;
+}
+body.chat-layout-active .chat-page{
+  width:100%;
+  min-width:0;
+  min-height:0;
+  gap:12px;
+}
+body.chat-layout-active .chat-page-head{
+  width:100%;
+  padding:0 2px;
+  min-height:52px;
+}
+body.chat-layout-active .chat-page-head h1{font-size:clamp(1.7rem,2.5vw,2.25rem);letter-spacing:-.035em}
+body.chat-layout-active .chat-page-head p{color:#625866;font-size:.9rem}
+body.chat-layout-active .chat-section-tabs{
+  width:100%;
+  min-width:0;
+  flex:none;
+}
+body.chat-layout-active .chat-section-tabs .chat-section-nav{
+  display:flex;
+  flex-direction:row;
+  align-items:stretch;
+  gap:6px;
+  overflow-x:auto;
+  padding:0;
+  scrollbar-width:none;
+}
+body.chat-layout-active .chat-section-tabs .chat-section-nav::-webkit-scrollbar{display:none}
+body.chat-layout-active .chat-section-tabs .chat-section-item{
+  width:auto;
+  min-width:128px;
+  min-height:40px;
+  grid-template-columns:22px minmax(0,1fr) auto;
+  flex:0 0 auto;
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid transparent;
+  background:transparent;
+  color:#625866;
+}
+body.chat-layout-active .chat-section-tabs .chat-section-item:hover,
+body.chat-layout-active .chat-section-tabs .chat-section-item:focus-visible{
+  background:#fbf8fd;
+}
+body.chat-layout-active .chat-section-tabs .chat-section-item.active{
+  background:#f1e8f4;
+  color:var(--text);
+  border-color:#d9cadb;
+  box-shadow:inset 0 -3px 0 var(--brand),0 1px 0 rgba(60,40,70,.03);
+}
+body.chat-layout-active .chat-section-tabs .chat-section-icon{
+  width:22px;height:22px;border-radius:7px;background:transparent;
+}
+body.chat-layout-active .chat-section-tabs .chat-section-item.active .chat-section-icon{background:transparent}
+body.chat-layout-active .chat-workspace{
+  width:100%;
+  min-width:0;
+  min-height:0;
+  flex:1 1 auto;
+  grid-template-columns:minmax(320px,380px) minmax(0,1fr);
+  align-self:stretch;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 4px 18px rgba(55,40,35,.08);
+}
+body.chat-layout-active .chat-list-panel{
+  min-width:0;
+  min-height:0;
+  height:100%;
+  border-right:1px solid var(--line);
+}
+body.chat-layout-active .chat-list-head{
+  min-height:50px;
+  padding:12px 14px 8px;
+}
+body.chat-layout-active .chat-list-head-tools{min-width:0}
+body.chat-layout-active .chat-list-title-compact{
+  color:var(--text);
+  font-size:.78rem;
+  font-weight:900;
+  letter-spacing:.01em;
+}
+body.chat-layout-active .chat-search-wrap{margin-bottom:10px}
+body.chat-layout-active .chat-list-scroll{min-height:0;flex:1 1 auto}
+body.chat-layout-active .chat-main-pane{
+  min-width:0;
+  min-height:0;
+  height:100%;
+  overflow:hidden;
+}
+body.chat-layout-active .chat-conversation-panel{
+  min-width:0;
+  min-height:0;
+  height:100%;
+}
+body.chat-layout-active .chat-conversation-head{flex:none}
+body.chat-layout-active .chat-message-scroll{min-height:0;flex:1 1 auto;overflow:auto}
+body.chat-layout-active .chat-composer-wrap{flex:none}
+body.chat-layout-active .chat-conversation-empty{height:100%}
+body.chat-layout-active .chat-conversation-empty p{color:#625866}
+body.chat-layout-active .chat-conversation-top time,
+body.chat-layout-active .chat-conversation-preview,
+body.chat-layout-active .chat-conversation-context,
+body.chat-layout-active .chat-message-meta,
+body.chat-layout-active .chat-edited,
+body.chat-layout-active .chat-closed-notice{color:#625866}
+body.chat-layout-active .chat-conversation-row.unread .chat-conversation-preview{color:#4f4655;font-weight:600}
+body.chat-layout-active .chat-conversation-row.unread .chat-conversation-top time{color:#504755;font-weight:760}
+body.chat-layout-active .chat-conversation-row.selected{background:#fcfafd}
+
+/* No mobile-only two-column behavior until portrait tablets or narrow phones. */
+@media ((max-width:900px) and (orientation:portrait)), (max-width:600px){
+  body.chat-layout-active .chat-container{padding:10px 11px 12px}
+  body.chat-layout-active .chat-page-head{min-height:auto;padding:0}
+  body.chat-layout-active .chat-section-tabs .chat-section-item{min-width:118px}
+  body.chat-layout-active .chat-workspace{grid-template-columns:1fr;min-height:0;border-radius:16px}
+  body.chat-layout-active .chat-workspace .chat-list-panel{border-right:0}
+  body.chat-layout-active .chat-workspace .chat-main-pane{display:none}
+  body.chat-layout-active .chat-workspace.has-selection .chat-list-panel{display:none}
+  body.chat-layout-active .chat-workspace.has-selection .chat-main-pane{display:block}
+  body.chat-layout-active .chat-page.with-chat .chat-page-head,
+  body.chat-layout-active .chat-page.with-chat .chat-section-tabs{display:none}
+  body.chat-layout-active .chat-workspace.has-selection{border-radius:14px}
+}
+
+/* Explicitly keep small landscape phones in the single-column experience. */
+@media (max-width:600px){
+  body.chat-layout-active .chat-container{padding:8px 8px 10px}
+}
+
+html[data-theme="dark"] body.chat-layout-active .chat-section-tabs .chat-section-item.active{background:#3b3139;border-color:#584a56;box-shadow:inset 0 -3px 0 var(--brand)}
+html[data-theme="dark"] body.chat-layout-active .chat-section-tabs .chat-section-item:hover,
+html[data-theme="dark"] body.chat-layout-active .chat-section-tabs .chat-section-item:focus-visible{background:#2f282f}
+</style>
+
+<style>
+/* V4.34.0 — Atendimento: Chat/Suporte padronizados + fila e transferência */
+.chat-status.queue{color:#a36a2f}.chat-status.progress{color:var(--brand)}
+.chat-support-start-card{margin:4px 2px 12px;padding:14px;border:1px solid var(--line);border-radius:15px;background:var(--card);display:grid;gap:9px;box-shadow:0 2px 8px rgba(55,40,35,.04)}
+.chat-support-start-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--surface);color:var(--brand);border:1px solid var(--line)}
+.chat-support-start-icon .icon{width:20px;height:20px}.chat-support-start-copy{display:grid;gap:3px}.chat-support-start-copy strong{font-size:.86rem}.chat-support-start-copy span{font-size:.74rem;line-height:1.4;color:var(--muted)}
+.chat-support-start-card button{width:100%;min-height:42px}
+.chat-support-admin-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;align-items:stretch;padding:5px;margin:1px 0;border:1px solid transparent;border-radius:14px;background:transparent}
+.chat-support-admin-row.selected{background:var(--card);border-color:var(--line);box-shadow:inset 3px 0 0 var(--brand)}
+.chat-support-admin-row:hover{background:var(--card)}
+.chat-support-admin-row .chat-conversation-open{min-width:0;width:100%;border:0;background:transparent;color:var(--text);padding:7px 5px;text-align:left;cursor:pointer;border-radius:10px}
+.chat-support-admin-row .chat-conversation-open:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+.chat-claim-row-button{align-self:center;white-space:nowrap;min-height:36px;padding:7px 11px;border:1px solid var(--brand);border-radius:10px;background:var(--brand);color:#fff;font-size:.72rem;font-weight:850;cursor:pointer}
+.chat-claim-row-button:hover{filter:brightness(.97)}
+.chat-header-claim{margin-left:auto;min-height:40px;padding:7px 12px;white-space:nowrap}
+.chat-claim-banner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 11px;margin-bottom:8px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.chat-claim-banner>div{display:grid;gap:2px;min-width:0}.chat-claim-banner strong{font-size:.78rem}.chat-claim-banner span{font-size:.69rem;color:var(--muted);line-height:1.35}.chat-claim-banner button{flex:none;min-height:38px;padding:7px 12px}
+.chat-support-draft-body{flex:1;display:grid;place-items:center;align-content:center;text-align:center;padding:30px;gap:8px;color:var(--muted)}
+.chat-support-draft-body h2{margin:0;color:var(--text);font-size:1.08rem}.chat-support-draft-body p{margin:0;max-width:470px;font-size:.86rem;line-height:1.55}
+.chat-transfer-modal{max-width:560px}.chat-transfer-text{margin:0 0 16px;color:var(--muted);line-height:1.55;font-size:.88rem}.chat-transfer-actions{justify-content:flex-end}
+.chat-transfer-actions .primary{display:flex;align-items:center;justify-content:center;gap:7px;min-width:160px}.chat-transfer-actions .chat-send-loading{margin:auto}
+html[data-theme="dark"] .chat-support-start-card,html[data-theme="dark"] .chat-support-admin-row.selected,html[data-theme="dark"] .chat-claim-banner{background:#2b252a}
+html[data-theme="dark"] .chat-support-admin-row:hover{background:#2b252a}
+html[data-theme="dark"] .chat-claim-row-button{color:#fff}
+@media(max-width:720px){
+ .chat-support-admin-row{grid-template-columns:minmax(0,1fr)}
+ .chat-claim-row-button{justify-self:stretch;width:100%;min-height:34px}
+ .chat-claim-banner{align-items:stretch;flex-direction:column}.chat-claim-banner button{width:100%}
+ .chat-header-claim{padding-inline:10px}
+}
+@media(max-width:600px){
+ .chat-support-start-card{margin-inline:0}.chat-support-draft-body{padding:22px 16px}.chat-transfer-modal{margin:0 10px}
+}
+</style>
 </head>
 <body><div id="app"><div class="loading">Carregando Fios & Artes…</div></div>
 
@@ -334,6 +631,18 @@ function authEmailError(error, fallback='Não foi possível enviar o e-mail.') {
  return msg||fallback;
 }
 let sb=null;
+window.addEventListener('error',event=>{
+  try{
+    if(!window.__fiosBootUiReady){
+      const root=document.getElementById('app');
+      if(root && root.querySelector('.loading')){
+        const msg=event?.error?.message||event?.message||'Erro inesperado ao iniciar o aplicativo.';
+        root.innerHTML=`<main class="container"><div class="panel connection-error"><div class="empty"><div class="empty-icon">${typeof icon==='function'?icon('craft','lg'):''}</div><h2>Não foi possível iniciar o site</h2><p>${typeof esc==='function'?esc(msg):'O aplicativo encontrou um erro ao iniciar.'}</p><button class="primary" onclick="location.reload()">Tentar novamente</button></div></div></main>`;
+      }
+    }
+  }catch{}
+});
+
 const SUPABASE_CDNS=[
  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
  'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js'
@@ -634,7 +943,7 @@ function toggleTheme(){
   toast(themeMode==='dark'?'Tema escuro ativado.':'Tema claro ativado.');
 }
 applyTheme();
-let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false};
+let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,chatSelectedId:null,chatSection:'sellers',chatFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,chatLoading:false,chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatEditingMessageId:null,chatLoadingOlder:false,chatSectionCounts:{},chatNewMessages:0,chatSending:false,chatSupportDraft:false,chatTransferAgents:[],chatTransferLoading:false};
 let changingPassword=false;
 function serializableModal(){
   if(state.modal==='auth')return 'auth';
@@ -643,21 +952,21 @@ function serializableModal(){
   if(!allowed.includes(state.modal.type))return null;
   return {type:state.modal.type,id:state.modal.id||''};
 }
-function navigationSnapshot(){return {page:state.page,category:state.category,sellerCategory:state.sellerCategory,search:state.search,selected:state.selected,sellerId:state.sellerId||null,adminTab:state.adminTab,modal:serializableModal(),authMode:state.authMode,authUnconfirmed:state.authUnconfirmed,editingProfile:!!editingProfile,editingSellerInfo:!!editingSellerInfo,changingPassword:!!changingPassword}}
-function saveNavigation(){try{const snapshot=JSON.stringify(navigationSnapshot());localStorage.setItem(NAV_STATE,snapshot);sessionStorage.setItem(NAV_SESSION_STATE,snapshot);const q=new URLSearchParams();if(state.page&&state.page!=='home')q.set('page',state.page);if(state.page==='products'&&state.category&&state.category!=='Todos')q.set('category',state.category);if(state.page==='products'&&state.search)q.set('search',state.search);if(state.page==='detail'&&state.selected)q.set('selected',state.selected);if(state.page==='sellerShop'&&state.sellerId)q.set('seller',state.sellerId);if(state.page==='admin'&&state.adminTab&&state.adminTab!=='requests')q.set('tab',state.adminTab);history.replaceState({navigation:true},document.title,location.pathname+(q.toString()?'?'+q.toString():'')+location.hash)}catch{}}
+function navigationSnapshot(){return {page:state.page,category:state.category,sellerCategory:state.sellerCategory,search:state.search,selected:state.selected,sellerId:state.sellerId||null,adminTab:state.adminTab,chatSection:state.chatSection,modal:serializableModal(),authMode:state.authMode,authUnconfirmed:state.authUnconfirmed,editingProfile:!!editingProfile,editingSellerInfo:!!editingSellerInfo,changingPassword:!!changingPassword}}
+function saveNavigation(){try{const snapshot=JSON.stringify(navigationSnapshot());localStorage.setItem(NAV_STATE,snapshot);sessionStorage.setItem(NAV_SESSION_STATE,snapshot);const q=new URLSearchParams();if(state.page&&state.page!=='home')q.set('page',state.page);if(state.page==='products'&&state.category&&state.category!=='Todos')q.set('category',state.category);if(state.page==='products'&&state.search)q.set('search',state.search);if(state.page==='detail'&&state.selected)q.set('selected',state.selected);if(state.page==='sellerShop'&&state.sellerId)q.set('seller',state.sellerId);if(state.page==='admin'&&state.adminTab&&state.adminTab!=='requests')q.set('tab',state.adminTab);if((state.page==='sellerChats'||state.page==='supportCenter')&&state.chatSection)q.set('section',state.chatSection);history.replaceState({navigation:true},document.title,location.pathname+(q.toString()?'?'+q.toString():'')+location.hash)}catch{}}
 function restoreNavigation(){try{
   // V4.20.2 — a nova abertura do site deve começar sempre na página inicial.
   // O estado salvo de navegação não é mais restaurado entre aberturas.
   // Parâmetros explícitos na URL continuam funcionando para links compartilháveis.
   const q=new URLSearchParams(location.search);
   const qp=q.get('page');
-  const valid=['home','products','detail','cart','favorites','followedSellers','notifications','account','seller','sellerPreview','sellerShop','sellerChats','admin'];
+  const valid=['home','products','detail','cart','favorites','followedSellers','notifications','account','seller','sellerPreview','sellerShop','sellerChats','supportCenter','admin'];
   if(valid.includes(qp||''))state.page=qp;
   if(q.has('category'))state.category=q.get('category')||'Todos';
   if(q.has('seller'))state.sellerId=q.get('seller')||null;
   if(q.has('selected'))state.selected=q.get('selected')||null;
   if(q.has('search'))state.search=q.get('search')||'';
-  if(q.has('tab'))state.adminTab=q.get('tab')||'requests';
+  if(q.has('tab')){state.adminTab=q.get('tab')||'requests';if(state.adminTab==='support')state.page='supportCenter';}if(q.has('section'))state.chatSection=q.get('section')||state.chatSection;
   editingProfile=false;
   editingSellerInfo=false;
   changingPassword=false;
@@ -772,7 +1081,6 @@ function publicationLabel(p){const st=publicationStatus(p);return st==='draft'?'
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2400)}
 function guestCart(){try{return JSON.parse(localStorage.getItem(GUEST_CART)||'[]')}catch{return[]}}
 function saveGuestCart(){localStorage.setItem(GUEST_CART,JSON.stringify(cart))}
-function go(p){saveCurrentFormDraft();if(state.modal?.type==='product')resetProductImageEditor();state.page=p;state.selected=null;state.sellerId=null;state.modal=null;state.drawer=false;if(p!=='sellerShop')state.sellerCategory='Todos';saveNavigation();render()}
 function getProduct(id){return products.find(p=>p.id===id)}
 function isFavorite(id){return favorites.some(x=>x.product_id===id||x===id)}
 function guestFavorites(){try{return JSON.parse(localStorage.getItem(GUEST_FAVORITES)||'[]')}catch{return[]}}
@@ -798,8 +1106,9 @@ async function loadAll(){
     if(r.error){r=await sb.from('product_images').select('id,product_id,storage_path,position').in('product_id',products.map(p=>p.id)).order('position')}
     if(!r.error){images=(r.data||[]).map(x=>({...x,position_x:50,position_y:50,zoom:1,url:sb.storage.from('product-images').getPublicUrl(x.storage_path).data.publicUrl}))}
   }
-  if(session){await loadDbCart();const [sr,nr,fr,sc]=await Promise.all([sb.from('seller_requests').select('id,user_id,status,product_type,rejection_reason,requested_at,reviewed_at').eq('user_id',session.user.id).order('requested_at',{ascending:false}).limit(1),sb.from('notifications').select('id,type,title,message,read_at,created_at,data').eq('user_id',session.user.id).order('created_at',{ascending:false}).limit(100),sb.from('seller_follows').select('seller_id').eq('user_id',session.user.id),sb.from('seller_chats').select('id,seller_id,customer_id,product_id,last_message_at,created_at').or(`seller_id.eq.${session.user.id},customer_id.eq.${session.user.id}`).order('last_message_at',{ascending:false,nullsFirst:false})]);mySellerRequest=sr.error?null:(sr.data?.[0]||null);notifications=nr.error?[]:(nr.data||[]);followedSellers=fr.error?[]:(fr.data||[]).map(x=>x.seller_id);sellerChats=sc.error?[]:(sc.data||[]);window.__chatUsers=window.__chatUsers||{};const chatIds=[...new Set(sellerChats.map(c=>c.seller_id===session.user.id?c.customer_id:c.seller_id))];if(chatIds.length){const uq=await sb.from('profiles').select('id,name,surname,seller_display_name').in('id',chatIds);(uq.data||[]).forEach(u=>window.__chatUsers[u.id]=u)}}else{cart=guestCart();mySellerRequest=null;notifications=[];followedSellers=[];sellerChats=[];}await loadFavorites();
+  if(session){await loadDbCart();const [sr,nr,fr]=await Promise.all([sb.from('seller_requests').select('id,user_id,status,product_type,rejection_reason,requested_at,reviewed_at').eq('user_id',session.user.id).order('requested_at',{ascending:false}).limit(1),sb.from('notifications').select('id,type,title,message,read_at,created_at,data').eq('user_id',session.user.id).order('created_at',{ascending:false}).limit(100),sb.from('seller_follows').select('seller_id').eq('user_id',session.user.id)]);mySellerRequest=sr.error?null:(sr.data?.[0]||null);notifications=nr.error?[]:(nr.data||[]);followedSellers=fr.error?[]:(fr.data||[])}else{cart=guestCart();mySellerRequest=null;notifications=[];followedSellers=[];sellerChats=[];}await loadFavorites();
 }
+function go(p){saveCurrentFormDraft();if(state.modal?.type==='product')resetProductImageEditor();state.page=p;state.selected=null;state.sellerId=null;state.modal=null;state.drawer=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;state.chatSupportDraft=false;if(p!=='sellerShop')state.sellerCategory='Todos';if(!['sellerChats','supportCenter'].includes(p)){state.chatSelectedId=null}else{state.chatOffset=0;state.chatTotal=0;state.chatHasMore=false;normalizeChatSection();}saveNavigation();render();if(session&&['sellerChats','supportCenter'].includes(p)){loadSellerChatSectionCounts({silent:true}).then(()=>render());loadSellerChats({reset:true,silent:true}).then(()=>render()).catch(()=>{});}}
 async function loadDbCart(){const r=await sb.from('cart_items').select('product_id,quantity').eq('user_id',session.user.id);if(r.error){toast(r.error.message);return}cart=r.data||[]}
 let notificationChannel=null,productChannel=null;
 async function subscribeNotifications(){
@@ -835,7 +1144,368 @@ async function subscribeProducts(){
   })
   .subscribe(status=>{if(status==='CHANNEL_ERROR')console.error('product realtime channel error')});
 }
-async function refresh(){try{await loadAll();render()}catch(e){console.error(e);$('app').innerHTML=`<main class="container"><div class="notice"><b>Não foi possível carregar o banco.</b><br>${esc(e.message||e)}<br><br>Verifique a conexão com o Supabase e recarregue.</div></main>`}}
+async function subscribeSellerChats(){
+  if(chatRealtimeChannel){try{await sb.removeChannel(chatRealtimeChannel)}catch(err){console.error('remove chat channel',err)}chatRealtimeChannel=null;}
+  if(!session)return;
+  chatRealtimeChannel=sb.channel(`seller-chats-${session.user.id}`)
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'seller_chat_messages'},p=>handleChatRealtimeMessage(p,'INSERT'))
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'seller_chat_messages'},p=>handleChatRealtimeMessage(p,'UPDATE'))
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'seller_chats'},p=>handleChatRealtimeChat(p,'UPDATE'))
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'seller_chats'},p=>handleChatRealtimeChat(p,'INSERT'))
+    .on('postgres_changes',{event:'DELETE',schema:'public',table:'seller_chats'},p=>handleChatRealtimeChat(p,'DELETE'))
+    .subscribe(status=>{if(status==='CHANNEL_ERROR')console.error('seller chat realtime channel error')});
+}
+
+function syncChatViewport(){
+  const active=document.body.classList.contains('chat-layout-active');
+  if(!active){document.documentElement.style.removeProperty('--fios-chat-vh');document.documentElement.style.removeProperty('--fios-chat-top');return}
+  const top=document.querySelector('.top');
+  const topH=top?.getBoundingClientRect().height||62;
+  document.documentElement.style.setProperty('--fios-chat-top',`${Math.round(topH)}px`);
+  const vv=window.visualViewport;
+  const innerH=window.innerHeight||0;
+  const keyboardOpen=!!vv&&vv.height<innerH*.82;
+  if(keyboardOpen)document.documentElement.style.setProperty('--fios-chat-vh',`${Math.round(vv.height)}px`);
+  else document.documentElement.style.removeProperty('--fios-chat-vh');
+}
+function syncChatLayoutState(active){
+  document.documentElement.classList.toggle('chat-layout-active',!!active);
+  document.body.classList.toggle('chat-layout-active',!!active);
+  if(active)requestAnimationFrame(syncChatViewport);else syncChatViewport();
+}
+function refreshChatSidebarDom(){
+  const panel=document.querySelector('.chat-list-panel');if(!panel)return;
+  const currentScroll=panel.querySelector('.chat-list-scroll');if(!currentScroll)return;
+  const top=currentScroll.scrollTop||0;
+  const temp=document.createElement('div');temp.innerHTML=sellerChatSidebar();
+  const nextPanel=temp.firstElementChild;
+  const nextScroll=nextPanel?.querySelector('.chat-list-scroll');
+  if(!nextScroll)return;
+  currentScroll.replaceWith(nextScroll);
+  requestAnimationFrame(()=>{const next=document.querySelector('.chat-list-scroll');if(next)next.scrollTop=top});
+}
+function syncChatNewMessagesDom(){
+  const pane=document.querySelector('.chat-conversation-panel');if(!pane)return;
+  let button=pane.querySelector('.chat-new-messages');
+  if(state.chatNewMessages>0){
+    if(!button){button=document.createElement('button');button.type='button';button.className='chat-new-messages';button.addEventListener('click',jumpToChatBottom);pane.appendChild(button)}
+    button.innerHTML=`${icon('arrowLeft','xs')} ${state.chatNewMessages} nova${state.chatNewMessages>1?'s':''} mensagem${state.chatNewMessages>1?'s':''}`;
+  }else if(button)button.remove();
+}
+function refreshChatMessagesDom({keepScroll=true}={}){
+  const list=document.querySelector('.chat-message-list');if(!list)return;
+  const scroll=document.querySelector('.chat-message-scroll');const wasNear=scroll?isChatNearBottom(scroll):true;const oldTop=scroll?.scrollTop||0;
+  list.innerHTML=chatMessages.length?chatMessages.map(chatMessageBubble).join(''):'<div class="empty chat-history-empty">Nenhuma mensagem ainda.</div>';
+  syncChatNewMessagesDom();
+  requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(!el)return;if(wasNear)el.scrollTop=el.scrollHeight;else if(keepScroll)el.scrollTop=oldTop});
+}
+function refreshChatHeaderDom(){
+  const chat=chatCurrent(),host=document.querySelector('.chat-conversation-panel');if(!chat||!host)return;
+  const temp=document.createElement('div');temp.innerHTML=sellerChatConversationPane(chat);const next=temp.querySelector('.chat-conversation-head');const current=host.querySelector('.chat-conversation-head');if(next&&current)current.replaceWith(next);
+  const nextComposer=temp.querySelector('.chat-composer-wrap');const currentComposer=host.querySelector('.chat-composer-wrap');if(nextComposer&&currentComposer)currentComposer.replaceWith(nextComposer);
+}
+async function handleChatRealtimeMessage(payload,kind){
+  const m=payload?.new;if(!m?.id||!m.chat_id)return;
+  const selected=m.chat_id===state.chatSelectedId;
+  const before=selected?document.querySelector('#chatMessageScroll'):null;
+  const near=selected?isChatNearBottom(before):true;
+  const oldTop=before?.scrollTop||0;
+
+  if(selected){
+    if(kind==='INSERT'&&!chatMessages.some(x=>x.id===m.id))chatMessages=[...chatMessages,m].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+    if(kind==='UPDATE')chatMessages=chatMessages.map(x=>x.id===m.id?{...x,...m}:x);
+    if(kind==='INSERT'&&near){state.chatNewMessages=0;await markSellerChatRead(m.chat_id,{rerender:false});}
+    else if(kind==='INSERT')state.chatNewMessages=Math.max(1,Number(state.chatNewMessages||0)+1);
+  }
+
+  await loadSellerChats({reset:true,silent:true});
+  await loadSellerChatSectionCounts({silent:true});
+
+  if(!(state.page==='sellerChats'||state.page==='supportCenter'))return;
+  if(state.chatSelectedId===m.chat_id&&isSupportChat(chatCurrent())&&profile?.role==='admin'&&!sellerChats.some(c=>c.id===m.chat_id)){state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;saveNavigation();render();return;}
+  refreshChatSidebarDom();
+
+  if(selected){
+    refreshChatMessagesDom({keepScroll:true});
+    requestAnimationFrame(()=>{
+      const el=document.querySelector('#chatMessageScroll');if(!el)return;
+      if(near)el.scrollTop=el.scrollHeight;else el.scrollTop=oldTop;
+      syncChatNewMessagesDom();
+    });
+  }
+}
+async function handleChatRealtimeChat(payload,kind){
+  const id=payload?.new?.id||payload?.old?.id;if(!id)return;
+  if(kind==='DELETE'&&state.chatSelectedId===id){state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;}
+  await loadSellerChats({reset:true,silent:true});
+  await loadSellerChatSectionCounts({silent:true});
+  if(!(state.page==='sellerChats'||state.page==='supportCenter'))return;
+  if(state.chatSelectedId===id&&!sellerChats.some(c=>c.id===id)){state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;saveNavigation();render();return;}
+  refreshChatSidebarDom();
+  if(state.chatSelectedId===id){
+    refreshChatHeaderDom();
+    refreshChatMessagesDom();
+  }
+}
+async function loadSellerChatSectionCounts({silent=true}={}){
+ if(!session)return;
+ try{const r=await sb.rpc('get_seller_chat_section_counts');if(r.error)throw r.error;state.chatSectionCounts={};(r.data||[]).forEach(x=>state.chatSectionCounts[x.section]={total:Number(x.total_count||0),unread:Number(x.unread_count||0)});}catch(e){console.error('loadSellerChatSectionCounts',e);if(!silent)toast(e?.message||'Não foi possível carregar os contadores das conversas.')}
+}
+function chatSectionsForCurrentRole(){
+ if(profile?.role==='client')return [{id:'sellers',label:'Chat',icon:'messageCircle'},{id:'support',label:'Suporte',icon:'comment'}];
+ if(profile?.role==='seller')return [{id:'customers',label:'Chat',icon:'messageCircle'},{id:'support',label:'Suporte',icon:'comment'}];
+ if(profile?.role==='admin')return [{id:'clients',label:'Clientes',icon:'user'},{id:'sellers',label:'Vendedores',icon:'store'},{id:'management',label:'Gestão',icon:'shield'}];
+ return [];
+}
+function normalizeChatSection(){const valid=chatSectionsForCurrentRole().map(x=>x.id);if(!valid.includes(state.chatSection))state.chatSection=valid[0]||'sellers';}
+async function loadSellerChats({reset=true,silent=false}={}){
+ if(!session){sellerChats=[];return}normalizeChatSection();if(!['all','unread','closed'].includes(state.chatFilter))state.chatFilter='all';if(reset){state.chatOffset=0;sellerChats=[];state.chatTotal=0;state.chatHasMore=false;}if(state.chatLoading)return;state.chatLoading=true;
+ try{
+  const useSupportList=state.chatSection==='support'||(profile?.role==='admin'&&['clients','sellers'].includes(state.chatSection));
+  const fn=useSupportList?'list_support_chats':'list_seller_chats';
+  const r=await sb.rpc(fn,{p_section:state.chatSection,p_search:state.chatSearch||'',p_filter:state.chatFilter||'all',p_limit:30,p_offset:state.chatOffset||0});
+  if(r.error)throw r.error;
+  const rows=Array.isArray(r.data)?r.data:[];
+  if(reset)sellerChats=rows;else sellerChats=[...sellerChats,...rows.filter(x=>!sellerChats.some(c=>c.id===x.id))];
+  state.chatTotal=Number(rows[0]?.total_count||0);state.chatOffset=(reset?0:(state.chatOffset||0))+rows.length;state.chatHasMore=state.chatOffset<state.chatTotal;
+ }catch(e){console.error('loadSellerChats',e);if(!silent)toast(e?.message||'Não foi possível carregar as conversas.');if(reset)sellerChats=[]}finally{state.chatLoading=false}
+}
+async function loadSellerChatById(id){const r=await sb.rpc('get_seller_chat',{p_chat_id:id});if(r.error)throw r.error;const chat=Array.isArray(r.data)?r.data[0]:r.data;if(!chat)throw new Error('Conversa não encontrada ou sem permissão.');return chat}
+async function loadSellerChatMessages(id,{prepend=false,before=null}={}){if(!id)return;const r=await sb.rpc('list_seller_chat_messages',{p_chat_id:id,p_limit:60,p_before:before||null});if(r.error)throw r.error;const rows=(Array.isArray(r.data)?r.data:[]).reverse();const prevHeight=prepend?(document.querySelector('.chat-message-scroll')?.scrollHeight||0):0;const map=new Map(chatMessages.map(m=>[m.id,m]));rows.forEach(m=>map.set(m.id,m));chatMessages=[...map.values()].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));const total=Number(r.data?.[0]?.total_count||0);state.chatHasMore=chatMessages.length<total;if(prepend)requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=Math.max(0,el.scrollHeight-prevHeight)})}
+function chatCurrent(){return sellerChats.find(c=>c.id===state.chatSelectedId)||null}
+function chatFilterLabel(f){return f==='unread'?'Não lidas':f==='closed'?'Encerradas':'Todas'}
+function chatStatusLabel(status){if(status==='EM_ESPERA')return 'Em espera';if(status==='EM_ANDAMENTO')return 'Em andamento';return status==='closed'?'Encerrada':status==='waiting_customer'?'Aguardando resposta':'Aberta'}
+function chatStatusClass(status){if(status==='EM_ESPERA')return 'queue';if(status==='EM_ANDAMENTO')return 'progress';return status==='closed'?'closed':status==='waiting_customer'?'waiting':'open'}
+function isSupportChat(c){return !!c&&['customer_support','seller_support'].includes(c.conversation_type)}
+function isSupportActive(c){return isSupportChat(c)&&['EM_ESPERA','EM_ANDAMENTO'].includes(c.status)}
+function currentSupportTicket(){return sellerChats.find(isSupportActive)||null}
+function openChatMessageMenu(event,id){event?.preventDefault?.();event?.stopPropagation?.();const m=chatMessages.find(x=>x.id===id);if(!m||m.sender_id!==session?.user?.id||m.deleted_at)return;state.chatMenuOpen=false;state.chatMessageMenuId=state.chatMessageMenuId===id?null:id;render()}
+function startChatMessagePress(event,id){if(window.matchMedia&&window.matchMedia('(hover:hover)').matches)return;clearTimeout(chatMessagePressTimer);chatMessagePressTimer=setTimeout(()=>openChatMessageMenu(event,id),520)}
+function cancelChatMessagePress(){clearTimeout(chatMessagePressTimer);chatMessagePressTimer=null}
+function beginChatMessageEdit(id){state.chatMessageMenuId=null;state.chatEditingMessageId=id;render();requestAnimationFrame(()=>{const el=$(`chatEdit_${id}`);if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}})}
+function cancelChatMessageEdit(){state.chatEditingMessageId=null;render()}
+function chatOtherName(c){return c?.other_user_name||'Cliente'}
+function chatSenderName(m){return String(m?.sender_name||m?.senderName||'').trim()}
+function chatSenderLabel(m){
+  if(m.sender_id===session?.user?.id)return 'Você';
+  const name=chatSenderName(m);
+  if(m.sender_role==='admin'){
+    const prefix=chatCurrent()?.conversation_type==='management_internal'?'Gestor':'Suporte';
+    return name?`${prefix} • ${name}`:prefix;
+  }
+  if(m.sender_role==='seller')return 'Vendedor';
+  return 'Cliente';
+}
+function chatConversationHeaderName(c){
+  const name=chatOtherName(c);
+  return c?.conversation_type==='management_internal'?`Gestor • ${name}`:name;
+}
+function chatListPreview(c){return c?.last_message_preview||'Conversa iniciada.'}
+function formatChatDate(v){if(!v)return '';const d=new Date(v);if(Number.isNaN(d.getTime()))return '';const now=new Date();return d.toDateString()===now.toDateString()?d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}
+function formatChatFullDate(v){if(!v)return '';const d=new Date(v);return Number.isNaN(d.getTime())?'':d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+async function openSellerChat(sid){if(!session)return openAuth('login');if(profile?.role!=='client')return toast('Somente clientes podem iniciar uma nova conversa com vendedor.');const r=await sb.rpc('create_seller_chat',{p_seller_id:sid,p_product_id:state.selected||null});if(r.error)return toast(r.error.message||'Não foi possível iniciar o atendimento.');const id=r.data;state.page='sellerChats';state.drawer=false;state.chatSection='sellers';state.chatSelectedId=id;state.chatSearch='';state.chatFilter='all';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:true});try{await openSellerChatById(id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir a conversa.')}render();requestAnimationFrame(scrollChatToBottom)}
+async function openSupportChat(){
+ if(!session)return openAuth('login');
+ if(!['client','seller'].includes(profile?.role))return toast('A Central de Suporte é destinada a clientes e vendedores.');
+ state.page='sellerChats';state.drawer=false;state.chatSection='support';state.chatSelectedId=null;state.chatSupportDraft=false;state.chatSearch='';state.chatFilter='all';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;
+ saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:true});
+ const ticket=currentSupportTicket();
+ if(ticket)try{await openSellerChatById(ticket.id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir o suporte.')}
+ render();requestAnimationFrame(()=>{if(state.chatSelectedId)scrollChatToBottom()});
+}
+async function openAdminUserConversation(userId,userRole){if(profile?.role!=='admin')return toast('Acesso restrito à Gestão.');let id,section;if(userRole==='admin'){const r=await sb.rpc('create_management_chat',{p_user_id:userId});if(r.error)return toast(r.error.message||'Não foi possível abrir a conversa interna.');id=r.data;section='management'}else{const r=await sb.rpc('create_support_chat_for_user',{p_user_id:userId});if(r.error)return toast(r.error.message||'Não foi possível abrir o suporte.');id=r.data;section=userRole==='seller'?'sellers':'clients'}state.page='supportCenter';state.drawer=false;state.chatSection=section;state.chatSelectedId=id;state.chatSearch='';state.chatFilter='all';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:true});try{await openSellerChatById(id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir a conversa.');return}render();requestAnimationFrame(scrollChatToBottom)}
+async function openSellerChatById(id,{renderAfter=true}={}){
+ if(!session)return openAuth('login');
+ state.chatSupportDraft=false;state.chatSelectedId=id;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;
+ const chat=await loadSellerChatById(id);
+ if(isSupportChat(chat)){const mr=await sb.rpc('get_support_chat_meta',{p_chat_id:id});if(!mr.error){const meta=Array.isArray(mr.data)?mr.data[0]:mr.data;if(meta)Object.assign(chat,meta)}}
+ if(!sellerChats.some(c=>c.id===id))sellerChats=[chat,...sellerChats];
+ else sellerChats=sellerChats.map(c=>c.id===id?{...c,...chat}:c);
+ chatMessages=[];state.chatHasMore=false;await loadSellerChatMessages(id);await markSellerChatRead(id,{rerender:false});
+ sellerChats=sellerChats.map(c=>c.id===id?{...c,...chat,unread_count:0}:c);await loadSellerChatSectionCounts({silent:true});saveNavigation();
+ if(renderAfter){render();requestAnimationFrame(scrollChatToBottom)}return chat
+}
+async function markSellerChatRead(id,{rerender=true}={}){const r=await sb.rpc('mark_seller_chat_read',{p_chat_id:id});if(r.error){if(rerender)toast(r.error.message||'Não foi possível marcar a conversa como lida.');return}sellerChats=sellerChats.map(c=>c.id===id?{...c,unread_count:0}:c);await loadSellerChatSectionCounts({silent:true});if(rerender)render()}
+async function markSellerChatUnread(id){const r=await sb.rpc('mark_seller_chat_unread',{p_chat_id:id});if(r.error)return toast(r.error.message||'Não foi possível marcar a conversa como não lida.');sellerChats=sellerChats.map(c=>c.id===id?{...c,unread_count:Math.max(1,Number(c.unread_count||0))}:c);state.chatMenuOpen=false;await loadSellerChatSectionCounts({silent:true});render();toast('Conversa marcada como não lida.')}
+async function setSellerChatStatus(id,status){const r=await sb.rpc('set_seller_chat_status',{p_chat_id:id,p_status:status});if(r.error)return toast(r.error.message||'Não foi possível alterar o status da conversa.');state.chatMenuOpen=false;await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});render();toast(status==='closed'?'Conversa encerrada.':'Conversa reaberta.')}
+async function deleteSellerChat(id){const r=await sb.rpc('delete_seller_chat',{p_chat_id:id});if(r.error)return toast(r.error.message||'Não foi possível excluir a conversa.');sellerChats=sellerChats.filter(c=>c.id!==id);state.chatSelectedId=null;state.chatMenuOpen=false;chatMessages=[];state.chatNewMessages=0;state.modal=null;await loadSellerChatSectionCounts({silent:true});render();toast('Conversa excluída.')}
+async function claimSupportChat(id){
+ if(profile?.role!=='admin')return toast('Acesso restrito à Gestão.');
+ const r=await sb.rpc('claim_support_chat',{p_chat_id:id});
+ if(r.error)return toast(r.error.message||'Não foi possível assumir o chamado.');
+ state.chatSelectedId=id;state.chatSupportDraft=false;
+ await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});
+ try{await openSellerChatById(id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir o chamado.');return}
+ render();requestAnimationFrame(scrollChatToBottom);toast('Chamado assumido.');
+}
+async function openTransferSupportChat(id){
+ if(profile?.role!=='admin')return toast('Acesso restrito à Gestão.');
+ state.chatTransferAgents=[];state.chatTransferLoading=true;state.modal={type:'chatTransfer',id};render();
+ const r=await sb.rpc('list_support_agents');state.chatTransferLoading=false;
+ if(r.error){state.modal=null;render();return toast(r.error.message||'Não foi possível carregar a lista de gestores.');}
+ state.chatTransferAgents=Array.isArray(r.data)?r.data:[];render();
+}
+async function confirmTransferSupportChat(){
+ const id=state.modal?.id,agentId=$('chatTransferAgent')?.value||'';
+ if(!id||!agentId)return toast('Selecione o gestor que receberá o chamado.');
+ state.chatTransferLoading=true;render();
+ const r=await sb.rpc('transfer_support_chat',{p_chat_id:id,p_new_agent_id:agentId});
+ state.chatTransferLoading=false;
+ if(r.error)return render(),toast(r.error.message||'Não foi possível transferir o chamado.');
+ state.modal=null;state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;
+ await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});saveNavigation();render();toast('Chamado transferido.');
+}
+async function beginNewSupportTicket(){
+ if(!session)return openAuth('login');
+ if(!['client','seller'].includes(profile?.role))return toast('Somente clientes e vendedores podem abrir chamados.');
+ let active=currentSupportTicket();
+ if(!active){const probe=await sb.rpc('create_user_support_chat');if(probe.error)return toast(probe.error.message||'Não foi possível verificar seus chamados.');if(probe.data)active={id:probe.data}}
+ if(active){state.chatSelectedId=active.id;state.chatSupportDraft=false;try{await openSellerChatById(active.id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir o chamado.');return}render();requestAnimationFrame(scrollChatToBottom);return}
+ state.chatSelectedId=null;state.chatSupportDraft=true;state.chatMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();render();requestAnimationFrame(()=>document.querySelector('#chatMessage')?.focus());
+}
+async function sendSellerChatMessage(chatId){
+ if(state.chatSending)return;
+ const message=$('chatMessage')?.value.trim()||'';
+ if(!message)return toast('Digite sua mensagem.');if(textCharCount(message)>1000)return toast('A mensagem pode ter no máximo 1.000 caracteres.');
+ state.chatSending=true;render();
+ if(!chatId&&state.chatSupportDraft&&state.chatSection==='support'&&['client','seller'].includes(profile?.role)){
+   const r=await sb.rpc('create_support_ticket_with_message',{p_message:message});state.chatSending=false;
+   if(r.error){render();return toast(r.error.message||'Não foi possível criar o chamado.');}
+   const id=r.data;state.chatSupportDraft=false;state.chatSelectedId=id;
+   await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});
+   try{await openSellerChatById(id,{renderAfter:false})}catch(e){render();return toast(e?.message||'O chamado foi criado, mas não foi possível abrir o histórico.')}
+   render();requestAnimationFrame(scrollChatToBottom);return;
+ }
+ const r=await sb.rpc('send_seller_chat_message',{p_chat_id:chatId,p_message:message});state.chatSending=false;
+ if(r.error){render();return toast(r.error.message||'Não foi possível enviar a mensagem.')}
+ const sent=Array.isArray(r.data)?r.data[0]:r.data;if(sent)chatMessages=[...chatMessages.filter(m=>m.id!==sent.id),sent].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+ await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});state.chatEditingMessageId=null;state.chatNewMessages=0;render();requestAnimationFrame(scrollChatToBottom)
+}
+async function editSellerChatMessage(id){const value=$(`chatEdit_${id}`)?.value.trim()||'';if(!value)return toast('Digite sua mensagem.');if(textCharCount(value)>1000)return toast('A mensagem pode ter no máximo 1.000 caracteres.');const r=await sb.rpc('edit_seller_chat_message',{p_message_id:id,p_message:value});if(r.error)return toast(r.error.message||'Não foi possível editar a mensagem.');const edited=Array.isArray(r.data)?r.data[0]:r.data;if(edited)chatMessages=chatMessages.map(m=>m.id===id?{...m,...edited}:m);state.chatEditingMessageId=null;state.chatMessageMenuId=null;await loadSellerChats({reset:true,silent:true});render()}
+async function deleteSellerChatMessage(id){const r=await sb.rpc('delete_seller_chat_message',{p_message_id:id});if(r.error)return toast(r.error.message||'Não foi possível excluir a mensagem.');const deleted=Array.isArray(r.data)?r.data[0]:r.data;if(deleted)chatMessages=chatMessages.map(m=>m.id===id?{...m,...deleted}:m);state.chatMessageMenuId=null;await loadSellerChats({reset:true,silent:true});render();toast('Mensagem excluída.')}
+function openChatConfirm(action,id){state.chatMenuOpen=false;state.chatMessageMenuId=null;state.modal={type:'chatConfirm',action,id};render()}
+async function confirmChatAction(){const action=state.modal?.action,id=state.modal?.id;state.modal=null;render();if(action==='deleteMessage')return deleteSellerChatMessage(id);if(action==='deleteChat')return deleteSellerChat(id);if(action==='closeChat')return setSellerChatStatus(id,'closed');if(action==='reopenChat')return setSellerChatStatus(id,'open')}
+function toggleChatMenu(){state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatMenuOpen=!state.chatMenuOpen;render()}
+function toggleChatFilterMenu(){state.chatMenuOpen=false;state.chatMessageMenuId=null;state.chatFilterMenuOpen=!state.chatFilterMenuOpen;render()}
+async function setChatSection(section){if(!chatSectionsForCurrentRole().some(x=>x.id===section))return;state.chatSection=section;state.chatSelectedId=null;state.chatSupportDraft=false;state.chatFilter='all';state.chatSearch='';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:false});render()}
+async function setChatFilter(filter){if(!['all','unread','closed'].includes(filter))filter='all';state.chatFilter=filter;state.chatSelectedId=null;state.chatSupportDraft=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;await loadSellerChats({reset:true,silent:false});render()}
+function chatSearchChanged(value){
+  state.chatSearch=String(value||'');
+  clearTimeout(chatSearchTimer);
+  const serial=++chatSearchRequestSerial;
+  chatSearchTimer=setTimeout(async()=>{
+    if(serial!==chatSearchRequestSerial)return;
+    await loadSellerChats({reset:true,silent:true});
+    if(serial!==chatSearchRequestSerial)return;
+    refreshChatSidebarDom();
+  },220);
+}
+async function loadMoreSellerChats(){if(state.chatLoading||!state.chatHasMore)return;await loadSellerChats({reset:false,silent:false});render()}
+async function loadOlderChatMessages(){const first=chatMessages[0];if(!first||state.chatLoadingOlder||!state.chatHasMore)return;state.chatLoadingOlder=true;try{await loadSellerChatMessages(state.chatSelectedId,{prepend:true,before:first.created_at})}catch(e){toast(e?.message||'Não foi possível carregar mensagens anteriores.')}finally{state.chatLoadingOlder=false;render()}}
+function isChatNearBottom(el){return !el||el.scrollHeight-el.scrollTop-el.clientHeight<90}
+async function handleChatScroll(){const el=document.querySelector('#chatMessageScroll');if(!el)return;if(isChatNearBottom(el)&&state.chatNewMessages>0){state.chatNewMessages=0;if(state.chatSelectedId)await markSellerChatRead(state.chatSelectedId,{rerender:false});syncChatNewMessagesDom()}}
+function jumpToChatBottom(){const el=document.querySelector('#chatMessageScroll');if(el)el.scrollTop=el.scrollHeight;state.chatNewMessages=0;if(state.chatSelectedId)markSellerChatRead(state.chatSelectedId,{rerender:false});syncChatNewMessagesDom();requestAnimationFrame(scrollChatToBottom)}
+function chatComposerKeydown(event,id){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();if(!state.chatSending)sendSellerChatMessage(id)}}
+function scrollChatToBottom(){const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=el.scrollHeight}
+function chatMessageRowContext(m){
+  if(m?.sender_role==='admin'){
+    const name=chatSenderName(m);
+    return (chatCurrent()?.conversation_type==='management_internal'?'Gestor':'Suporte')+(name?` • ${name}`:'');
+  }
+  return m?.sender_role==='seller'?'Vendedor':'Cliente';
+}
+function chatConfirmModal(){const a=state.modal?.action;const cfg={deleteMessage:{title:'Excluir mensagem?',text:'Esta mensagem será removida da conversa.',confirm:'Excluir'},deleteChat:{title:'Excluir conversa?',text:'Todo o histórico desta conversa será excluído. Essa ação não poderá ser desfeita.',confirm:'Excluir'},closeChat:{title:'Encerrar conversa?',text:'A conversa será mantida no histórico e ficará disponível em “Encerradas”.',confirm:'Encerrar'},reopenChat:{title:'Reabrir conversa?',text:'A conversa voltará a ficar ativa.',confirm:'Reabrir'}}[a]||{};return `<div class="modalback chat-confirm-back"><div class="modal chat-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="chatConfirmTitle"><div class="sectionhead"><div><div class="eyebrow">Atendimento</div><h2 id="chatConfirmTitle">${esc(cfg.title||'Confirmar ação')}</h2></div><button type="button" class="iconbtn" onclick="state.modal=null;render()" aria-label="Fechar">${icon('x')}</button></div><p class="chat-confirm-text">${esc(cfg.text||'Confirme esta ação.')}</p><div class="actions chat-confirm-actions"><button type="button" class="secondary" onclick="state.modal=null;render()">Cancelar</button><button type="button" class="danger" onclick="confirmChatAction()">${esc(cfg.confirm||'Confirmar')}</button></div></div></div>`}
+
+
+function chatSectionLabel(section){return chatSectionsForCurrentRole().find(x=>x.id===section)?.label||'Conversas'}
+function chatSectionCount(section){return Number(state.chatSectionCounts?.[section]?.unread||0)}
+function chatFilterLabel(f){return f==='unread'?'Não lidas':f==='closed'?'Encerradas':'Todas'}
+function chatOtherName(c){return c?.other_user_name||'Cliente'}
+function chatSenderLabel(m){
+  if(m.sender_id===session?.user?.id)return 'Você';
+  const name=chatSenderName(m);
+  if(m.sender_role==='admin'){
+    const prefix=chatCurrent()?.conversation_type==='management_internal'?'Gestor':'Suporte';
+    return name?`${prefix} • ${name}`:prefix;
+  }
+  if(m.sender_role==='seller')return 'Vendedor';
+  return 'Cliente';
+}
+function chatListPreview(c){return c?.last_message_preview||'Conversa iniciada.'}
+function formatChatDate(v){if(!v)return '';const d=new Date(v);if(Number.isNaN(d.getTime()))return '';const now=new Date();return d.toDateString()===now.toDateString()?d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}
+function formatChatFullDate(v){if(!v)return '';const d=new Date(v);return Number.isNaN(d.getTime())?'':d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
+function chatSectionNav(){
+ const sections=chatSectionsForCurrentRole();
+ return `<nav class="chat-section-nav" aria-label="Seções do atendimento">${sections.map(x=>{const active=x.id===state.chatSection;const unread=chatSectionCount(x.id);return `<button type="button" class="chat-section-item ${active?'active':''}" aria-current="${active?'page':'false'}" onclick="setChatSection('${x.id}')"><span class="chat-section-icon">${icon(x.icon,'sm')}</span><span class="chat-section-label">${esc(x.label)}</span>${unread?`<span class="chat-section-count" aria-label="${unread} não lidas">${unread>99?'99+':unread}</span>`:''}</button>`}).join('')}</nav>`
+}
+function chatFilterMenu(){if(!state.chatFilterMenuOpen)return '';return `<div class="chat-filter-popover" role="dialog" aria-label="Filtrar conversas"><div class="chat-filter-popover-title">Filtrar conversas</div>${['all','unread','closed'].map(f=>`<button type="button" class="chat-filter-option ${state.chatFilter===f?'active':''}" aria-pressed="${state.chatFilter===f}" onclick="setChatFilter('${f}')"><span class="chat-filter-radio">${state.chatFilter===f?icon('check','xs'):''}</span><span>${esc(chatFilterLabel(f))}</span></button>`).join('')}</div>`}
+function sellerChatSidebar(){
+ const rows=sellerChats,loading=state.chatLoading&&!rows.length,filteredEmpty=!loading&&!rows.length;
+ const canStartSupport=['client','seller'].includes(profile?.role)&&state.chatSection==='support'&&state.chatFilter==='all'&&!state.chatSearch&&!currentSupportTicket();
+ return `<aside class="chat-list-panel" aria-label="Lista de conversas">
+  <div class="chat-list-head"><div class="chat-list-head-tools"><div class="chat-list-title-compact">Conversas</div></div><div class="chat-filter-control"><button type="button" class="iconbtn chat-filter-button ${state.chatFilter!=='all'?'has-filter':''}" onclick="toggleChatFilterMenu()" aria-label="Filtrar conversas" aria-expanded="${state.chatFilterMenuOpen?'true':'false'}">${icon('filter','sm')}${state.chatFilter!=='all'?'<span class="chat-filter-active-dot" aria-hidden="true"></span>':''}</button>${chatFilterMenu()}</div></div>
+  <div class="chat-search-wrap"><span class="chat-search-icon">${icon('search','sm')}</span><input id="chatSearch" value="${esc(state.chatSearch||'')}" oninput="chatSearchChanged(this.value)" placeholder="Buscar conversas..." aria-label="Buscar conversas"></div>
+  <div class="chat-list-scroll">
+   ${canStartSupport?`<div class="chat-support-start-card"><div class="chat-support-start-icon">${icon('comment','lg')}</div><div class="chat-support-start-copy"><strong>Precisa de ajuda?</strong><span>Inicie um chamado com a Gestão para receber atendimento.</span></div><button type="button" class="primary" onclick="beginNewSupportTicket()">Iniciar Novo Chamado</button></div>`:''}
+   ${loading?'<div class="chat-list-state"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>':''}
+   ${filteredEmpty?`<div class="chat-list-state"><div class="chat-empty-icon">${icon('comment','lg')}</div><strong>${state.chatSearch?'Nenhuma conversa corresponde à sua busca.':'Nenhuma conversa encontrada.'}</strong><span>${state.chatFilter!=='all'?'Tente outro filtro ou consulte Todas.':state.chatSearch?'Tente outro nome, termo ou conteúdo de mensagem.':state.chatSection==='support'&&['client','seller'].includes(profile?.role)?'Seu próximo chamado de suporte aparecerá aqui.':'As conversas desta seção aparecerão aqui.'}</span></div>`:''}
+   ${rows.map(chatConversationRow).join('')}
+   ${state.chatHasMore?`<button type="button" class="chat-load-more" onclick="loadMoreSellerChats()">${state.chatLoading?'Carregando…':'Carregar mais conversas'}</button>`:''}
+  </div>
+ </aside>`
+}
+function chatConversationRow(c){
+ const unread=Number(c.unread_count||0)>0,selected=c.id===state.chatSelectedId,other=chatOtherName(c),context=c.context_label||'';
+ const adminSupport=profile?.role==='admin'&&isSupportChat(c);
+ if(adminSupport){
+  const queue=!c.assigned_agent_id&&c.status==='EM_ESPERA',mine=c.assigned_agent_id===session?.user?.id&&c.status==='EM_ANDAMENTO';
+  return `<div class="chat-conversation-row chat-support-admin-row ${selected?'selected':''} ${unread?'unread':''}">
+   <button type="button" class="chat-conversation-open" onclick="openSellerChatById('${c.id}')" aria-label="Abrir chamado de ${esc(other)}">
+    <span class="chat-conversation-main"><span class="chat-conversation-top"><strong>${esc(other)}</strong>${c.last_message_at?`<time datetime="${esc(c.last_message_at)}">${esc(formatChatDate(c.last_message_at))}</time>`:''}</span><span class="chat-conversation-context">${esc(context)}</span><span class="chat-conversation-preview">${esc(chatListPreview(c))}</span><span class="chat-conversation-meta">${queue?'<span class="chat-status queue">Em espera</span>':mine?'<span class="chat-status progress">Em andamento · Você</span>':c.status==='closed'?'<span class="chat-status closed">Encerrada</span>':''}${unread?'<span class="chat-unread-dot" aria-label="Não lida"></span>':''}</span></span>
+   </button>
+   ${queue?`<button type="button" class="chat-claim-row-button" onclick="claimSupportChat('${c.id}')">Atender</button>`:''}
+  </div>`;
+ }
+ return `<button type="button" class="chat-conversation-row ${selected?'selected':''} ${unread?'unread':''}" onclick="openSellerChatById('${c.id}')" aria-label="Abrir conversa com ${esc(other)}">
+  <span class="chat-conversation-main"><span class="chat-conversation-top"><strong>${esc(other)}</strong>${c.last_message_at?`<time datetime="${esc(c.last_message_at)}">${esc(formatChatDate(c.last_message_at))}</time>`:''}</span><span class="chat-conversation-context">${esc(context)}</span><span class="chat-conversation-preview">${esc(chatListPreview(c))}</span><span class="chat-conversation-meta">${c.status==='EM_ESPERA'?'<span class="chat-status queue">Em espera</span>':c.status==='EM_ANDAMENTO'?'<span class="chat-status progress">Em andamento</span>':c.status==='closed'?`<span class="chat-status closed">Encerrada</span>`:''}${unread?`<span class="chat-unread-dot" aria-label="Não lida"></span>`:''}</span></span></button>`
+}
+function sellerChatConversationPane(chat){
+ if(state.chatSupportDraft)return `<section class="chat-conversation-panel chat-support-draft-panel" aria-label="Novo chamado de suporte">
+  <header class="chat-conversation-head"><button type="button" class="chat-back-button" onclick="state.chatSelectedId=null;state.chatSupportDraft=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;saveNavigation();render()" aria-label="Voltar para conversas">${icon('arrowLeft')}</button><div class="chat-conversation-title"><strong>Novo Chamado</strong><span class="chat-conversation-context">Suporte Fios & Artes</span><span class="chat-status queue">Em espera após o primeiro envio</span></div></header>
+  <div class="chat-support-draft-body"><div class="chat-empty-icon">${icon('comment','lg')}</div><h2>Como podemos ajudar?</h2><p>Escreva sua primeira mensagem. O chamado será criado automaticamente e enviado para a fila geral da Gestão.</p></div>
+  <div class="chat-composer-wrap"><form class="chat-composer" onsubmit="event.preventDefault();sendSellerChatMessage('')"><textarea id="chatMessage" maxlength="1000" placeholder="Descreva o que precisa de ajuda..." aria-label="Mensagem do chamado" rows="1" onkeydown="chatComposerKeydown(event,'')" ${state.chatSending?'disabled':''}></textarea><button type="submit" class="primary" aria-label="Enviar primeira mensagem" ${state.chatSending?'disabled':''}>${state.chatSending?'<span class="chat-send-loading" aria-hidden="true"></span>':icon('send','sm')}<span>Enviar</span></button></form></div>
+ </section>`;
+ if(!chat)return `<section class="chat-conversation-empty" aria-live="polite"><div class="chat-empty-icon">${icon('comment','lg')}</div><h2>Selecione uma conversa</h2><p>Escolha uma conversa à esquerda para começar a responder</p></section>`;
+ const closed=chat.status==='closed',support=isSupportChat(chat),admin=profile?.role==='admin',queue=support&&admin&&!chat.assigned_agent_id&&chat.status==='EM_ESPERA',mine=support&&admin&&chat.assigned_agent_id===session?.user?.id&&chat.status==='EM_ANDAMENTO',context=chat.context_label||'';
+ const canTransfer=support&&admin&&mine;
+ return `<section class="chat-conversation-panel" aria-label="Conversa com ${esc(chatOtherName(chat))}">
+  <header class="chat-conversation-head"><button type="button" class="chat-back-button" onclick="state.chatSelectedId=null;state.chatSupportDraft=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;saveNavigation();render()" aria-label="Voltar para conversas">${icon('arrowLeft')}</button><div class="chat-conversation-title"><strong>${esc(chatConversationHeaderName(chat))}</strong><span class="chat-conversation-context">${esc(context)}</span>${queue?'<span class="chat-status queue">Em espera · Fila geral</span>':mine?'<span class="chat-status progress">Em andamento · Você</span>':chat.status==='waiting_customer'?'<span class="chat-status waiting">Aguardando resposta</span>':chat.status==='closed'?'<span class="chat-status closed">Encerrada</span>':''}</div>${admin&&support&&queue?`<button type="button" class="primary chat-header-claim" onclick="claimSupportChat('${chat.id}')">Atender</button>`:`<div class="chat-conversation-actions"><button type="button" class="iconbtn" onclick="toggleChatMenu()" aria-label="Mais opções" aria-expanded="${state.chatMenuOpen?'true':'false'}">${icon('more')}</button>${state.chatMenuOpen?`<div class="chat-context-menu" role="menu">${canTransfer?`<button type="button" role="menuitem" onclick="openTransferSupportChat('${chat.id}')">${icon('transfer','sm')}<span>Transferir Chamado</span></button>`:''}<button type="button" role="menuitem" onclick="markSellerChatUnread('${chat.id}')">${icon('mail','sm')}<span>Marcar como não lida</span></button>${closed?`<button type="button" role="menuitem" onclick="openChatConfirm('reopenChat','${chat.id}')">${icon('rotate','sm')}<span>Reabrir conversa</span></button>`:`<button type="button" role="menuitem" onclick="openChatConfirm('closeChat','${chat.id}')">${icon('check','sm')}<span>Encerrar conversa</span></button>`}<button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteChat','${chat.id}')">${icon('trash','sm')}<span>Excluir conversa</span></button></div>`:''}</div>`}</header>
+  <div class="chat-message-scroll" id="chatMessageScroll" tabindex="0" aria-label="Histórico de mensagens" onscroll="handleChatScroll()">${state.chatHasMore?`<div class="chat-history-load"><button type="button" class="ghost" onclick="loadOlderChatMessages()">${state.chatLoadingOlder?'Carregando…':'Carregar mensagens anteriores'}</button></div>`:''}<div class="chat-message-list">${chatMessages.length?chatMessages.map(chatMessageBubble).join(''):'<div class="empty chat-history-empty">Nenhuma mensagem ainda.</div>'}</div></div>
+  ${state.chatNewMessages?`<button type="button" class="chat-new-messages" onclick="jumpToChatBottom()">${icon('arrowLeft','xs')} ${state.chatNewMessages} nova${state.chatNewMessages>1?'s':''} mensagem${state.chatNewMessages>1?'s':''}</button>`:''}
+  <div class="chat-composer-wrap">${queue?`<div class="chat-claim-banner"><div><strong>Chamado na fila geral</strong><span>Assuma este chamado para responder e tornar-se o único gestor com acesso.</span></div><button type="button" class="primary" onclick="claimSupportChat('${chat.id}')">Atender</button></div>`:''}${closed?`<div class="chat-closed-notice"><span>Esta conversa está encerrada. Reabra a conversa para enviar uma nova mensagem.</span><button type="button" class="secondary" onclick="openChatConfirm('reopenChat','${chat.id}')">Reabrir conversa</button></div>`:''}${!queue?`<form class="chat-composer" onsubmit="event.preventDefault();sendSellerChatMessage('${chat.id}')"><textarea id="chatMessage" maxlength="1000" placeholder="Digite uma mensagem..." aria-label="Mensagem" rows="1" onkeydown="chatComposerKeydown(event,'${chat.id}')" ${state.chatSending||closed?'disabled':''}></textarea><button type="submit" class="primary" aria-label="Enviar mensagem" ${state.chatSending||closed?'disabled':''}>${state.chatSending?'<span class="chat-send-loading" aria-hidden="true"></span>':icon('send','sm')}<span>Enviar</span></button></form>`:''}</div>
+ </section>`
+}
+function chatMessageBubble(m){const mine=m.sender_id===session?.user?.id,editing=state.chatEditingMessageId===m.id,deleted=!!m.deleted_at;if(editing)return `<article class="chat-message ${mine?'mine':''}"><div class="chat-message-editing"><label class="sr-only" for="chatEdit_${m.id}">Editar mensagem</label><textarea id="chatEdit_${m.id}" maxlength="1000">${esc(m.message||'')}</textarea><div class="chat-message-edit-actions"><button type="button" class="secondary" onclick="cancelChatMessageEdit()">Cancelar</button><button type="button" class="primary" onclick="editSellerChatMessage('${m.id}')">Salvar</button></div></div></article>`;return `<article class="chat-message ${mine?'mine':''} ${m.sender_role==='admin'?'from-admin':''} ${deleted?'deleted':''}" oncontextmenu="openChatMessageMenu(event,'${m.id}')" ontouchstart="startChatMessagePress(event,'${m.id}')" ontouchend="cancelChatMessagePress()" ontouchcancel="cancelChatMessagePress()"><div class="chat-message-bubble"><div class="chat-message-meta"><span>${esc(chatSenderLabel(m))}</span><time datetime="${esc(m.created_at)}">${esc(formatChatFullDate(m.created_at))}</time></div><div class="chat-message-content">${deleted?`<span class="chat-deleted-label">${icon('trash','xs')}Mensagem excluída</span>`:esc(m.message||'')}</div>${m.edited_at&&!deleted?`<span class="chat-edited">editada</span>`:''}${mine&&!deleted?`<button type="button" class="chat-message-actions" onclick="openChatMessageMenu(event,'${m.id}')" aria-label="Ações da mensagem">${icon('more')}</button>`:''}</div>${state.chatMessageMenuId===m.id?`<div class="chat-message-menu" role="menu"><button type="button" role="menuitem" onclick="beginChatMessageEdit('${m.id}')">${icon('edit','sm')}<span>Editar mensagem</span></button><button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteMessage','${m.id}')">${icon('trash','sm')}<span>Excluir mensagem</span></button></div>`:''}</article>`}
+function sellerChatsPage(){
+ if(!session)return `<div class="panel"><div class="empty"><h2>Entre para acessar o Atendimento</h2><button type="button" class="primary" onclick="openAuth('login')">Entrar</button></div></div>`;
+ if(!['client','seller'].includes(profile?.role))return `<div class="notice">Acesso restrito a clientes e vendedores.</div>`;
+ const chat=chatCurrent(),selected=!!chat||state.chatSupportDraft;
+ return `<div class="chat-page ${selected?'with-chat':''}">
+  <div class="chat-page-head"><div><h1>Atendimento</h1><p>Gerencie suas conversas de compra, venda e suporte.</p></div></div>
+  <div class="chat-section-tabs">${chatSectionNav()}</div>
+  <div class="chat-workspace ${selected?'has-selection':''}">${sellerChatSidebar()}<div class="chat-main-pane">${sellerChatConversationPane(chat)}</div></div>
+ </div>`
+}
+function supportCenterPage(){
+ if(!session||profile?.role!=='admin')return `<div class="notice">Acesso restrito à Gestão.</div>`;
+ const chat=chatCurrent(),selected=!!chat;
+ return `<div class="chat-page admin-support-page ${selected?'with-chat':''}">
+  <div class="chat-page-head"><div><h1>Central de Suporte</h1><p>Atenda clientes e vendedores que precisam de ajuda com a plataforma.</p></div></div>
+  <div class="chat-section-tabs">${chatSectionNav()}</div>
+  <div class="chat-workspace ${selected?'has-selection':''}">${sellerChatSidebar()}<div class="chat-main-pane">${sellerChatConversationPane(chat)}</div></div>
+ </div>`
+}
+async function refresh(){try{await loadAll();if(session&&(state.page==='sellerChats'||state.page==='supportCenter')){normalizeChatSection();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:true});}render()}catch(e){console.error(e);$('app').innerHTML=`<main class="container"><div class="notice"><b>Não foi possível carregar o banco.</b><br>${esc(e.message||e)}<br><br>Verifique a conexão com o Supabase e recarregue.</div></main>`}}
 function icon(n,cls=''){
   const p={
     menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
@@ -866,12 +1536,19 @@ function icon(n,cls=''){
     sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>',
     moon:'<path d="M20 15.2A8 8 0 1 1 8.8 4 6.2 6.2 0 0 0 20 15.2Z"/>',
     search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+    more:'<circle cx="5" cy="12" r="1.1"/><circle cx="12" cy="12" r="1.1"/><circle cx="19" cy="12" r="1.1"/>',
+    arrowLeft:'<path d="M19 12H5M12 19l-7-7 7-7"/>',
+    send:'<path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4L21 3Z"/>',
+    trash:'<path d="M4 7h16M10 11v6M14 11v6M9 4h6l1 3H8l1-3Z"/><path d="M6 7l1 14h10l1-14"/>',
+    rotate:'<path d="M20 11a8 8 0 0 0-14-5L3 9"/><path d="M3 4v5h5M4 13a8 8 0 0 0 14 5l3-3"/><path d="M21 20v-5h-5"/>',
     filter:'<path d="M4 6h16M7 12h10M10 18h4"/>',
     sort:'<path d="M7 5v14M7 19l-3-3M7 19l3-3M17 19V5M17 5l-3 3M17 5l3 3"/>',
+    transfer:'<path d="M7 7h11l-3-3M18 7l-3 3M17 17H6l3 3M6 17l3-3"/>',
     eye:'<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/>',
     eyeoff:'<path d="M3 3l18 18"/><path d="M10.6 6.2A9.7 9.7 0 0 1 12 6c6.5 0 10 6 10 6a18.7 18.7 0 0 1-3.1 3.6M6.4 6.4C3.6 8.2 2 12 2 12s3.5 6 10 6a10 10 0 0 0 3.1-.5"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
     alertTriangle:'<path d="m12 4 9 16H3L12 4Z"/><path d="M12 9v5M12 17h.01"/>',
-    lock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>'
+    lock:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+    check:'<path d="M5 12l4 4L19 6"/>'
   };
   const aliases={
     catalog:'layoutGrid',
@@ -887,7 +1564,7 @@ function drawerLink(page,ico,label,extra=''){const active=state.page===page?' ac
 function header(){const name=profile?.name||session?.user?.email?.split('@')[0]||'Conta';const unread=notifications.filter(n=>!n.read_at).length;return `<header class="top"><nav class="nav"><button class="iconbtn menu-btn" aria-label="Abrir menu" onclick="openDrawer()">${icon('menu')}</button><button class="logo" onclick="go('home')"><span class="logo-mark">${icon('craft','sm')}</span><span class="logo-text">Fios & Artes</span></button><div class="spacer"></div><button class="iconbtn hide-sm" aria-label="Catálogo" onclick="go('products')">${icon('grid')}</button><button class="iconbtn" aria-label="Sacola" onclick="go('cart')">${icon('bag')}<span class="badge">${cartCount()}</span></button>${session?`<button class="iconbtn notification-bell" aria-label="Notificações${unread?`: ${unread} nova(s)`:''}" onclick="go('notifications')">${icon('bell')}${unread?`<span class="notification-count-badge" aria-label="${unread} nova(s)">${unread>9?'9+':unread}</span>`:''}</button><button class="nav-account" onclick="go('account')">${icon('user')}<span class="account-name">${esc(name)}</span></button>`:`<button class="primary" onclick="openAuth()">Entrar</button>`}</nav></header>${drawer()}`}
 function drawer(){
  const logged=session;
- return `<div class="drawer-back ${state.drawer?'open':''}" onclick="if(event.target===this)closeDrawer()"><aside class="drawer"><div class="drawer-head"><button class="iconbtn drawer-close" onclick="closeDrawer()" aria-label="Fechar menu">${icon('x')}</button><div class="drawer-brand"><span class="logo-mark">${icon('craft','sm')}</span><span>Fios & Artes</span></div></div>${logged?`<div class="drawer-user"><strong>${esc(profile?.name||'Conta')}</strong></div>`:`<div class="drawer-user"><strong>Bem-vindo</strong><small>Entre para acessar sua conta e recursos.</small></div>`}<div class="drawer-section">Navegação</div>${drawerLink('home','home','Início')}${drawerLink('products','layoutGrid','Catálogo')}${drawerLink('favorites','heart','Favoritos')}${drawerLink('cart','bag',`Sacola (${cartCount()})`)}${logged?`${drawerLink('followedSellers','store',`Vendedores que sigo${followedSellers.length?` (${followedSellers.length})`:''}`)}${drawerLink('notifications','bell',`Notificações${notifications.filter(n=>!n.read_at).length?` (${notifications.filter(n=>!n.read_at).length})`:''}`)}${drawerLink('account','user','Meu perfil')}${profile?.role==='seller'?drawerLink('seller','store','Área do vendedor'):''}${profile?.role==='seller'?drawerLink('sellerChats','comment','Atendimento'):''}${profile?.role==='admin'?drawerLink('admin','shield','Gestão'):''}`:`<button class="drawer-link" onclick="closeDrawer();openAuth()">${icon('user')}<span>Entrar / criar conta</span></button>`}<div class="drawer-section">Conta</div><button class="drawer-theme" type="button" onclick="toggleTheme()">${icon(themeMode==='dark'?'sun':'moon')}<span>${themeMode==='dark'?'Mudar para tema claro':'Mudar para tema escuro'}</span><span class="theme-state">${themeMode==='dark'?'Atual: escuro':'Atual: claro'}</span></button>${logged?`<div class="small" style="padding:8px 4px">Gerencie seus dados e acesso pelo Meu perfil.</div>`:`<div class="small" style="padding:8px 4px">Você pode navegar sem conta. Para comprar, comentar e favoritar em outros dispositivos, crie uma conta.</div>`}</aside></div>`
+ return `<div class="drawer-back ${state.drawer?'open':''}" onclick="if(event.target===this)closeDrawer()"><aside class="drawer"><div class="drawer-head"><button class="iconbtn drawer-close" onclick="closeDrawer()" aria-label="Fechar menu">${icon('x')}</button><div class="drawer-brand"><span class="logo-mark">${icon('craft','sm')}</span><span>Fios & Artes</span></div></div>${logged?`<div class="drawer-user"><strong>${esc(profile?.name||'Conta')}</strong></div>`:`<div class="drawer-user"><strong>Bem-vindo</strong><small>Entre para acessar sua conta e recursos.</small></div>`}<div class="drawer-section">Navegação</div>${drawerLink('home','home','Início')}${drawerLink('products','layoutGrid','Catálogo')}${drawerLink('favorites','heart','Favoritos')}${drawerLink('cart','bag',`Sacola (${cartCount()})`)}${logged?`${drawerLink('followedSellers','store',`Vendedores que sigo${followedSellers.length?` (${followedSellers.length})`:''}`)}${drawerLink('notifications','bell',`Notificações${notifications.filter(n=>!n.read_at).length?` (${notifications.filter(n=>!n.read_at).length})`:''}`)}${drawerLink('account','user','Meu perfil')}${profile?.role==='seller'?drawerLink('seller','store','Área do vendedor'):''}${profile?.role==='admin'?drawerLink('supportCenter','comment','Central de Suporte'):drawerLink('sellerChats','comment','Atendimento')}${profile?.role==='admin'?drawerLink('admin','shield','Gestão'):''}`:`<button class="drawer-link" onclick="closeDrawer();openAuth()">${icon('user')}<span>Entrar / criar conta</span></button>`}<div class="drawer-section">Conta</div><button class="drawer-theme" type="button" onclick="toggleTheme()">${icon(themeMode==='dark'?'sun':'moon')}<span>${themeMode==='dark'?'Mudar para tema claro':'Mudar para tema escuro'}</span><span class="theme-state">${themeMode==='dark'?'Atual: escuro':'Atual: claro'}</span></button>${logged?`<div class="small" style="padding:8px 4px">Gerencie seus dados e acesso pelo Meu perfil.</div>`:`<div class="small" style="padding:8px 4px">Você pode navegar sem conta. Para comprar, comentar e favoritar em outros dispositivos, crie uma conta.</div>`}</aside></div>`
 }
 
 function home(){const active=products.filter(p=>p.featured===true&&p.active&&publicationStatus(p)==='published'&&moderationStatus(p)==='approved'&&p.stock>0).sort((a,b)=>new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at));return `<section class="hero"><div class="brandline">${icon('store','sm')}<b>Artesanal • feito à mão • direto com o vendedor</b></div><h1>Peças feitas à mão para encantar.</h1><p>Encontre amigurumis, crochê e peças artesanais, monte sua sacola e combine a compra diretamente com o vendedor.</p><div class="actions"><button class="primary" onclick="go('products')">Ver catálogo completo</button>${session?'':`<button class="secondary" onclick="openAuth('signup')">Criar conta</button>`}</div></section><div class="sectionhead"><div><h2>Destaques</h2><div class="small">Produtos em destaque</div></div></div><div class="grid">${active.slice(0,8).map(productCard).join('')||'<div class="empty">Nenhum produto publicado ainda.</div>'}</div>`}
@@ -935,12 +1612,6 @@ async function cartPage(){
  }).join('')}<div class="small">Produtos suspensos, em análise, ocultos ou sem estoque permanecem visíveis na sacola para informar o cliente, mas não podem ser comprados.</div>`
 }
 
-async function openSellerChat(sid,customerId=null){if(!session)return openAuth('login');if(profile?.id===sid)return toast('Use o Atendimento da Área do vendedor para conversar com clientes.');let chat=sellerChats.find(c=>c.seller_id===sid&&c.customer_id===session.user.id);if(!chat){const r=await sb.from('seller_chats').insert({seller_id:sid,customer_id:session.user.id}).select('id,seller_id,customer_id,product_id,last_message_at,created_at').single();if(r.error)return toast(r.error.message);chat=r.data;sellerChats=[chat,...sellerChats]}await loadChat(chat.id);state.modal={type:'sellerChat',chat};render()}
-async function loadChat(id){const r=await sb.from('seller_chat_messages').select('id,chat_id,sender_id,message,created_at,read_at').eq('chat_id',id).order('created_at');if(r.error)return toast('Não foi possível carregar o chat.');chatMessages=r.data||[];const ids=[...new Set(chatMessages.map(x=>x.sender_id))];if(ids.length){const q=await sb.from('profiles').select('id,name,surname').in('id',ids);const map=Object.fromEntries((q.data||[]).map(x=>[x.id,x]));chatMessages=chatMessages.map(m=>({...m,user:map[m.sender_id]}))}}
-async function openSellerChatById(id){const chat=sellerChats.find(c=>c.id===id);if(!chat)return toast('Conversa não encontrada.');await loadChat(id);state.modal={type:'sellerChat',chat};render()}
-function sellerChatModal(chat){const otherId=chat.seller_id===profile.id?chat.customer_id:chat.seller_id;const other=sellers[otherId]||((window.__chatUsers||{})[otherId]);return `<div class="modalback" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal chat-modal"><div class="sectionhead"><div><div class="eyebrow">Atendimento da loja</div><h2>${esc(other?.name||'Cliente')}</h2><div class="small">Conversa de suporte</div></div><button class="iconbtn" onclick="state.modal=null;render()">${icon('x')}</button></div><div class="chat-messages">${chatMessages.length?chatMessages.map(m=>`<div class="chat-bubble ${m.sender_id===profile.id?'mine':''}"><div>${esc(m.message)}</div><span>${new Date(m.created_at).toLocaleString('pt-BR')}</span></div>`).join(''):'<div class="empty">Nenhuma mensagem ainda.</div>'}</div><div class="field"><textarea id="chatMessage" maxlength="1000" placeholder="Digite sua mensagem…"></textarea></div><button class="primary" style="width:100%" onclick="sendSellerChatMessage('${chat.id}')">Enviar</button></div></div>`}
-async function sendSellerChatMessage(chatId){const message=$('chatMessage')?.value.trim()||'';if(!message)return toast('Digite uma mensagem.');if(textCharCount(message)>1000)return toast('A mensagem pode ter no máximo 1.000 caracteres.');const r=await sb.from('seller_chat_messages').insert({chat_id:chatId,sender_id:session.user.id,message});if(r.error)return toast(r.error.message);await loadChat(chatId);render()}
-function sellerChatsPage(){if(profile?.role!=='seller')return `<div class="notice">Acesso restrito a vendedores.</div>`;return `<div class="sectionhead"><div><h2>Atendimento</h2><div class="small">Converse com clientes que precisam de suporte sobre sua loja.</div></div><button class="ghost" onclick="go('seller')">Área do vendedor</button></div><div class="list">${sellerChats.filter(c=>c.seller_id===profile.id).map(c=>{const u=(window.__chatUsers||{})[c.customer_id];return `<div class="row chat-list-row"><div><b>${esc(u?.name||'Cliente')}</b><div class="small">${c.last_message_at?new Date(c.last_message_at).toLocaleString('pt-BR'):'Conversa iniciada'}</div></div><button class="secondary" onclick="openSellerChatById('${c.id}')">Abrir conversa</button></div>`}).join('')||'<div class="empty">Nenhuma conversa com clientes ainda.</div>'}</div>`}
 function sellerRequestPanel(){
  if(profile?.role!=='client')return '';
  const r=mySellerRequest;
@@ -969,7 +1640,7 @@ function account(){
    <section class="profile-card">
     <div class="profile-card-head"><div><span class="eyebrow">Atalhos</span><h3>Minha área</h3></div></div>
     <div class="profile-links">
-     ${profile?.role==='seller'?`<button class="secondary" onclick="go('seller')">${icon('store','sm')}<span>Área do vendedor</span></button>`:''}
+     ${profile?.role==='seller'?`<button class="secondary" onclick="go('seller')">${icon('store','sm')}<span>Área do vendedor</span></button>`:''}${['client','seller'].includes(profile?.role)?`<button class="secondary" onclick="openSupportChat()">${icon('comment','sm')}<span>Falar com o suporte</span></button>`:''}
      ${profile?.role==='admin'?`<button class="secondary" onclick="go('admin')">${icon('shield','sm')}<span>Gestão</span></button>`:''}
      <button class="danger" onclick="logout()">${icon('logout','sm')}<span>Sair da conta</span></button>
     </div>
@@ -1156,6 +1827,7 @@ function adminProductsHtml(list){
   return '<div class="row"><div class="rowleft">'+productImage(p,'thumb')+'<div><b>'+esc(p.name)+'</b><div class="small">'+money(salePrice(p))+(discountPct(p)?' · '+discountPct(p)+'% off':'')+' · estoque '+p.stock+' · '+esc(sellers[p.seller_id]?.name||'Vendedor')+'</div><div class="small">'+status+'</div></div></div><div class="product-moderation-actions">'+actions+'</div></div>';
  }).join('')+'</div>';
 }
+function adminSupportCenter(){return supportCenterPage()}
 async function adminPage(){
  if(profile?.role!=='admin')return `<div class="notice">Acesso restrito à Gestão.</div>`;
  const [req,us,com,cr,allcat]=await Promise.all([
@@ -1172,7 +1844,7 @@ async function adminPage(){
  const adminNav=`<div class="admin-sticky"><div class="admin-sticky-inner">${summary}${tabs}</div></div>`;
  if(state.adminTab==='manual')return adminNav+`<div class="panel admin-manual"><div class="eyebrow">Área exclusiva</div><h2>Manual da Gestão</h2><p class="small">Funções disponíveis somente para o administrador responsável pelos bastidores da plataforma.</p><div class="manual-grid"><article><h3>Usuários</h3><ul><li>Consultar usuários por nível.</li><li>Ver detalhes e contatos.</li><li>Aprovar vendedores.</li><li>Suspender ou reativar contas.</li><li>Excluir usuários.</li></ul></article><article><h3>Catálogo</h3><ul><li>Destacar produtos na página inicial.</li><li>Suspender produtos que violem políticas ou termos.</li><li>Analisar e aprovar/reprovar correções feitas pelos vendedores.</li><li>Criar novos produtos administrativos quando necessário.</li></ul></article><article><h3>Categorias</h3><ul><li>Criar e renomear categorias.</li><li>Ativar ou desativar categorias.</li><li>Excluir categorias sem produtos.</li><li>Aprovar novas categorias.</li></ul></article><article><h3>Comentários</h3><ul><li>Analisar denúncias de comentários.</li><li>Ignorar denúncias ou remover comentários em desacordo com as Diretrizes da Comunidade.</li></ul></article></div><div class="notice"><b>Área restrita:</b> Gestão é uma função administrativa. Vendedores e clientes não possuem acesso.</div></div>`;
  if(state.adminTab==='requests')return adminNav+`<div class="panel"><h2>Solicitações de vendedor</h2>${adminRequestsHtml(requests,users)}</div>`;
- if(state.adminTab==='users')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Usuários</h2><div class="small">Classificados por nível. Abra <b>Detalhes</b> para consultar os dados e administrar a conta.</div></div></div>${[['admin','Gestão','shield'],['seller','Vendedores','store'],['client','Clientes','user']].map(([role,label,ico])=>{const group=users.filter(u=>u.role===role);return `<section class="user-level"><div class="user-level-head">${icon(ico,'sm')}<div><h3>${label}</h3><span class="small">${group.length} usuário(s)</span></div></div><div class="list">${group.map(u=>`<div class="row"><div><b>${esc(fullUserName(u))}</b><div><span class="status ${u.status==='active'?'ok':'off'}">${u.status==='active'?'Ativo':'Suspenso'}</span></div></div>${u.id!==profile.id?`<div class="actions"><button type="button" class="admin-user-notify-btn" title="Enviar notificação para ${esc(fullUserName(u))}" aria-label="Enviar notificação para ${esc(fullUserName(u))}" onclick="openUserNotification('${u.id}')">${icon('bell','sm')}</button><button class="secondary user-detail-btn" onclick="openUserDetails('${u.id}')">${icon('user','sm')} Detalhes</button></div>`:`<div class="small">Sua conta</div>`}</div>`).join('')||'<div class="empty">Nenhum usuário neste nível.</div>'}</div></section>`}).join('')}</div>`;
+ if(state.adminTab==='users')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Usuários</h2><div class="small">Classificados por nível. Abra <b>Detalhes</b> para consultar os dados e administrar a conta.</div></div></div>${[['admin','Gestão','shield'],['seller','Vendedores','store'],['client','Clientes','user']].map(([role,label,ico])=>{const group=users.filter(u=>u.role===role);return `<section class="user-level"><div class="user-level-head">${icon(ico,'sm')}<div><h3>${label}</h3><span class="small">${group.length} usuário(s)</span></div></div><div class="list">${group.map(u=>`<div class="row"><div><b>${esc(fullUserName(u))}</b><div><span class="status ${u.status==='active'?'ok':'off'}">${u.status==='active'?'Ativo':'Suspenso'}</span></div></div>${u.id!==profile.id?`<div class="actions"><button type="button" class="admin-user-message-btn" title="Abrir conversa de suporte com ${esc(fullUserName(u))}" aria-label="Abrir conversa de suporte com ${esc(fullUserName(u))}" onclick="openAdminUserConversation('${u.id}','${u.role}')">${icon('comment','sm')} Mensagem</button><button type="button" class="admin-user-notify-btn" title="Enviar notificação para ${esc(fullUserName(u))}" aria-label="Enviar notificação para ${esc(fullUserName(u))}" onclick="openUserNotification('${u.id}')">${icon('bell','sm')}</button><button class="secondary user-detail-btn" onclick="openUserDetails('${u.id}')">${icon('user','sm')} Detalhes</button></div>`:`<div class="small">Sua conta</div>`}</div>`).join('')||'<div class="empty">Nenhum usuário neste nível.</div>'}</div></section>`}).join('')}</div>`;
  if(state.adminTab==='categories')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Categorias</h2><div class="small">Crie, renomeie, ative/desative e exclua categorias sem quebrar produtos.</div></div></div><div class="inline-form" style="margin-bottom:15px"><div class="field"><label>Nova categoria</label><input id="adminCatName" placeholder="Ex.: Enfeites"></div><button class="primary" onclick="saveCategory()">Criar categoria</button></div><div class="category-admin">${allCategories.map(c=>`<div class="category-line"><div class="cat-info"><b>${esc(c.name)}</b><div class="small">/${esc(c.slug)} · ${c.active?'ativa':'desativada'}${products.some(p=>productCategoriesFor(p.id).includes(c.id))?' · possui produtos':''}</div></div><div class="cat-actions"><button class="mini" onclick="renameCategory('${c.id}')">Renomear</button><button class="mini ${c.active?'danger':'ok'}" onclick="toggleCategory('${c.id}',${!c.active})">${c.active?'Desativar':'Ativar'}</button><button class="mini danger" onclick="deleteCategory('${c.id}')">Excluir</button></div></div>`).join('')}</div><div class="sectionhead"><div><h3>Solicitações de vendedores</h3></div></div><div class="list">${catRequests.map(r=>{const u=users.find(x=>x.id===r.user_id);return `<div class="row"><div><b>${esc(r.name)}</b><div class="small">Solicitada por ${esc(u?.name||'Vendedor')} · ${new Date(r.requested_at).toLocaleString('pt-BR')}</div></div><div class="actions"><button class="primary" onclick="reviewCategoryRequest('${r.id}',true)">Aprovar</button><button class="danger" onclick="reviewCategoryRequest('${r.id}',false)">Recusar</button></div></div>`}).join('')||'<div class="empty">Nenhuma solicitação de categoria pendente.</div>'}</div></div>`;
  if(state.adminTab==='announcements')return adminNav+`<div class="panel admin-announcements"><div class="sectionhead"><div><span class="eyebrow">Comunicação</span><h2>Anúncios</h2><div class="small">Envie uma mensagem para todos ou exclusivamente para os vendedores.</div></div></div><div class="notice"><b>Público do anúncio:</b> escolha quem receberá a notificação. Um anúncio para vendedores nunca é enviado aos clientes.</div><div class="field"><label>Destinatários</label><select id="adminAnnouncementAudience"><option value="all">Todos os usuários</option><option value="sellers">Somente vendedores</option></select></div><div class="field"><label>Título</label><input id="adminAnnouncementTitle" data-char-limit="60" data-char-counter="adminAnnouncementTitleCounter" oninput="syncLimitedField(this)" placeholder="Ex.: Manutenção programada">${characterCounter('adminAnnouncementTitleCounter','',TEXT_LIMITS.announcementTitle)}</div><div class="field"><label>Mensagem</label><textarea id="adminAnnouncementMessage" data-char-limit="600" data-char-counter="adminAnnouncementMessageCounter" oninput="syncLimitedField(this)" placeholder="Escreva o aviso que os destinatários deverão receber."></textarea>${characterCounter('adminAnnouncementMessageCounter','',TEXT_LIMITS.announcementMessage)}</div><button type="button" class="primary" onclick="sendAdminAnnouncement()">Enviar anúncio</button></div>`;
  if(state.adminTab==='products')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Produtos</h2><div class="small">A Gestão não edita produtos de vendedores. Pode destacar, suspender e analisar correções.</div></div></div>${adminProductsHtml(products)}</div>`;
@@ -1221,6 +1893,7 @@ function notificationTypeLabel(type){
   seller_new_follower:'Novo seguidor',
   seller_product_out_of_stock:'Estoque esgotado',
   seller_chat_message:'Atendimento da loja',
+  support_message:'Suporte da plataforma',
   admin_new_product:'Novo produto',
   admin_seller_request_new:'Nova solicitação de vendedor',
   admin_category_request_new:'Nova solicitação de categoria',
@@ -1235,6 +1908,7 @@ function notificationIcon(type){
  if(type==='account_confirmed')return 'shield';
  if(type==='password_changed')return 'lock';
  if(type==='new_user')return 'user';
+ if(type==='support_message')return 'comment';
  if(type==='admin_announcement'||type==='admin_seller_announcement'||type==='admin_user_message'||type==='seller_new_follower'||type==='seller_product_out_of_stock')return 'bell';
  return 'file';
 }
@@ -1244,6 +1918,7 @@ function notificationActionLabel(n){
   if(profile?.role==='seller' && ['product_suspended','product_reactivated','product_review_approved','product_review_rejected','product_added_to_cart','seller_product_out_of_stock'].includes(n.type))return 'Ver área do vendedor';
   return 'Ver produto';
  }
+ if(['seller_chat_message','support_message'].includes(n.type))return profile?.role==='admin'?'Central de Suporte':'Abrir atendimento';
  if(profile?.role==='admin' && ['new_user','account_suspended','admin_new_product','admin_seller_request_new','admin_category_request_new'].includes(n.type))return 'Ver Gestão';
  return '';
 }
@@ -1258,6 +1933,127 @@ async function openNotification(id){
   if(profile?.role==='seller' && ['product_suspended','product_reactivated','product_review_approved','product_review_rejected','product_added_to_cart','seller_product_out_of_stock'].includes(n.type))return go('seller');
   if(profile?.role==='seller' && n.type==='seller_new_comment')return openProduct(d.product_id);
   return openProduct(d.product_id);
+ }
+ if(['seller_chat_message','support_message'].includes(n.type) && d.chat_id){
+  if(profile?.role==='admin'){state.chatSection=d.conversation_type==='seller_support'?'sellers':d.conversation_type==='management_internal'?'management':'clients';state.chatSelectedId=d.chat_id;go('supportCenter');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;}
+  state.chatSection=d.conversation_type==='seller_customer'?'sellers':'support';state.chatSelectedId=d.chat_id;go('sellerChats');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;
+ }
+ if(profile?.role==='admin'){
+  if(n.type==='new_user'){state.adminTab='users';saveNavigation();return go('admin');}
+  if(n.type==='account_suspended'){state.adminTab='users';saveNavigation();return go('admin');}
+  if(n.type==='admin_new_product'){state.adminTab='products';saveNavigation();return go('admin');}
+  if(n.type==='admin_seller_request_new'){state.adminTab='requests';saveNavigation();return go('admin');}
+  if(n.type==='admin_category_request_new'){state.adminTab='categories';saveNavigation();return go('admin');}
+ }
+ if(profile?.role==='admin'&&['admin_announcement','admin_seller_announcement'].includes(n.type))return;
+}
+async function markNotificationRead(id){const n=notifications.find(x=>x.id===id);if(!session||!n||n.read_at)return;const r=await sb.from('notifications').update({read_at:new Date().toISOString()}).eq('id',id).eq('user_id',session.user.id).is('read_at',null);if(r.error)return toast('Não foi possível marcar a notificação como lida.');notifications=notifications.map(x=>x.id===id?{...x,read_at:new Date().toISOString()}:x);render();}
+function notificationsPage(){
+ if(!session)return `<div class="panel"><div class="empty"><h2>Notificações</h2><p>Entre na sua conta para acessar suas notificações.</p><button class="primary" onclick="openAuth()">Entrar</button></div></div>`;
+ const unread=notifications.filter(n=>!n.read_at).length;
+ const items=notifications.map(n=>{
+  const action=notificationActionLabel(n);
+  return `<article class="notification-page-item ${n.read_at?'':'unread'}" onclick="openNotification('${n.id}')">
+   <div class="notification-page-icon">${icon(notificationIcon(n.type),'sm')}</div>
+   <div class="notification-page-main">
+    <div class="notification-page-top"><div><span class="notification-type">${esc(notificationTypeLabel(n.type))}</span><h3>${esc(n.title)}</h3></div>${!n.read_at?'<span class="notification-unread-dot" aria-label="Não lida"></span>':''}</div>
+    <p>${esc(n.message)}</p>
+    <div class="notification-page-bottom"><span>${new Date(n.created_at).toLocaleString('pt-BR')}</span>${action?`<button type="button" class="mini" onclick="event.stopPropagation();openNotification('${n.id}')">${action}</button>`:''}</div>
+   </div>
+  </article>`;
+ }).join('');
+ return `<div class="notifications-page">
+  <div class="sectionhead notifications-page-head"><div><span class="eyebrow">Central de avisos</span><h1>Notificações${unread?` <span class="badge notification-count">${unread}</span>`:''}</h1><p class="small">Acompanhe avisos da Gestão, mudanças nos produtos e atividades relacionadas à sua conta.</p></div><div class="notification-actions"><button type="button" class="secondary" onclick="markNotificationsRead()" ${unread?'':'disabled'}>Marcar todas como lidas</button><button type="button" class="danger" onclick="clearNotifications()" ${notifications.length?'':'disabled'}>Limpar todas</button></div></div>
+  ${notifications.length?`<div class="notification-page-list">${items}</div>`:`<section class="panel notification-empty"><div class="empty"><div class="empty-icon">${icon('bell','lg')}</div><h2>Nenhuma notificação</h2><p>Quando houver um novo aviso, ele aparecerá aqui.</p></div></section>`}
+ </div>`;
+}
+
+async function toggleSellerFollow(sid){
+ if(!session)return openAuth('login');
+ if(profile?.id===sid)return toast('Você não pode seguir sua própria loja.');
+ const followed=sellerIsFollowed(sid);
+ const r=followed?await sb.from('seller_follows').delete().eq('user_id',session.user.id).eq('seller_id',sid):await sb.from('seller_follows').insert({user_id:session.user.id,seller_id:sid});
+ if(r.error)return toast(r.error.message||'Não foi possível atualizar o vendedor seguido.');
+ followedSellers=followed?followedSellers.filter(id=>id!==sid):[...followedSellers,sid];
+ render();toast(followed?'Vendedor removido dos seus seguidos.':'Vendedor seguido.');
+}
+function followedSellersPage(){
+ if(!session)return `<div class="panel"><div class="empty"><h2>Entre para ver seus vendedores</h2><button class="primary" onclick="openAuth('login')">Entrar</button></div></div>`;
+ const list=followedSellers.map(id=>sellers[id]).filter(s=>s&&s.role==='seller'&&s.status==='active');
+ return `<div class="sectionhead"><div><h2>Vendedores que sigo</h2><div class="small">Acesse rapidamente as lojas que você escolheu acompanhar.</div></div><button class="ghost" onclick="go('products')">Explorar catálogo</button></div>${list.length?`<div class="seller-follow-list">${list.map(s=>{const count=products.filter(p=>p.seller_id===s.id&&isProductPurchasable(p)).length;return `<div class="seller-follow-item"><div class="seller-follow-identity"><div class="seller-follow-avatar">${icon('store','sm')}</div><div><h3>${esc(sellerPublicName(s))}</h3><div class="small">${count} produto(s) disponível(is)</div></div></div><div class="actions"><button class="secondary" onclick="openSellerShop('${s.id}')">Ver loja</button><button class="ghost" onclick="toggleSellerFollow('${s.id}')">Deixar de seguir</button></div></div>`}).join('')}</div>`:`<div class="panel seller-following-empty"><div class="empty"><h3>Você ainda não segue nenhum vendedor</h3><p>Abra a página de um vendedor e toque em “Seguir vendedor” para criar seu atalho.</p><button class="primary" onclick="go('products')">Explorar vendedores</button></div></div>`}`
+}
+
+function favoritesPage(){
+ const ids=favorites.map(x=>x.product_id||x);
+ const list=products.filter(p=>p.active&&!(profile?.role==='seller'&&p.seller_id===profile.id)&&ids.includes(p.id));
+ if(!list.length)return `<div class="favorites-page"><div class="sectionhead"><div><h2>Favoritos</h2><div class="small">0 produto(s) salvo(s)</div></div></div><div class="panel favorites-empty"><div class="empty-icon">${icon('heart','lg')}</div><h3>Você ainda não salvou produtos</h3><p>Toque no coração de um produto para adicioná-lo aos seus favoritos.</p><button class="primary" onclick="go('products')">Explorar catálogo</button></div></div>`;
+ return `<div class="sectionhead"><div><h2>Favoritos</h2><div class="small">${list.length} produto(s) salvo(s)</div></div></div><div class="grid">${list.map(productCard).join('')}</div>`
+}
+
+function notificationTypeLabel(type){
+ const map={
+  seller_request_approved:'Solicitação de vendedor',
+  seller_request_rejected:'Solicitação de vendedor',
+  product_review_approved:'Moderação de produto',
+  product_review_rejected:'Moderação de produto',
+  product_suspended:'Produto',
+  product_reactivated:'Produto',
+  product_added_to_cart:'Sacola',
+  product_price_changed:'Preço reduzido',
+  new_user:'Novo usuário',
+  account_suspended:'Conta',
+  account_confirmed:'Conta',
+  admin_announcement:'Anúncio',
+  admin_seller_announcement:'Anúncio para vendedores',
+  admin_user_message:'Mensagem da Gestão',
+  seller_new_comment:'Comentário no produto',
+  seller_new_follower:'Novo seguidor',
+  seller_product_out_of_stock:'Estoque esgotado',
+  seller_chat_message:'Atendimento da loja',
+  support_message:'Suporte da plataforma',
+  admin_new_product:'Novo produto',
+  admin_seller_request_new:'Nova solicitação de vendedor',
+  admin_category_request_new:'Nova solicitação de categoria',
+  password_changed:'Segurança'
+ };
+ return map[type]||'Notificação';
+}
+function notificationIcon(type){
+ if(type==='product_added_to_cart')return 'bag';
+ if(type==='product_price_changed')return 'tag';
+ if(type==='account_suspended')return 'shield';
+ if(type==='account_confirmed')return 'shield';
+ if(type==='password_changed')return 'lock';
+ if(type==='new_user')return 'user';
+ if(type==='support_message')return 'comment';
+ if(type==='admin_announcement'||type==='admin_seller_announcement'||type==='admin_user_message'||type==='seller_new_follower'||type==='seller_product_out_of_stock')return 'bell';
+ return 'file';
+}
+function notificationActionLabel(n){
+ const d=n?.data||{};
+ if(d.product_id){
+  if(profile?.role==='seller' && ['product_suspended','product_reactivated','product_review_approved','product_review_rejected','product_added_to_cart','seller_product_out_of_stock'].includes(n.type))return 'Ver área do vendedor';
+  return 'Ver produto';
+ }
+ if(['seller_chat_message','support_message'].includes(n.type))return profile?.role==='admin'?'Central de Suporte':'Abrir atendimento';
+ if(profile?.role==='admin' && ['new_user','account_suspended','admin_new_product','admin_seller_request_new','admin_category_request_new'].includes(n.type))return 'Ver Gestão';
+ return '';
+}
+async function openNotification(id){
+ const n=notifications.find(x=>x.id===id);if(!n)return;
+ if(session && !n.read_at){
+  const r=await sb.from('notifications').update({read_at:new Date().toISOString()}).eq('id',id).eq('user_id',session.user.id).is('read_at',null);
+  if(!r.error){const when=new Date().toISOString();notifications=notifications.map(x=>x.id===id?{...x,read_at:when}:x);render();}
+ }
+ const d=n.data||{};
+ if(d.product_id){
+  if(profile?.role==='seller' && ['product_suspended','product_reactivated','product_review_approved','product_review_rejected','product_added_to_cart','seller_product_out_of_stock'].includes(n.type))return go('seller');
+  if(profile?.role==='seller' && n.type==='seller_new_comment')return openProduct(d.product_id);
+  return openProduct(d.product_id);
+ }
+ if(['seller_chat_message','support_message'].includes(n.type) && d.chat_id){
+  if(profile?.role==='admin'){state.chatSection=d.conversation_type==='seller_support'?'sellers':d.conversation_type==='management_internal'?'management':'clients';state.chatSelectedId=d.chat_id;go('supportCenter');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;}
+  state.chatSection=d.conversation_type==='seller_customer'?'sellers':'support';state.chatSelectedId=d.chat_id;go('sellerChats');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;
  }
  if(profile?.role==='admin'){
   if(n.type==='new_user'){state.adminTab='users';saveNavigation();return go('admin');}
@@ -1310,7 +2106,8 @@ async function quickStock(id,delta){
  render();
 }
 function reasonModal(kind,id,title,actionLabel){return `<div class="modalback" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal"><div class="sectionhead"><div><div class="eyebrow">Análise da Gestão</div><h2>${title}</h2><div class="small">Descreva o motivo. Essa informação será enviada ao usuário/vendedor.</div></div><button type="button" class="iconbtn" onclick="state.modal=null;render()">${icon('x')}</button></div><div class="field"><label>Motivo <span class="required-mark">*</span></label><textarea id="moderationReason" placeholder="Descreva o problema ou o motivo da decisão…"></textarea></div><button type="button" class="danger" style="width:100%" onclick="${actionLabel==='Recusar solicitação'?`submitSellerReject('${id}')`:`submitProductDecision('${id}',${kind==='suspend'?'false':'false'})`}">${actionLabel}</button></div></div>`}
-function modal(){if(state.modal?.type==='sellerFilters')return sellerFilterSheet();if(state.modal==='auth')return authModal();if(state.modal?.type==='product')return productForm(state.modal.id);if(state.modal?.type==='sellerInfo')return sellerInfoModal();if(state.modal?.type==='sellerCategories')return sellerCategoriesModal();if(state.modal?.type==='sellerChat')return sellerChatModal(state.modal.chat);if(state.modal?.type==='userNotification')return userNotificationModal(state.modal.user);if(state.modal?.type==='user')return userDetailsModal(state.modal.user);if(state.modal?.type==='sellerRequest')return sellerRequestModal();if(state.modal?.type==='sellerRequestDetails')return sellerRequestDetailsModal(state.modal.request,state.modal.user);if(state.modal?.type==='sellerReject')return reasonModal('sellerReject',state.modal.id,'Recusar solicitação','Recusar solicitação');if(state.modal?.type==='productSuspend')return reasonModal('suspend',state.modal.id,'Suspender produto','Suspender produto');if(state.modal?.type==='productReviewReject')return reasonModal('reviewReject',state.modal.id,'Reprovar correção','Reprovar correção');if(state.modal?.type==='commentEdit')return commentEditModal(state.modal.comment);return ''}
+function chatTransferModal(){const id=state.modal?.id,agents=state.chatTransferAgents||[];return `<div class="modalback chat-transfer-back" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal chat-transfer-modal" role="dialog" aria-modal="true" aria-labelledby="chatTransferTitle"><div class="sectionhead"><div><div class="eyebrow">Atendimento</div><h2 id="chatTransferTitle">Transferir Chamado</h2></div><button type="button" class="iconbtn" onclick="state.modal=null;render()" aria-label="Fechar">${icon('x')}</button></div><p class="chat-transfer-text">Selecione outro gestor. Ao confirmar, ele será o único responsável pelo chamado e você perderá o acesso ao histórico.</p><div class="field"><label for="chatTransferAgent">Novo gestor</label><select id="chatTransferAgent" ${state.chatTransferLoading?'disabled':''}><option value="">Selecione um gestor</option>${agents.map(a=>`<option value="${a.id}">${esc(fullUserName(a))}</option>`).join('')}</select>${!state.chatTransferLoading&&!agents.length?'<div class="field-help">Nenhum outro gestor ativo está disponível para a transferência.</div>':''}</div><div class="actions chat-transfer-actions"><button type="button" class="secondary" onclick="state.modal=null;render()">Cancelar</button><button type="button" class="primary" onclick="confirmTransferSupportChat()" ${state.chatTransferLoading||!agents.length?'disabled':''}>${state.chatTransferLoading?'<span class="chat-send-loading" aria-hidden="true"></span>':'Transferir Chamado'}</button></div></div></div>`}
+function modal(){if(state.modal?.type==='sellerFilters')return sellerFilterSheet();if(state.modal==='auth')return authModal();if(state.modal?.type==='product')return productForm(state.modal.id);if(state.modal?.type==='sellerInfo')return sellerInfoModal();if(state.modal?.type==='sellerCategories')return sellerCategoriesModal();if(state.modal?.type==='chatConfirm')return chatConfirmModal();if(state.modal?.type==='chatTransfer')return chatTransferModal();if(state.modal?.type==='userNotification')return userNotificationModal(state.modal.user);if(state.modal?.type==='user')return userDetailsModal(state.modal.user);if(state.modal?.type==='sellerRequest')return sellerRequestModal();if(state.modal?.type==='sellerRequestDetails')return sellerRequestDetailsModal(state.modal.request,state.modal.user);if(state.modal?.type==='sellerReject')return reasonModal('sellerReject',state.modal.id,'Recusar solicitação','Recusar solicitação');if(state.modal?.type==='productSuspend')return reasonModal('suspend',state.modal.id,'Suspender produto','Suspender produto');if(state.modal?.type==='productReviewReject')return reasonModal('reviewReject',state.modal.id,'Reprovar correção','Reprovar correção');if(state.modal?.type==='commentEdit')return commentEditModal(state.modal.comment);return ''}
 function passwordField(id,label,placeholder,autocomplete='current-password'){return `<div class="field"><label>${label} <span class="required-mark">*</span></label><div class="password-wrap"><input id="${id}" type="password" autocomplete="${autocomplete}" placeholder="${placeholder}"><button type="button" class="password-toggle" aria-label="Mostrar senha" onclick="togglePassword('${id}',this)">${icon('eye','sm')}</button></div></div>`}
 function togglePassword(id,btn){const input=$(id);if(!input)return;const show=input.type==='password';input.type=show?'text':'password';if(btn){btn.setAttribute('aria-label',show?'Ocultar senha':'Mostrar senha');btn.innerHTML=icon(show?'eyeoff':'eye','sm');}}
 function authModal(){
@@ -1570,24 +2367,14 @@ function render(){
   const token=++renderToken;
   syncModalScrollLock();
   if(state.recoveryReady){ $('app').innerHTML=header()+`<main class="container">${recoveryPage()}</main><footer>Fios & Artes · Marketplace artesanal</footer>`; bindFormDraftPersistence(); return; }
-  let body=state.page==='home'?home():state.page==='products'?productsPage():state.page==='detail'?detail():state.page==='cart'?cartPage():state.page==='favorites'?favoritesPage():state.page==='followedSellers'?followedSellersPage():state.page==='notifications'?notificationsPage():state.page==='account'?account():state.page==='seller'?sellerPage():state.page==='sellerPreview'?sellerPreviewPage():state.page==='sellerShop'?sellerShopPage():state.page==='sellerChats'?sellerChatsPage():state.page==='admin'?adminPage():home();
+  let body=state.page==='home'?home():state.page==='products'?productsPage():state.page==='detail'?detail():state.page==='cart'?cartPage():state.page==='favorites'?favoritesPage():state.page==='followedSellers'?followedSellersPage():state.page==='notifications'?notificationsPage():state.page==='account'?account():state.page==='seller'?sellerPage():state.page==='sellerPreview'?sellerPreviewPage():state.page==='sellerShop'?sellerShopPage():state.page==='sellerChats'?sellerChatsPage():state.page==='supportCenter'?supportCenterPage():state.page==='admin'?adminPage():home();
+  const chatPage=state.page==='sellerChats'||state.page==='supportCenter';
+  syncChatLayoutState(chatPage);
+  const containerClass=`container ${state.page==='admin'?'admin-page':''} ${state.page==='seller'?'seller-container':''} ${chatPage?'chat-container':''}`;
   if(body instanceof Promise){
-    $('app').innerHTML=header()+`<main class="container ${state.page==='admin'?'admin-page':''} ${state.page==='seller'?'seller-container':''}"><div class="loading">Carregando…</div></main>`;
-    body.then(x=>{
-      if(token!==renderToken)return;
-      $('app').innerHTML=header()+`<main class="container ${state.page==='admin'?'admin-page':''} ${state.page==='seller'?'seller-container':''}">${x}</main><footer>Fios & Artes · Marketplace artesanal</footer>${state.modal?modal():''}`;
-      bindFormDraftPersistence();
-      if(state.modal?.type==='product')resetProductModalScroll();
-    }).catch(err=>{
-      if(token!==renderToken)return;
-      console.error('render',err);
-      $('app').innerHTML=header()+`<main class="container ${state.page==='admin'?'admin-page':''} ${state.page==='seller'?'seller-container':''}"><div class="notice"><b>Não foi possível abrir esta tela.</b><br>${esc(err?.message||err)}</div></main><footer>Fios & Artes · Marketplace artesanal</footer>`;
-    });
-  }else{
-    $('app').innerHTML=header()+`<main class="container ${state.page==='admin'?'admin-page':''} ${state.page==='seller'?'seller-container':''}">${body}</main><footer>Fios & Artes · Marketplace artesanal</footer>${state.modal?modal():''}`;
-    bindFormDraftPersistence();
-    if(state.modal?.type==='product')resetProductModalScroll();
-  }
+    $('app').innerHTML=header()+`<main class="${containerClass}"><div class="loading">Carregando…</div></main>`;requestAnimationFrame(syncChatViewport);
+    body.then(x=>{if(token!==renderToken)return;$('app').innerHTML=header()+`<main class="${containerClass}">${x}</main><footer>Fios & Artes · Marketplace artesanal</footer>${state.modal?modal():''}`;bindFormDraftPersistence();if(state.modal?.type==='product')resetProductModalScroll();requestAnimationFrame(syncChatViewport);}).catch(err=>{if(token!==renderToken)return;console.error('render',err);$('app').innerHTML=header()+`<main class="${containerClass}"><div class="notice"><b>Não foi possível abrir esta tela.</b><br>${esc(err?.message||err)}</div></main><footer>Fios & Artes · Marketplace artesanal</footer>`});
+  }else{$('app').innerHTML=header()+`<main class="${containerClass}">${body}</main><footer>Fios & Artes · Marketplace artesanal</footer>${state.modal?modal():''}`;bindFormDraftPersistence();if(state.modal?.type==='product')resetProductModalScroll();requestAnimationFrame(syncChatViewport);}
 }
 function updateFileName(input){const el=document.getElementById('pfImageName');if(el)el.textContent=input.files?.[0]?.name||'Escolher uma imagem'}
 function updateSalePreview(){const price=Number($('pfPrice')?.value||0),sale=Number($('pfSalePrice')?.value||0),el=$('pfDiscountPreview');if(!el)return;if(price>0&&sale>0&&sale<price)el.textContent=`Desconto: ${Math.round(((price-sale)/price)*10000)/100}%`;else el.textContent='';}
@@ -1632,7 +2419,9 @@ async function bootstrap(){
   session=initialSession;
   if(session){const valid=await loadProfile();if(!valid){appBooting=false;return;}}
   if(state.page==='admin'&&profile?.role!=='admin')state.page='home';
+  if(state.page==='supportCenter'&&profile?.role!=='admin')state.page='home';
   if(state.page==='seller'&&profile?.role!=='seller')state.page='home';
+  normalizeChatSection();
 
   // Carrega a tela restaurada antes de começar a escutar eventos de autenticação.
   // O Supabase pode emitir INITIAL_SESSION/SIGNED_IN durante a inicialização;
@@ -1641,6 +2430,7 @@ async function bootstrap(){
   await refresh();
   await subscribeNotifications();
   await subscribeProducts();
+  await subscribeSellerChats();
   appBooting=false;
   saveNavigation();
 
@@ -1652,6 +2442,8 @@ async function bootstrap(){
         if(session){const valid=await loadProfile();if(!valid)return;}
         else {profile=null;favorites=[];saveGuestFavorites();}
         await subscribeNotifications();
+        await subscribeSellerChats();
+        await loadSellerChats({reset:true,silent:true});
         if(event==='PASSWORD_RECOVERY'){
           state.recoveryReady=true;state.accessRecovered=false;state.modal=null;state.confirmedNotice=false;
           render();
@@ -1669,8 +2461,10 @@ async function bootstrap(){
   window.__authSubscription=authListener?.data?.subscription||null;
 }
 
-window.go=go;window.render=render;window.toggleSellerProductMenu=toggleSellerProductMenu;window.toggleCommentMenu=toggleCommentMenu;window.closeCommentMenus=closeCommentMenus;window.openCommentEdit=openCommentEdit;window.saveEditedComment=saveEditedComment;window.deleteOwnComment=deleteOwnComment;window.reportComment=reportComment;window.ignoreCommentReport=ignoreCommentReport;window.removeReportedComment=removeReportedComment;window.toggleSellerFollow=toggleSellerFollow;window.saveSellerInfo=saveSellerInfo;window.openUserNotification=openUserNotification;window.sendUserNotification=sendUserNotification;window.openSellerShop=openSellerShop;window.openSellerPreview=openSellerPreview;window.openSellerChat=openSellerChat;window.openSellerChatById=openSellerChatById;window.sendSellerChatMessage=sendSellerChatMessage;window.getComments=getComments;window.handleProductImageSelection=handleProductImageSelection;window.removeProductImage=removeProductImage;window.toggleFavorite=toggleFavorite;window.favoritesPage=favoritesPage;window.requestCategory=requestCategory;window.reviewCategoryRequest=reviewCategoryRequest;window.saveCategory=saveCategory;window.renameCategory=renameCategory;window.toggleCategory=toggleCategory;window.deleteCategory=deleteCategory;window.quickStock=quickStock;window.sellerCatalogSearch=sellerCatalogSearch;window.setSellerTab=setSellerTab;window.setSellerStockFilter=setSellerStockFilter;window.setSellerCategoryFilter=setSellerCategoryFilter;window.setSellerSort=setSellerSort;window.clearSellerCatalogFilters=clearSellerCatalogFilters;window.openSellerFilterSheet=openSellerFilterSheet;window.closeSellerFilterSheet=closeSellerFilterSheet;window.applySellerFilterSheet=applySellerFilterSheet;window.clearSellerMobileFilters=clearSellerMobileFilters;window.clearSellerStockFilter=clearSellerStockFilter;window.clearSellerCategoryFilter=clearSellerCategoryFilter;window.openSellerCategories=openSellerCategories;window.setSellerPublication=setSellerPublication;window.duplicateSellerProduct=duplicateSellerProduct;window.closeDrawer=closeDrawer;window.toggleTheme=toggleTheme;window.updateFileName=updateFileName;window.syncLimitedField=syncLimitedField;window.normalizeMoneyInput=normalizeMoneyInput;window.normalizeStockInput=normalizeStockInput;window.searchProducts=searchProducts;window.saveNavigation=saveNavigation;window.openAuth=openAuth;window.switchAuthMode=switchAuthMode;window.submitAuth=submitAuth;window.resendConfirmation=resendConfirmation;window.sendRecovery=sendRecovery;window.togglePassword=togglePassword;window.saveProfilePassword=saveProfilePassword;window.logout=logout;window.saveProfile=saveProfile;window.requestSeller=requestSeller;window.reviewRequest=reviewRequest;window.openSellerRequestForm=openSellerRequestForm;window.openSellerReject=openSellerReject;window.submitSellerReject=submitSellerReject;window.openProductSuspend=openProductSuspend;window.openProductReviewReject=openProductReviewReject;window.submitProductDecision=submitProductDecision;window.reviewProduct=reviewProduct;window.reactivateProduct=reactivateProduct;window.saveRecoveryPassword=saveRecoveryPassword;window.toggleUser=toggleUser;window.deleteUser=deleteUser;window.openProductForm=openProductForm;window.saveProduct=saveProduct;window.deleteProduct=deleteProduct;window.adminDeleteProduct=adminDeleteProduct;window.addCart=addCart;window.changeQty=changeQty;window.openWhatsAppSeller=openWhatsAppSeller;window.openWhatsAppSingle=openWhatsAppSingle;window.postComment=postComment;window.openProduct=openProduct;window.openNotification=openNotification;window.markNotificationRead=markNotificationRead;window.sendAdminAnnouncement=sendAdminAnnouncement;window.markNotificationsRead=markNotificationsRead;window.clearNotifications=clearNotifications;
+window.go=go;window.render=render;window.subscribeSellerChats=subscribeSellerChats;window.loadSellerChats=loadSellerChats;window.loadSellerChatSectionCounts=loadSellerChatSectionCounts;window.openSellerChat=openSellerChat;window.openSupportChat=openSupportChat;window.openAdminUserConversation=openAdminUserConversation;window.openSellerChatById=openSellerChatById;window.sendSellerChatMessage=sendSellerChatMessage;window.editSellerChatMessage=editSellerChatMessage;window.deleteSellerChatMessage=deleteSellerChatMessage;window.markSellerChatRead=markSellerChatRead;window.markSellerChatUnread=markSellerChatUnread;window.setSellerChatStatus=setSellerChatStatus;window.deleteSellerChat=deleteSellerChat;window.toggleChatMenu=toggleChatMenu;window.openChatMessageMenu=openChatMessageMenu;window.startChatMessagePress=startChatMessagePress;window.cancelChatMessagePress=cancelChatMessagePress;window.beginChatMessageEdit=beginChatMessageEdit;window.cancelChatMessageEdit=cancelChatMessageEdit;window.openChatConfirm=openChatConfirm;window.confirmChatAction=confirmChatAction;window.chatSearchChanged=chatSearchChanged;window.setChatSection=setChatSection;window.toggleChatFilterMenu=toggleChatFilterMenu;window.setChatFilter=setChatFilter;window.loadMoreSellerChats=loadMoreSellerChats;window.loadOlderChatMessages=loadOlderChatMessages;window.handleChatScroll=handleChatScroll;window.jumpToChatBottom=jumpToChatBottom;window.chatComposerKeydown=chatComposerKeydown;window.toggleSellerProductMenu=toggleSellerProductMenu;window.toggleCommentMenu=toggleCommentMenu;window.closeCommentMenus=closeCommentMenus;window.openCommentEdit=openCommentEdit;window.saveEditedComment=saveEditedComment;window.deleteOwnComment=deleteOwnComment;window.reportComment=reportComment;window.ignoreCommentReport=ignoreCommentReport;window.removeReportedComment=removeReportedComment;window.toggleSellerFollow=toggleSellerFollow;window.saveSellerInfo=saveSellerInfo;window.openUserNotification=openUserNotification;window.sendUserNotification=sendUserNotification;window.openSellerShop=openSellerShop;window.openSellerPreview=openSellerPreview;window.getComments=getComments;window.handleProductImageSelection=handleProductImageSelection;window.removeProductImage=removeProductImage;window.toggleFavorite=toggleFavorite;window.favoritesPage=favoritesPage;window.requestCategory=requestCategory;window.reviewCategoryRequest=reviewCategoryRequest;window.saveCategory=saveCategory;window.renameCategory=renameCategory;window.toggleCategory=toggleCategory;window.deleteCategory=deleteCategory;window.quickStock=quickStock;window.sellerCatalogSearch=sellerCatalogSearch;window.setSellerTab=setSellerTab;window.setSellerStockFilter=setSellerStockFilter;window.setSellerCategoryFilter=setSellerCategoryFilter;window.setSellerSort=setSellerSort;window.clearSellerCatalogFilters=clearSellerCatalogFilters;window.openSellerFilterSheet=openSellerFilterSheet;window.closeSellerFilterSheet=closeSellerFilterSheet;window.applySellerFilterSheet=applySellerFilterSheet;window.clearSellerMobileFilters=clearSellerMobileFilters;window.clearSellerStockFilter=clearSellerStockFilter;window.clearSellerCategoryFilter=clearSellerCategoryFilter;window.openSellerCategories=openSellerCategories;window.setSellerPublication=setSellerPublication;window.duplicateSellerProduct=duplicateSellerProduct;window.closeDrawer=closeDrawer;window.toggleTheme=toggleTheme;window.updateFileName=updateFileName;window.syncLimitedField=syncLimitedField;window.normalizeMoneyInput=normalizeMoneyInput;window.normalizeStockInput=normalizeStockInput;window.searchProducts=searchProducts;window.saveNavigation=saveNavigation;window.openAuth=openAuth;window.switchAuthMode=switchAuthMode;window.submitAuth=submitAuth;window.resendConfirmation=resendConfirmation;window.sendRecovery=sendRecovery;window.togglePassword=togglePassword;window.saveProfilePassword=saveProfilePassword;window.logout=logout;window.saveProfile=saveProfile;window.requestSeller=requestSeller;window.reviewRequest=reviewRequest;window.openSellerRequestForm=openSellerRequestForm;window.openSellerReject=openSellerReject;window.submitSellerReject=submitSellerReject;window.openProductSuspend=openProductSuspend;window.openProductReviewReject=openProductReviewReject;window.submitProductDecision=submitProductDecision;window.reviewProduct=reviewProduct;window.reactivateProduct=reactivateProduct;window.saveRecoveryPassword=saveRecoveryPassword;window.toggleUser=toggleUser;window.deleteUser=deleteUser;window.openProductForm=openProductForm;window.saveProduct=saveProduct;window.deleteProduct=deleteProduct;window.adminDeleteProduct=adminDeleteProduct;window.addCart=addCart;window.changeQty=changeQty;window.openWhatsAppSeller=openWhatsAppSeller;window.openWhatsAppSingle=openWhatsAppSingle;window.postComment=postComment;window.openProduct=openProduct;window.openNotification=openNotification;window.markNotificationRead=markNotificationRead;window.sendAdminAnnouncement=sendAdminAnnouncement;window.markNotificationsRead=markNotificationsRead;window.clearNotifications=clearNotifications;
+window.__fiosBootUiReady=false;
 $('app').innerHTML=header()+`<main class="container"><div class="loading">Carregando…</div></main>`;
+window.__fiosBootUiReady=true;
 let bootFinished=false;
 const bootTimeout=setTimeout(()=>{
   if(bootFinished)return;
@@ -1690,6 +2484,18 @@ window.addEventListener('keydown',event=>{if(event.key==='Escape'&&state.modal?.
 window.addEventListener('focus',()=>verifyAccountOnReturn());
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')verifyAccountOnReturn();});
 setInterval(()=>{if(document.visibilityState==='visible')verifyAccountOnReturn();},30000);
+
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',()=>{
+    if(document.body.classList.contains('chat-layout-active'))requestAnimationFrame(syncChatViewport);
+  },{passive:true});
+  window.visualViewport.addEventListener('scroll',()=>{
+    if(document.body.classList.contains('chat-layout-active'))requestAnimationFrame(syncChatViewport);
+  },{passive:true});
+}
+window.addEventListener('resize',()=>{
+  if(document.body.classList.contains('chat-layout-active'))requestAnimationFrame(syncChatViewport);
+},{passive:true});
 </script><style>
 .cart-item-suspended{background:#fff7f5;border-color:#ead7d3}.cart-suspended-label{display:inline-flex;margin-top:5px;padding:4px 8px;border-radius:999px;background:#f4e1df;color:#8b3d39;font-size:.74rem;font-weight:850}.cart-suspended-notice{margin-top:12px;margin-bottom:0}.cart-remove-btn{background:#f4e1df!important;color:#8b3d39!important;font-weight:900}.product-moderation-actions{display:flex;gap:7px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.product-moderation-actions .small{max-width:240px;text-align:right}@media(max-width:700px){.product-moderation-actions{width:100%;justify-content:stretch}.product-moderation-actions button{flex:1}.product-moderation-actions .small{max-width:none;width:100%;text-align:left}.cart-item-row .qty{flex-wrap:wrap;justify-content:flex-end}}
 /* V4.12.23 — sessão inválida após exclusão de conta */
