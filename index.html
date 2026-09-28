@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.33.0">
+<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.36.0">
 <link rel="manifest" href="/loja-atelie/manifest.json?v=4">
 <link rel="icon" type="image/png" sizes="16x16" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-16.png?v=1">
 <link rel="icon" type="image/png" sizes="32x32" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-32.png?v=1">
@@ -943,7 +943,7 @@ function toggleTheme(){
   toast(themeMode==='dark'?'Tema escuro ativado.':'Tema claro ativado.');
 }
 applyTheme();
-let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,chatSelectedId:null,chatSection:'sellers',chatFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,chatLoading:false,chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatEditingMessageId:null,chatLoadingOlder:false,chatSectionCounts:{},chatNewMessages:0,chatSending:false,chatSupportDraft:false,chatTransferAgents:[],chatTransferLoading:false};
+let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,selectedConversationId:null,selectedConversation:null,activeSection:'sellers',activeFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,loadingConversations:false,loadingMessages:false,chatError:'',chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatEditingMessageId:null,loadingOlderMessages:false,chatSectionCounts:{},newMessagesCount:0,supportDraft:false,composerValue:'',sendingMessage:false,chatTransferAgents:[],chatTransferLoading:false,chatSectionCache:{},chatMessageCache:{},chatFetchSerial:0,chatConversationFetchSerial:0,chatMessagesFetchSerial:0,chatBackgroundFetchSerial:0};
 let changingPassword=false;
 function serializableModal(){
   if(state.modal==='auth')return 'auth';
@@ -952,8 +952,8 @@ function serializableModal(){
   if(!allowed.includes(state.modal.type))return null;
   return {type:state.modal.type,id:state.modal.id||''};
 }
-function navigationSnapshot(){return {page:state.page,category:state.category,sellerCategory:state.sellerCategory,search:state.search,selected:state.selected,sellerId:state.sellerId||null,adminTab:state.adminTab,chatSection:state.chatSection,modal:serializableModal(),authMode:state.authMode,authUnconfirmed:state.authUnconfirmed,editingProfile:!!editingProfile,editingSellerInfo:!!editingSellerInfo,changingPassword:!!changingPassword}}
-function saveNavigation(){try{const snapshot=JSON.stringify(navigationSnapshot());localStorage.setItem(NAV_STATE,snapshot);sessionStorage.setItem(NAV_SESSION_STATE,snapshot);const q=new URLSearchParams();if(state.page&&state.page!=='home')q.set('page',state.page);if(state.page==='products'&&state.category&&state.category!=='Todos')q.set('category',state.category);if(state.page==='products'&&state.search)q.set('search',state.search);if(state.page==='detail'&&state.selected)q.set('selected',state.selected);if(state.page==='sellerShop'&&state.sellerId)q.set('seller',state.sellerId);if(state.page==='admin'&&state.adminTab&&state.adminTab!=='requests')q.set('tab',state.adminTab);if((state.page==='sellerChats'||state.page==='supportCenter')&&state.chatSection)q.set('section',state.chatSection);history.replaceState({navigation:true},document.title,location.pathname+(q.toString()?'?'+q.toString():'')+location.hash)}catch{}}
+function navigationSnapshot(){return {page:state.page,category:state.category,sellerCategory:state.sellerCategory,search:state.search,selected:state.selected,sellerId:state.sellerId||null,adminTab:state.adminTab,chatSection:state.activeSection,modal:serializableModal(),authMode:state.authMode,authUnconfirmed:state.authUnconfirmed,editingProfile:!!editingProfile,editingSellerInfo:!!editingSellerInfo,changingPassword:!!changingPassword}}
+function saveNavigation(){try{const snapshot=JSON.stringify(navigationSnapshot());localStorage.setItem(NAV_STATE,snapshot);sessionStorage.setItem(NAV_SESSION_STATE,snapshot);const q=new URLSearchParams();if(state.page&&state.page!=='home')q.set('page',state.page);if(state.page==='products'&&state.category&&state.category!=='Todos')q.set('category',state.category);if(state.page==='products'&&state.search)q.set('search',state.search);if(state.page==='detail'&&state.selected)q.set('selected',state.selected);if(state.page==='sellerShop'&&state.sellerId)q.set('seller',state.sellerId);if(state.page==='admin'&&state.adminTab&&state.adminTab!=='requests')q.set('tab',state.adminTab);if((state.page==='sellerChats'||state.page==='supportCenter')&&state.activeSection)q.set('section',state.activeSection);history.replaceState({navigation:true},document.title,location.pathname+(q.toString()?'?'+q.toString():'')+location.hash)}catch{}}
 function restoreNavigation(){try{
   // V4.20.2 — a nova abertura do site deve começar sempre na página inicial.
   // O estado salvo de navegação não é mais restaurado entre aberturas.
@@ -966,7 +966,7 @@ function restoreNavigation(){try{
   if(q.has('seller'))state.sellerId=q.get('seller')||null;
   if(q.has('selected'))state.selected=q.get('selected')||null;
   if(q.has('search'))state.search=q.get('search')||'';
-  if(q.has('tab')){state.adminTab=q.get('tab')||'requests';if(state.adminTab==='support')state.page='supportCenter';}if(q.has('section'))state.chatSection=q.get('section')||state.chatSection;
+  if(q.has('tab')){state.adminTab=q.get('tab')||'requests';if(state.adminTab==='support')state.page='supportCenter';}if(q.has('section'))state.activeSection=q.get('section')||state.activeSection;
   editingProfile=false;
   editingSellerInfo=false;
   changingPassword=false;
@@ -984,7 +984,7 @@ function readFormDrafts(){try{return JSON.parse(localStorage.getItem(FORM_DRAFTS
 function writeFormDrafts(drafts){try{localStorage.setItem(FORM_DRAFTS,JSON.stringify(drafts))}catch{}}
 function saveCurrentFormDraft(){
   try{
-    const fields=[...document.querySelectorAll('#app input, #app textarea, #app select')].filter(el=>(el.id||el.name) && el.type!=='password' && el.type!=='file' && !el.disabled);
+    const fields=[...document.querySelectorAll('#app input, #app textarea, #app select')].filter(el=>(el.id||el.name) && el.id!=='chatMessage' && el.type!=='password' && el.type!=='file' && !el.disabled);
     if(!fields.length)return;
     const values={};
     fields.forEach(el=>{
@@ -1005,7 +1005,7 @@ function restoreCurrentFormDraft(){
     Object.entries(draft.values||{}).forEach(([key,data])=>{
       if(key.startsWith('@')){const [,name,val]=key.match(/^@([^:]+):(.+)$/)||[];const el=[...document.querySelectorAll('#app input')].find(x=>x.name===name&&x.value===val);if(el&&(el.type==='checkbox'||el.type==='radio'))el.checked=!!data.checked;return;}
       if(key.includes(':')){const [id]=key.split(/:(.+)/);const el=document.getElementById(id);if(el&&(el.type==='checkbox'||el.type==='radio'))el.checked=!!data.checked;return;}
-      const el=document.getElementById(key);if(!el||el.type==='password'||el.type==='file')return;
+      const el=document.getElementById(key);if(!el||el.id==='chatMessage'||el.type==='password'||el.type==='file')return;
       if(el.value!==String(data?.value??''))el.value=String(data?.value??'');
     });
     updateSalePreview();
@@ -1023,7 +1023,7 @@ async function restoreProductImageDraft(){
 function bindFormDraftPersistence(){
   const root=document.getElementById('app');if(!root)return;
   root.querySelectorAll('input, textarea, select').forEach(el=>{
-    if(el.type==='password')return;
+    if(el.id==='chatMessage'||el.type==='password')return;
     if(el.type==='file'){
       if(el.dataset.imageHandlerBound!=='1'){
         el.dataset.imageHandlerBound='1';
@@ -1108,8 +1108,21 @@ async function loadAll(){
   }
   if(session){await loadDbCart();const [sr,nr,fr]=await Promise.all([sb.from('seller_requests').select('id,user_id,status,product_type,rejection_reason,requested_at,reviewed_at').eq('user_id',session.user.id).order('requested_at',{ascending:false}).limit(1),sb.from('notifications').select('id,type,title,message,read_at,created_at,data').eq('user_id',session.user.id).order('created_at',{ascending:false}).limit(100),sb.from('seller_follows').select('seller_id').eq('user_id',session.user.id)]);mySellerRequest=sr.error?null:(sr.data?.[0]||null);notifications=nr.error?[]:(nr.data||[]);followedSellers=fr.error?[]:(fr.data||[])}else{cart=guestCart();mySellerRequest=null;notifications=[];followedSellers=[];sellerChats=[];}await loadFavorites();
 }
-function go(p){saveCurrentFormDraft();if(state.modal?.type==='product')resetProductImageEditor();state.page=p;state.selected=null;state.sellerId=null;state.modal=null;state.drawer=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;state.chatSupportDraft=false;if(p!=='sellerShop')state.sellerCategory='Todos';if(!['sellerChats','supportCenter'].includes(p)){state.chatSelectedId=null}else{state.chatOffset=0;state.chatTotal=0;state.chatHasMore=false;normalizeChatSection();}saveNavigation();render();if(session&&['sellerChats','supportCenter'].includes(p)){loadSellerChatSectionCounts({silent:true}).then(()=>render());loadSellerChats({reset:true,silent:true}).then(()=>render()).catch(()=>{});}}
+function go(p){saveCurrentFormDraft();if(state.modal?.type==='product')resetProductImageEditor();state.page=p;state.selected=null;state.sellerId=null;state.modal=null;state.drawer=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;state.supportDraft=false;if(p!=='sellerShop')state.sellerCategory='Todos';if(!['sellerChats','supportCenter'].includes(p)){state.selectedConversationId=null;state.selectedConversation=null;state.composerValue='';chatMessages=[];}else{state.chatOffset=0;state.chatTotal=0;state.chatHasMore=false;normalizeChatSection();}saveNavigation();render();if(session&&['sellerChats','supportCenter'].includes(p)){void loadSellerChatSectionCounts({silent:true});void loadSellerChats({reset:true,silent:true});}}
 async function loadDbCart(){const r=await sb.from('cart_items').select('product_id,quantity').eq('user_id',session.user.id);if(r.error){toast(r.error.message);return}cart=r.data||[]}
+function refreshHeaderNotificationDom(){
+ const btn=document.querySelector('.notification-bell');if(!btn)return;
+ const unread=notifications.filter(n=>!n.read_at).length;
+ btn.setAttribute('aria-label',`Notificações${unread?`: ${unread} nova(s)`:''}`);
+ const old=btn.querySelector('.notification-count-badge');
+ if(unread){
+   const badge=old||document.createElement('span');
+   badge.className='notification-count-badge';
+   badge.setAttribute('aria-label',`${unread} nova(s)`);
+   badge.textContent=unread>9?'9+':String(unread);
+   if(!old)btn.appendChild(badge);
+ }else if(old)old.remove();
+}
 let notificationChannel=null,productChannel=null;
 async function subscribeNotifications(){
  if(notificationChannel){try{await sb.removeChannel(notificationChannel)}catch(err){console.error('remove notification channel',err)}notificationChannel=null;}
@@ -1118,18 +1131,21 @@ async function subscribeNotifications(){
   .on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:`user_id=eq.${session.user.id}`},payload=>{
     if(!payload?.new?.id)return;
     notifications=[payload.new,...notifications.filter(n=>n.id!==payload.new.id)].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,100);
-    if(state.modal?.type!=='product')render();
+    if(state.page==='sellerChats'||state.page==='supportCenter')refreshHeaderNotificationDom();
+    else if(state.modal?.type!=='product')render();
     toast(payload.new.title||'Nova notificação');
   })
   .on('postgres_changes',{event:'UPDATE',schema:'public',table:'notifications',filter:`user_id=eq.${session.user.id}`},payload=>{
     if(!payload?.new?.id)return;
     notifications=notifications.map(n=>n.id===payload.new.id?payload.new:n);
-    if(state.modal?.type!=='product')render();
+    if(state.page==='sellerChats'||state.page==='supportCenter')refreshHeaderNotificationDom();
+    else if(state.modal?.type!=='product')render();
   })
   .on('postgres_changes',{event:'DELETE',schema:'public',table:'notifications',filter:`user_id=eq.${session.user.id}`},payload=>{
     if(!payload?.old?.id)return;
     notifications=notifications.filter(n=>n.id!==payload.old.id);
-    if(state.modal?.type!=='product')render();
+    if(state.page==='sellerChats'||state.page==='supportCenter')refreshHeaderNotificationDom();
+    else if(state.modal?.type!=='product')render();
   })
   .subscribe(status=>{if(status==='CHANNEL_ERROR')console.error('notification realtime channel error')});
 }
@@ -1138,9 +1154,9 @@ async function subscribeProducts(){
  productChannel=sb.channel('products-realtime')
   .on('postgres_changes',{event:'*',schema:'public',table:'products'},payload=>{
     if(!payload?.eventType)return;
-    if(payload.eventType==='UPDATE'&&payload.new?.id){products=products.map(p=>p.id===payload.new.id?{...p,...payload.new}:p);if(state.modal?.type!=='product')render();return;}
-    if(payload.eventType==='INSERT'&&payload.new?.id){products=[payload.new,...products.filter(p=>p.id!==payload.new.id)];if(state.modal?.type!=='product')render();return;}
-    if(payload.eventType==='DELETE'&&payload.old?.id){products=products.filter(p=>p.id!==payload.old.id);if(state.modal?.type!=='product')render();}
+    if(payload.eventType==='UPDATE'&&payload.new?.id){products=products.map(p=>p.id===payload.new.id?{...p,...payload.new}:p);if(!(state.page==='sellerChats'||state.page==='supportCenter')&&state.modal?.type!=='product')render();return;}
+    if(payload.eventType==='INSERT'&&payload.new?.id){products=[payload.new,...products.filter(p=>p.id!==payload.new.id)];if(!(state.page==='sellerChats'||state.page==='supportCenter')&&state.modal?.type!=='product')render();return;}
+    if(payload.eventType==='DELETE'&&payload.old?.id){products=products.filter(p=>p.id!==payload.old.id);if(!(state.page==='sellerChats'||state.page==='supportCenter')&&state.modal?.type!=='product')render();}
   })
   .subscribe(status=>{if(status==='CHANNEL_ERROR')console.error('product realtime channel error')});
 }
@@ -1173,6 +1189,12 @@ function syncChatLayoutState(active){
   document.body.classList.toggle('chat-layout-active',!!active);
   if(active)requestAnimationFrame(syncChatViewport);else syncChatViewport();
 }
+function refreshChatListHeadDom(){
+  const host=document.querySelector('.chat-list-panel');if(!host)return;
+  const current=host.querySelector('.chat-list-head');if(!current)return;
+  const temp=document.createElement('div');temp.innerHTML=sellerChatSidebar();
+  const next=temp.querySelector('.chat-list-head');if(next)current.replaceWith(next);
+}
 function refreshChatSidebarDom(){
   const panel=document.querySelector('.chat-list-panel');if(!panel)return;
   const currentScroll=panel.querySelector('.chat-list-scroll');if(!currentScroll)return;
@@ -1187,9 +1209,9 @@ function refreshChatSidebarDom(){
 function syncChatNewMessagesDom(){
   const pane=document.querySelector('.chat-conversation-panel');if(!pane)return;
   let button=pane.querySelector('.chat-new-messages');
-  if(state.chatNewMessages>0){
+  if(state.newMessagesCount>0){
     if(!button){button=document.createElement('button');button.type='button';button.className='chat-new-messages';button.addEventListener('click',jumpToChatBottom);pane.appendChild(button)}
-    button.innerHTML=`${icon('arrowLeft','xs')} ${state.chatNewMessages} nova${state.chatNewMessages>1?'s':''} mensagem${state.chatNewMessages>1?'s':''}`;
+    button.innerHTML=`${icon('arrowLeft','xs')} ${state.newMessagesCount} nova${state.newMessagesCount>1?'s':''} mensagem${state.newMessagesCount>1?'s':''}`;
   }else if(button)button.remove();
 }
 function refreshChatMessagesDom({keepScroll=true}={}){
@@ -1201,30 +1223,40 @@ function refreshChatMessagesDom({keepScroll=true}={}){
 }
 function refreshChatHeaderDom(){
   const chat=chatCurrent(),host=document.querySelector('.chat-conversation-panel');if(!chat||!host)return;
-  const temp=document.createElement('div');temp.innerHTML=sellerChatConversationPane(chat);const next=temp.querySelector('.chat-conversation-head');const current=host.querySelector('.chat-conversation-head');if(next&&current)current.replaceWith(next);
-  const nextComposer=temp.querySelector('.chat-composer-wrap');const currentComposer=host.querySelector('.chat-composer-wrap');if(nextComposer&&currentComposer)currentComposer.replaceWith(nextComposer);
+  const current=host.querySelector('.chat-conversation-head');
+  if(!current)return;
+  const temp=document.createElement('div');temp.innerHTML=sellerChatConversationPane(chat);
+  const next=temp.querySelector('.chat-conversation-head');
+  if(next)current.replaceWith(next);
+  syncChatComposerDom();
 }
 async function handleChatRealtimeMessage(payload,kind){
   const m=payload?.new;if(!m?.id||!m.chat_id)return;
-  const selected=m.chat_id===state.chatSelectedId;
+  const selected=m.chat_id===state.selectedConversationId;
   const before=selected?document.querySelector('#chatMessageScroll'):null;
   const near=selected?isChatNearBottom(before):true;
   const oldTop=before?.scrollTop||0;
 
   if(selected){
-    if(kind==='INSERT'&&!chatMessages.some(x=>x.id===m.id))chatMessages=[...chatMessages,m].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+    if(kind==='INSERT'){
+      const pending=chatMessages.find(x=>x.pending&&x.sender_id===m.sender_id&&x.message===m.message);
+      if(pending)chatMessages=chatMessages.map(x=>x.id===pending.id?m:x);
+      else if(!chatMessages.some(x=>x.id===m.id))chatMessages=[...chatMessages,m].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+    }
     if(kind==='UPDATE')chatMessages=chatMessages.map(x=>x.id===m.id?{...x,...m}:x);
-    if(kind==='INSERT'&&near){state.chatNewMessages=0;await markSellerChatRead(m.chat_id,{rerender:false});}
-    else if(kind==='INSERT')state.chatNewMessages=Math.max(1,Number(state.chatNewMessages||0)+1);
+    const selectedChat=state.selectedConversation||chatCurrent();
+    if(selectedChat)state.selectedConversation={...selectedChat,last_message_at:kind==='INSERT'?(m.created_at||selectedChat.last_message_at):selectedChat.last_message_at,last_message_preview:kind==='INSERT'?(m.deleted_at?'Mensagem excluída':m.message):selectedChat.last_message_preview};
+    if(kind==='INSERT'&&near){state.newMessagesCount=0;void markSellerChatRead(m.chat_id,{rerender:false});}
+    else if(kind==='INSERT')state.newMessagesCount=Math.max(1,Number(state.newMessagesCount||0)+1);
+    if(kind==='INSERT'){refreshChatMessagesDom({keepScroll:true});}
   }
 
-  await loadSellerChats({reset:true,silent:true});
+  // Reconcile the list in the background without clearing the in-memory list or the open conversation.
+  await refreshCurrentChatList({silent:true,preserveList:true});
   await loadSellerChatSectionCounts({silent:true});
 
   if(!(state.page==='sellerChats'||state.page==='supportCenter'))return;
-  if(state.chatSelectedId===m.chat_id&&isSupportChat(chatCurrent())&&profile?.role==='admin'&&!sellerChats.some(c=>c.id===m.chat_id)){state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;saveNavigation();render();return;}
   refreshChatSidebarDom();
-
   if(selected){
     refreshChatMessagesDom({keepScroll:true});
     requestAnimationFrame(()=>{
@@ -1236,20 +1268,106 @@ async function handleChatRealtimeMessage(payload,kind){
 }
 async function handleChatRealtimeChat(payload,kind){
   const id=payload?.new?.id||payload?.old?.id;if(!id)return;
-  if(kind==='DELETE'&&state.chatSelectedId===id){state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;}
-  await loadSellerChats({reset:true,silent:true});
+  if(kind==='DELETE'&&state.selectedConversationId===id){
+    state.selectedConversationId=null;state.selectedConversation=null;state.supportDraft=false;chatMessages=[];state.newMessagesCount=0;state.composerValue='';
+    saveNavigation();
+  }
+  await refreshCurrentChatList({silent:true,preserveList:true});
   await loadSellerChatSectionCounts({silent:true});
   if(!(state.page==='sellerChats'||state.page==='supportCenter'))return;
-  if(state.chatSelectedId===id&&!sellerChats.some(c=>c.id===id)){state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;saveNavigation();render();return;}
   refreshChatSidebarDom();
-  if(state.chatSelectedId===id){
-    refreshChatHeaderDom();
-    refreshChatMessagesDom();
+  if(state.selectedConversationId===id&&sellerChats.some(c=>c.id===id))refreshChatHeaderDom();
+}
+
+function chatCacheKey(section=state.activeSection,filter=state.activeFilter,search=state.chatSearch){
+  return `${state.page}|${section}|${filter}|${String(search||'').trim().toLowerCase()}`;
+}
+function cacheCurrentChatList(){
+  try{state.chatSectionCache[chatCacheKey()]={rows:Array.isArray(sellerChats)?sellerChats.slice():[],total:Number(state.chatTotal||0),savedAt:Date.now()};}catch{}
+}
+function useCachedChatList(){
+  const c=state.chatSectionCache?.[chatCacheKey()];
+  if(!c)return false;
+  sellerChats=Array.isArray(c.rows)?c.rows.slice():[];
+  state.chatTotal=Number(c.total||0);
+  state.chatOffset=sellerChats.length;
+  state.chatHasMore=state.chatOffset<state.chatTotal;
+  return true;
+}
+function selectedConversationFromAnywhere(id=state.selectedConversationId){
+  if(!id)return null;
+  if(state.selectedConversation?.id===id)return state.selectedConversation;
+  const local=sellerChats.find(c=>c.id===id);
+  if(local){state.selectedConversation=local;return local;}
+  for(const c of Object.values(state.chatSectionCache||{})){const row=(c?.rows||[]).find(x=>x.id===id);if(row){state.selectedConversation=row;return row;}}
+  return null;
+}
+function chatCurrent(){return selectedConversationFromAnywhere()}
+function syncChatShellDom(){
+  const page=document.querySelector('.chat-page');
+  const workspace=document.querySelector('.chat-workspace');
+  if(!page||!workspace)return;
+  const selected=!!(state.selectedConversationId||state.supportDraft);
+  page.classList.toggle('with-chat',selected);
+  workspace.classList.toggle('has-selection',selected);
+  if(state.page==='sellerChats'||state.page==='supportCenter'){
+    const main=document.querySelector('.chat-main-pane');
+    if(main){main.innerHTML=sellerChatConversationPane(chatCurrent());}
   }
+}
+function refreshChatTabsDom(){
+  const host=document.querySelector('.chat-section-tabs');
+  if(host)host.innerHTML=chatSectionNav();
+}
+function syncChatComposerDom(){
+  const el=document.querySelector('#chatMessage');
+  if(!el)return;
+  if(el.value!==String(state.composerValue||''))el.value=String(state.composerValue||'');
+  const sending=!!state.sendingMessage;
+  const chat=chatCurrent();
+  const closed=chat?.status==='closed';
+  el.disabled=sending||closed;
+  const form=el.closest('form');
+  const btn=form?.querySelector('button[type="submit"]');
+  if(btn){btn.disabled=sending||closed;btn.setAttribute('aria-busy',sending?'true':'false');btn.innerHTML=sending?'<span class="chat-send-loading" aria-hidden="true"></span><span>Enviando…</span>':`${icon('send','sm')}<span>Enviar</span>`;}
+}
+function chatComposerChanged(value){state.composerValue=String(value||'');}
+function syncChatMessagesLoadingDom(){
+  const list=document.querySelector('.chat-message-list');
+  if(!list)return;
+  if(state.loadingMessages && !chatMessages.length){list.innerHTML='<div class="chat-history-loading"><span class="loading-dot"></span><span>Carregando mensagens…</span></div>';return;}
+  refreshChatMessagesDom({keepScroll:true});
+}
+async function refreshCurrentChatList({silent=true,preserveList=true}={}){
+  if(!session)return;
+  const snapshot={section:state.activeSection,filter:state.activeFilter,search:state.chatSearch,page:state.page,selectedId:state.selectedConversationId};
+  const requestId=++state.chatBackgroundFetchSerial;
+  state.loadingConversations=true;
+  try{
+    const useSupportList=state.activeSection==='support'||(profile?.role==='admin'&&['clients','sellers'].includes(state.activeSection));
+    const fn=useSupportList?'list_support_chats':'list_seller_chats';
+    const r=await sb.rpc(fn,{p_section:state.activeSection,p_search:state.chatSearch||'',p_filter:state.activeFilter||'all',p_limit:30,p_offset:0});
+    if(r.error)throw r.error;
+    const rows=Array.isArray(r.data)?r.data:[];
+    if(requestId!==state.chatBackgroundFetchSerial)return;
+    if(snapshot.page!==state.page||snapshot.section!==state.activeSection||snapshot.filter!==state.activeFilter||snapshot.search!==state.chatSearch)return;
+    sellerChats=rows;
+    state.chatTotal=Number(rows[0]?.total_count||0);state.chatOffset=rows.length;state.chatHasMore=state.chatOffset<state.chatTotal;
+    cacheCurrentChatList();
+    if(state.selectedConversationId){const selected=sellerChats.find(c=>c.id===state.selectedConversationId);if(selected)state.selectedConversation={...(state.selectedConversation||{}),...selected};}
+    refreshChatSidebarDom();
+  }catch(e){
+    console.error('refreshCurrentChatList',e);
+    if(!preserveList){sellerChats=[];state.chatTotal=0;state.chatOffset=0;state.chatHasMore=false;}
+    if(!silent)toast(e?.message||'Não foi possível atualizar as conversas.');
+  }finally{if(requestId===state.chatBackgroundFetchSerial)state.loadingConversations=false;}
+}
+function scheduleChatBackgroundSync(){
+  Promise.resolve().then(()=>refreshCurrentChatList({silent:true,preserveList:true})).then(()=>loadSellerChatSectionCounts({silent:true})).catch(()=>{});
 }
 async function loadSellerChatSectionCounts({silent=true}={}){
  if(!session)return;
- try{const r=await sb.rpc('get_seller_chat_section_counts');if(r.error)throw r.error;state.chatSectionCounts={};(r.data||[]).forEach(x=>state.chatSectionCounts[x.section]={total:Number(x.total_count||0),unread:Number(x.unread_count||0)});}catch(e){console.error('loadSellerChatSectionCounts',e);if(!silent)toast(e?.message||'Não foi possível carregar os contadores das conversas.')}
+ try{const r=await sb.rpc('get_seller_chat_section_counts');if(r.error)throw r.error;state.chatSectionCounts={};(r.data||[]).forEach(x=>state.chatSectionCounts[x.section]={total:Number(x.total_count||0),unread:Number(x.unread_count||0)});if((state.page==='sellerChats'||state.page==='supportCenter')&&document.querySelector('.chat-section-tabs'))refreshChatTabsDom();}catch(e){console.error('loadSellerChatSectionCounts',e);if(!silent)toast(e?.message||'Não foi possível carregar os contadores das conversas.')}
 }
 function chatSectionsForCurrentRole(){
  if(profile?.role==='client')return [{id:'sellers',label:'Chat',icon:'messageCircle'},{id:'support',label:'Suporte',icon:'comment'}];
@@ -1257,22 +1375,65 @@ function chatSectionsForCurrentRole(){
  if(profile?.role==='admin')return [{id:'clients',label:'Clientes',icon:'user'},{id:'sellers',label:'Vendedores',icon:'store'},{id:'management',label:'Gestão',icon:'shield'}];
  return [];
 }
-function normalizeChatSection(){const valid=chatSectionsForCurrentRole().map(x=>x.id);if(!valid.includes(state.chatSection))state.chatSection=valid[0]||'sellers';}
+function normalizeChatSection(){const valid=chatSectionsForCurrentRole().map(x=>x.id);if(!valid.includes(state.activeSection))state.activeSection=valid[0]||'sellers';}
+function invalidateChatListRequests(){state.chatFetchSerial++;state.chatBackgroundFetchSerial++;}
 async function loadSellerChats({reset=true,silent=false}={}){
- if(!session){sellerChats=[];return}normalizeChatSection();if(!['all','unread','closed'].includes(state.chatFilter))state.chatFilter='all';if(reset){state.chatOffset=0;sellerChats=[];state.chatTotal=0;state.chatHasMore=false;}if(state.chatLoading)return;state.chatLoading=true;
+ if(!session){sellerChats=[];return}
+ normalizeChatSection();
+ if(!['all','unread','closed'].includes(state.activeFilter))state.activeFilter='all';
+ const snapshot={page:state.page,section:state.activeSection,filter:state.activeFilter,search:state.chatSearch};
+ const requestId=++state.chatFetchSerial;
+ if(reset && useCachedChatList()){
+   refreshChatSidebarDom();
+   await refreshCurrentChatList({silent:true,preserveList:true});
+   return;
+ }
+ if(reset){state.chatOffset=0;state.chatTotal=0;state.chatHasMore=false;}
+ state.loadingConversations=true;
  try{
-  const useSupportList=state.chatSection==='support'||(profile?.role==='admin'&&['clients','sellers'].includes(state.chatSection));
+  const useSupportList=state.activeSection==='support'||(profile?.role==='admin'&&['clients','sellers'].includes(state.activeSection));
   const fn=useSupportList?'list_support_chats':'list_seller_chats';
-  const r=await sb.rpc(fn,{p_section:state.chatSection,p_search:state.chatSearch||'',p_filter:state.chatFilter||'all',p_limit:30,p_offset:state.chatOffset||0});
+  const r=await sb.rpc(fn,{p_section:state.activeSection,p_search:state.chatSearch||'',p_filter:state.activeFilter||'all',p_limit:30,p_offset:state.chatOffset||0});
   if(r.error)throw r.error;
+  if(requestId!==state.chatFetchSerial||snapshot.page!==state.page||snapshot.section!==state.activeSection||snapshot.filter!==state.activeFilter||snapshot.search!==state.chatSearch)return;
   const rows=Array.isArray(r.data)?r.data:[];
   if(reset)sellerChats=rows;else sellerChats=[...sellerChats,...rows.filter(x=>!sellerChats.some(c=>c.id===x.id))];
   state.chatTotal=Number(rows[0]?.total_count||0);state.chatOffset=(reset?0:(state.chatOffset||0))+rows.length;state.chatHasMore=state.chatOffset<state.chatTotal;
- }catch(e){console.error('loadSellerChats',e);if(!silent)toast(e?.message||'Não foi possível carregar as conversas.');if(reset)sellerChats=[]}finally{state.chatLoading=false}
+  cacheCurrentChatList();
+  if(state.selectedConversationId){const selected=sellerChats.find(c=>c.id===state.selectedConversationId);if(selected)state.selectedConversation={...(state.selectedConversation||{}),...selected};}
+  if(state.page==='sellerChats'||state.page==='supportCenter')refreshChatSidebarDom();
+ }catch(e){
+  console.error('loadSellerChats',e);
+  if(!silent)toast(e?.message||'Não foi possível carregar as conversas.');
+  if(reset&&requestId===state.chatFetchSerial&&snapshot.page===state.page&&snapshot.section===state.activeSection&&snapshot.filter===state.activeFilter&&snapshot.search===state.chatSearch){sellerChats=[];state.chatTotal=0;state.chatOffset=0;state.chatHasMore=false;}
+ }finally{if(requestId===state.chatFetchSerial)state.loadingConversations=false;}
 }
 async function loadSellerChatById(id){const r=await sb.rpc('get_seller_chat',{p_chat_id:id});if(r.error)throw r.error;const chat=Array.isArray(r.data)?r.data[0]:r.data;if(!chat)throw new Error('Conversa não encontrada ou sem permissão.');return chat}
-async function loadSellerChatMessages(id,{prepend=false,before=null}={}){if(!id)return;const r=await sb.rpc('list_seller_chat_messages',{p_chat_id:id,p_limit:60,p_before:before||null});if(r.error)throw r.error;const rows=(Array.isArray(r.data)?r.data:[]).reverse();const prevHeight=prepend?(document.querySelector('.chat-message-scroll')?.scrollHeight||0):0;const map=new Map(chatMessages.map(m=>[m.id,m]));rows.forEach(m=>map.set(m.id,m));chatMessages=[...map.values()].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));const total=Number(r.data?.[0]?.total_count||0);state.chatHasMore=chatMessages.length<total;if(prepend)requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=Math.max(0,el.scrollHeight-prevHeight)})}
-function chatCurrent(){return sellerChats.find(c=>c.id===state.chatSelectedId)||null}
+async function loadSellerChatMessages(id,{prepend=false,before=null}={}){
+ if(!id)return [];
+ const requestId=++state.chatMessagesFetchSerial;
+ if(!prepend){
+   const cached=state.chatMessageCache?.[id];
+   if(cached?.length){chatMessages=cached.slice();state.loadingMessages=false;refreshChatMessagesDom({keepScroll:true});}
+ }
+ state.loadingMessages=true;state.chatError='';
+ try{
+  const r=await sb.rpc('list_seller_chat_messages',{p_chat_id:id,p_limit:60,p_before:before||null});
+  if(r.error)throw r.error;
+  if(requestId!==state.chatMessagesFetchSerial||state.selectedConversationId!==id)return [];
+  const rows=(Array.isArray(r.data)?r.data:[]).reverse();
+  const prevHeight=prepend?(document.querySelector('.chat-message-scroll')?.scrollHeight||0):0;
+  const map=new Map(chatMessages.map(m=>[m.id,m]));rows.forEach(m=>map.set(m.id,m));
+  chatMessages=[...map.values()].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+  const total=Number(r.data?.[0]?.total_count||0);state.chatHasMore=chatMessages.length<total;
+  if(!prepend)state.chatMessageCache[id]=chatMessages.slice();
+  if(prepend)requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=Math.max(0,el.scrollHeight-prevHeight)});
+  return chatMessages;
+ }catch(e){
+  if(requestId===state.chatMessagesFetchSerial){state.chatError=e?.message||'Não foi possível carregar as mensagens.';console.error('loadSellerChatMessages',e);}
+  throw e;
+ }finally{if(requestId===state.chatMessagesFetchSerial)state.loadingMessages=false;}
+}
 function chatFilterLabel(f){return f==='unread'?'Não lidas':f==='closed'?'Encerradas':'Todas'}
 function chatStatusLabel(status){if(status==='EM_ESPERA')return 'Em espera';if(status==='EM_ANDAMENTO')return 'Em andamento';return status==='closed'?'Encerrada':status==='waiting_customer'?'Aguardando resposta':'Aberta'}
 function chatStatusClass(status){if(status==='EM_ESPERA')return 'queue';if(status==='EM_ANDAMENTO')return 'progress';return status==='closed'?'closed':status==='waiting_customer'?'waiting':'open'}
@@ -1303,37 +1464,110 @@ function chatConversationHeaderName(c){
 function chatListPreview(c){return c?.last_message_preview||'Conversa iniciada.'}
 function formatChatDate(v){if(!v)return '';const d=new Date(v);if(Number.isNaN(d.getTime()))return '';const now=new Date();return d.toDateString()===now.toDateString()?d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}
 function formatChatFullDate(v){if(!v)return '';const d=new Date(v);return Number.isNaN(d.getTime())?'':d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
-async function openSellerChat(sid){if(!session)return openAuth('login');if(profile?.role!=='client')return toast('Somente clientes podem iniciar uma nova conversa com vendedor.');const r=await sb.rpc('create_seller_chat',{p_seller_id:sid,p_product_id:state.selected||null});if(r.error)return toast(r.error.message||'Não foi possível iniciar o atendimento.');const id=r.data;state.page='sellerChats';state.drawer=false;state.chatSection='sellers';state.chatSelectedId=id;state.chatSearch='';state.chatFilter='all';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:true});try{await openSellerChatById(id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir a conversa.')}render();requestAnimationFrame(scrollChatToBottom)}
+async function openSellerChat(sid){
+ if(!session)return openAuth('login');
+ if(profile?.role!=='client')return toast('Somente clientes podem iniciar uma nova conversa com vendedor.');
+ const r=await sb.rpc('create_seller_chat',{p_seller_id:sid,p_product_id:state.selected||null});
+ if(r.error)return toast(r.error.message||'Não foi possível iniciar o atendimento.');
+ const id=r.data;
+ state.page='sellerChats';state.drawer=false;state.activeSection='sellers';state.activeFilter='all';state.chatSearch='';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;state.supportDraft=false;state.composerValue='';
+ state.selectedConversationId=id;state.selectedConversation={id,conversation_type:'seller_customer',status:'open',other_user_name:'Vendedor'};
+ saveNavigation();render();
+ void loadSellerChatSectionCounts({silent:true});
+ void loadSellerChats({reset:true,silent:true});
+ void openSellerChatById(id,{renderAfter:false}).then(()=>{syncChatShellDom();requestAnimationFrame(scrollChatToBottom)}).catch(e=>toast(e?.message||'Não foi possível abrir a conversa.'));
+}
 async function openSupportChat(){
  if(!session)return openAuth('login');
  if(!['client','seller'].includes(profile?.role))return toast('A Central de Suporte é destinada a clientes e vendedores.');
- state.page='sellerChats';state.drawer=false;state.chatSection='support';state.chatSelectedId=null;state.chatSupportDraft=false;state.chatSearch='';state.chatFilter='all';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;
- saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:true});
- const ticket=currentSupportTicket();
- if(ticket)try{await openSellerChatById(ticket.id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir o suporte.')}
- render();requestAnimationFrame(()=>{if(state.chatSelectedId)scrollChatToBottom()});
+ state.page='sellerChats';state.drawer=false;state.activeSection='support';state.selectedConversationId=null;state.selectedConversation=null;state.supportDraft=false;state.chatSearch='';state.activeFilter='all';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;state.composerValue='';chatMessages=[];
+ saveNavigation();render();
+ void loadSellerChatSectionCounts({silent:true});
+ (async()=>{await loadSellerChats({reset:true,silent:true});const ticket=currentSupportTicket();if(ticket){state.selectedConversationId=ticket.id;state.selectedConversation={...ticket};await openSellerChatById(ticket.id,{renderAfter:false});syncChatShellDom();requestAnimationFrame(scrollChatToBottom);}})().catch(e=>toast(e?.message||'Não foi possível abrir o suporte.'));
 }
-async function openAdminUserConversation(userId,userRole){if(profile?.role!=='admin')return toast('Acesso restrito à Gestão.');let id,section;if(userRole==='admin'){const r=await sb.rpc('create_management_chat',{p_user_id:userId});if(r.error)return toast(r.error.message||'Não foi possível abrir a conversa interna.');id=r.data;section='management'}else{const r=await sb.rpc('create_support_chat_for_user',{p_user_id:userId});if(r.error)return toast(r.error.message||'Não foi possível abrir o suporte.');id=r.data;section=userRole==='seller'?'sellers':'clients'}state.page='supportCenter';state.drawer=false;state.chatSection=section;state.chatSelectedId=id;state.chatSearch='';state.chatFilter='all';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:true});try{await openSellerChatById(id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir a conversa.');return}render();requestAnimationFrame(scrollChatToBottom)}
+async function openAdminUserConversation(userId,userRole){
+ if(profile?.role!=='admin')return toast('Acesso restrito à Gestão.');
+ let id,section;
+ if(userRole==='admin'){
+   const r=await sb.rpc('create_management_chat',{p_user_id:userId});if(r.error)return toast(r.error.message||'Não foi possível abrir a conversa interna.');id=r.data;section='management';
+ }else{
+   const r=await sb.rpc('create_support_chat_for_user',{p_user_id:userId});if(r.error)return toast(r.error.message||'Não foi possível abrir o suporte.');id=r.data;section=userRole==='seller'?'sellers':'clients';
+ }
+ state.page='supportCenter';state.drawer=false;state.activeSection=section;state.activeFilter='all';state.chatSearch='';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;state.supportDraft=false;state.composerValue='';
+ state.selectedConversationId=id;state.selectedConversation={id,conversation_type:userRole==='admin'?'management_internal':(userRole==='seller'?'seller_support':'customer_support'),status:'open',other_user_name:userRole==='admin'?'Gestor':(userRole==='seller'?'Vendedor':'Cliente')};
+ saveNavigation();render();
+ void loadSellerChatSectionCounts({silent:true});
+ void loadSellerChats({reset:true,silent:true});
+ void openSellerChatById(id,{renderAfter:false}).then(()=>{syncChatShellDom();requestAnimationFrame(scrollChatToBottom)}).catch(e=>toast(e?.message||'Não foi possível abrir a conversa.'));
+}
 async function openSellerChatById(id,{renderAfter=true}={}){
  if(!session)return openAuth('login');
- state.chatSupportDraft=false;state.chatSelectedId=id;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;
- const chat=await loadSellerChatById(id);
- if(isSupportChat(chat)){const mr=await sb.rpc('get_support_chat_meta',{p_chat_id:id});if(!mr.error){const meta=Array.isArray(mr.data)?mr.data[0]:mr.data;if(meta)Object.assign(chat,meta)}}
- if(!sellerChats.some(c=>c.id===id))sellerChats=[chat,...sellerChats];
- else sellerChats=sellerChats.map(c=>c.id===id?{...c,...chat}:c);
- chatMessages=[];state.chatHasMore=false;await loadSellerChatMessages(id);await markSellerChatRead(id,{rerender:false});
- sellerChats=sellerChats.map(c=>c.id===id?{...c,...chat,unread_count:0}:c);await loadSellerChatSectionCounts({silent:true});saveNavigation();
- if(renderAfter){render();requestAnimationFrame(scrollChatToBottom)}return chat
+ const previousId=state.selectedConversationId;
+ state.supportDraft=false;state.selectedConversationId=id;
+ state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;state.chatError='';
+ let local=selectedConversationFromAnywhere(id);
+ if(local)state.selectedConversation={...local};
+ else if(!state.selectedConversation||state.selectedConversation.id!==id)state.selectedConversation={id,conversation_type:'',status:'open',other_user_name:'Conversa'};
+ const cachedMessages=state.chatMessageCache?.[id];
+ chatMessages=Array.isArray(cachedMessages)?cachedMessages.slice():[];
+ state.loadingMessages=true;
+ // Selection is visible before any network await.
+ if(renderAfter)syncChatShellDom();
+ const requestId=++state.chatConversationFetchSerial;
+ try{
+   const chat=await loadSellerChatById(id);
+   if(requestId!==state.chatConversationFetchSerial||state.selectedConversationId!==id){if(state.selectedConversationId===id)state.loadingMessages=false;return chat;}
+   if(isSupportChat(chat)){
+     const mr=await sb.rpc('get_support_chat_meta',{p_chat_id:id});
+     if(!mr.error){const meta=Array.isArray(mr.data)?mr.data[0]:mr.data;if(meta)Object.assign(chat,meta);}
+   }
+   state.selectedConversation=chat;
+   const idx=sellerChats.findIndex(c=>c.id===id);
+   if(idx>=0)sellerChats[idx]={...sellerChats[idx],...chat};else sellerChats=[chat,...sellerChats];
+   cacheCurrentChatList();
+   chatMessages=[];state.chatHasMore=false;
+   await loadSellerChatMessages(id);
+   if(state.selectedConversationId===id)await markSellerChatRead(id,{rerender:false});
+   if(state.selectedConversationId===id){
+     state.selectedConversation={...chat,unread_count:0};
+     const i=sellerChats.findIndex(c=>c.id===id);if(i>=0)sellerChats[i]={...sellerChats[i],...state.selectedConversation};
+     cacheCurrentChatList();
+     if(renderAfter){refreshChatHeaderDom();refreshChatMessagesDom({keepScroll:false});syncChatComposerDom();requestAnimationFrame(scrollChatToBottom);}
+   }
+   return chat;
+ }catch(e){
+   state.loadingMessages=false;
+   if(state.selectedConversationId===id){state.chatError=e?.message||'Não foi possível carregar a conversa.';}
+   if(previousId!==id&&!local){state.selectedConversation=null;state.selectedConversationId=null;}
+   if(renderAfter)syncChatShellDom();
+   throw e;
+ }
 }
-async function markSellerChatRead(id,{rerender=true}={}){const r=await sb.rpc('mark_seller_chat_read',{p_chat_id:id});if(r.error){if(rerender)toast(r.error.message||'Não foi possível marcar a conversa como lida.');return}sellerChats=sellerChats.map(c=>c.id===id?{...c,unread_count:0}:c);await loadSellerChatSectionCounts({silent:true});if(rerender)render()}
-async function markSellerChatUnread(id){const r=await sb.rpc('mark_seller_chat_unread',{p_chat_id:id});if(r.error)return toast(r.error.message||'Não foi possível marcar a conversa como não lida.');sellerChats=sellerChats.map(c=>c.id===id?{...c,unread_count:Math.max(1,Number(c.unread_count||0))}:c);state.chatMenuOpen=false;await loadSellerChatSectionCounts({silent:true});render();toast('Conversa marcada como não lida.')}
-async function setSellerChatStatus(id,status){const r=await sb.rpc('set_seller_chat_status',{p_chat_id:id,p_status:status});if(r.error)return toast(r.error.message||'Não foi possível alterar o status da conversa.');state.chatMenuOpen=false;await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});render();toast(status==='closed'?'Conversa encerrada.':'Conversa reaberta.')}
-async function deleteSellerChat(id){const r=await sb.rpc('delete_seller_chat',{p_chat_id:id});if(r.error)return toast(r.error.message||'Não foi possível excluir a conversa.');sellerChats=sellerChats.filter(c=>c.id!==id);state.chatSelectedId=null;state.chatMenuOpen=false;chatMessages=[];state.chatNewMessages=0;state.modal=null;await loadSellerChatSectionCounts({silent:true});render();toast('Conversa excluída.')}
+async function markSellerChatRead(id,{rerender=true}={}){
+ const r=await sb.rpc('mark_seller_chat_read',{p_chat_id:id});
+ if(r.error){if(rerender)toast(r.error.message||'Não foi possível marcar a conversa como lida.');return}
+ sellerChats=sellerChats.map(c=>c.id===id?{...c,unread_count:0}:c);
+ if(state.selectedConversationId===id&&state.selectedConversation)state.selectedConversation={...state.selectedConversation,unread_count:0};
+ if(state.chatSectionCache){Object.keys(state.chatSectionCache).forEach(k=>{const c=state.chatSectionCache[k];if(c?.rows)c.rows=c.rows.map(x=>x.id===id?{...x,unread_count:0}:x);});}
+ await loadSellerChatSectionCounts({silent:true});
+ if(rerender){refreshChatSidebarDom();refreshChatHeaderDom();}
+}
+async function markSellerChatUnread(id){const r=await sb.rpc('mark_seller_chat_unread',{p_chat_id:id});if(r.error)return toast(r.error.message||'Não foi possível marcar a conversa como não lida.');sellerChats=sellerChats.map(c=>c.id===id?{...c,unread_count:Math.max(1,Number(c.unread_count||0))}:c);if(state.selectedConversationId===id&&state.selectedConversation)state.selectedConversation={...state.selectedConversation,unread_count:Math.max(1,Number(state.selectedConversation.unread_count||0))};state.chatMenuOpen=false;await loadSellerChatSectionCounts({silent:true});refreshChatListHeadDom();refreshChatSidebarDom();refreshChatHeaderDom();toast('Conversa marcada como não lida.')}
+async function setSellerChatStatus(id,status){
+ const r=await sb.rpc('set_seller_chat_status',{p_chat_id:id,p_status:status});
+ if(r.error)return toast(r.error.message||'Não foi possível alterar o status da conversa.');
+ state.chatMenuOpen=false;
+ const i=sellerChats.findIndex(c=>c.id===id);if(i>=0)sellerChats[i]={...sellerChats[i],status:(status==='closed'?'closed':(isSupportChat(sellerChats[i])?'EM_ANDAMENTO':status)),assigned_agent_id:isSupportChat(sellerChats[i])&&status!=='closed'&&profile?.role==='admin'?session?.user?.id:sellerChats[i]?.assigned_agent_id};
+ if(state.selectedConversationId===id&&state.selectedConversation)state.selectedConversation={...state.selectedConversation,...sellerChats[i]};
+ refreshChatSidebarDom();refreshChatHeaderDom();syncChatComposerDom();scheduleChatBackgroundSync();
+ toast(status==='closed'?'Conversa encerrada.':'Conversa reaberta.');
+}
+async function deleteSellerChat(id){const r=await sb.rpc('delete_seller_chat',{p_chat_id:id});if(r.error)return toast(r.error.message||'Não foi possível excluir a conversa.');sellerChats=sellerChats.filter(c=>c.id!==id);state.selectedConversationId=null;state.chatMenuOpen=false;chatMessages=[];state.newMessagesCount=0;state.modal=null;await loadSellerChatSectionCounts({silent:true});render();toast('Conversa excluída.')}
 async function claimSupportChat(id){
  if(profile?.role!=='admin')return toast('Acesso restrito à Gestão.');
  const r=await sb.rpc('claim_support_chat',{p_chat_id:id});
  if(r.error)return toast(r.error.message||'Não foi possível assumir o chamado.');
- state.chatSelectedId=id;state.chatSupportDraft=false;
+ state.selectedConversationId=id;state.supportDraft=false;
  await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});
  try{await openSellerChatById(id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir o chamado.');return}
  render();requestAnimationFrame(scrollChatToBottom);toast('Chamado assumido.');
@@ -1352,7 +1586,7 @@ async function confirmTransferSupportChat(){
  const r=await sb.rpc('transfer_support_chat',{p_chat_id:id,p_new_agent_id:agentId});
  state.chatTransferLoading=false;
  if(r.error)return render(),toast(r.error.message||'Não foi possível transferir o chamado.');
- state.modal=null;state.chatSelectedId=null;state.chatSupportDraft=false;chatMessages=[];state.chatNewMessages=0;
+ state.modal=null;state.selectedConversationId=null;state.supportDraft=false;chatMessages=[];state.newMessagesCount=0;
  await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});saveNavigation();render();toast('Chamado transferido.');
 }
 async function beginNewSupportTicket(){
@@ -1360,52 +1594,116 @@ async function beginNewSupportTicket(){
  if(!['client','seller'].includes(profile?.role))return toast('Somente clientes e vendedores podem abrir chamados.');
  let active=currentSupportTicket();
  if(!active){const probe=await sb.rpc('create_user_support_chat');if(probe.error)return toast(probe.error.message||'Não foi possível verificar seus chamados.');if(probe.data)active={id:probe.data}}
- if(active){state.chatSelectedId=active.id;state.chatSupportDraft=false;try{await openSellerChatById(active.id,{renderAfter:false})}catch(e){toast(e?.message||'Não foi possível abrir o chamado.');return}render();requestAnimationFrame(scrollChatToBottom);return}
- state.chatSelectedId=null;state.chatSupportDraft=true;state.chatMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();render();requestAnimationFrame(()=>document.querySelector('#chatMessage')?.focus());
+ if(active){state.selectedConversationId=active.id;state.selectedConversation={...active};state.supportDraft=false;state.composerValue='';syncChatShellDom();void openSellerChatById(active.id,{renderAfter:false}).then(()=>{syncChatShellDom();requestAnimationFrame(scrollChatToBottom)}).catch(e=>toast(e?.message||'Não foi possível abrir o chamado.'));return}
+ state.selectedConversationId=null;state.selectedConversation=null;state.supportDraft=true;state.composerValue='';state.chatMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;saveNavigation();render();requestAnimationFrame(()=>document.querySelector('#chatMessage')?.focus());
 }
 async function sendSellerChatMessage(chatId){
- if(state.chatSending)return;
- const message=$('chatMessage')?.value.trim()||'';
- if(!message)return toast('Digite sua mensagem.');if(textCharCount(message)>1000)return toast('A mensagem pode ter no máximo 1.000 caracteres.');
- state.chatSending=true;render();
- if(!chatId&&state.chatSupportDraft&&state.chatSection==='support'&&['client','seller'].includes(profile?.role)){
-   const r=await sb.rpc('create_support_ticket_with_message',{p_message:message});state.chatSending=false;
-   if(r.error){render();return toast(r.error.message||'Não foi possível criar o chamado.');}
-   const id=r.data;state.chatSupportDraft=false;state.chatSelectedId=id;
-   await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});
-   try{await openSellerChatById(id,{renderAfter:false})}catch(e){render();return toast(e?.message||'O chamado foi criado, mas não foi possível abrir o histórico.')}
-   render();requestAnimationFrame(scrollChatToBottom);return;
+ if(state.sendingMessage)return;
+ const currentId=state.selectedConversationId||chatId||null;
+ const message=String(state.composerValue||$('chatMessage')?.value||'').trim();
+ if(!message)return toast('Digite uma mensagem.');
+ if(textCharCount(message)>1000)return toast('A mensagem pode ter no máximo 1.000 caracteres.');
+ if(!currentId&&!(state.supportDraft&&state.activeSection==='support'&&['client','seller'].includes(profile?.role)))return toast('Conversa não encontrada.');
+ const originalValue=message;
+ state.sendingMessage=true;state.chatError='';syncChatComposerDom();
+ const optimisticId=`pending-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+ const role=profile?.role==='admin'?'admin':profile?.role==='seller'?'seller':'customer';
+ const optimistic={id:optimisticId,chat_id:currentId,sender_id:session?.user?.id,sender_role:role,sender_name:profile?.name||'Usuário',message:originalValue,created_at:new Date().toISOString(),updated_at:new Date().toISOString(),pending:true};
+ if(currentId){
+   chatMessages=[...chatMessages,optimistic];
+   refreshChatMessagesDom({keepScroll:true});
  }
- const r=await sb.rpc('send_seller_chat_message',{p_chat_id:chatId,p_message:message});state.chatSending=false;
- if(r.error){render();return toast(r.error.message||'Não foi possível enviar a mensagem.')}
- const sent=Array.isArray(r.data)?r.data[0]:r.data;if(sent)chatMessages=[...chatMessages.filter(m=>m.id!==sent.id),sent].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
- await loadSellerChats({reset:true,silent:true});await loadSellerChatSectionCounts({silent:true});state.chatEditingMessageId=null;state.chatNewMessages=0;render();requestAnimationFrame(scrollChatToBottom)
+ try{
+   if(!currentId&&state.supportDraft){
+     const r=await sb.rpc('create_support_ticket_with_message',{p_message:originalValue});
+     if(r.error)throw r.error;
+     const id=r.data;
+     state.supportDraft=false;state.selectedConversationId=id;state.composerValue='';
+     state.selectedConversation={id,conversation_type:profile?.role==='seller'?'seller_support':'customer_support',status:'EM_ESPERA',assigned_agent_id:null,other_user_name:'Suporte Fios & Artes'};
+     chatMessages=[];
+     await loadSellerChats({reset:true,silent:true});
+     await openSellerChatById(id,{renderAfter:false});
+     state.sendingMessage=false;syncChatShellDom();syncChatComposerDom();requestAnimationFrame(scrollChatToBottom);return;
+   }
+
+   const r=await sb.rpc('send_seller_chat_message',{p_chat_id:currentId,p_message:originalValue});
+   if(r.error)throw r.error;
+   const sent=Array.isArray(r.data)?r.data[0]:r.data;
+   if(sent){
+     chatMessages=chatMessages.map(m=>m.id===optimisticId?sent:m.id===sent.id?sent:m);
+     state.chatMessageCache[currentId]=chatMessages.filter(m=>!m.pending).slice();
+   }else{
+     chatMessages=chatMessages.filter(m=>m.id!==optimisticId);
+   }
+   state.composerValue='';
+   const i=sellerChats.findIndex(c=>c.id===currentId);
+   const nextMeta={last_message_at:sent?.created_at||new Date().toISOString(),last_message_preview:sent?.message||originalValue,unread_count:0};
+   if(i>=0){sellerChats[i]={...sellerChats[i],...nextMeta};const moved=sellerChats[i];sellerChats.splice(i,1);sellerChats=[moved,...sellerChats];}
+   if(state.selectedConversationId===currentId&&state.selectedConversation)state.selectedConversation={...state.selectedConversation,...nextMeta};
+   cacheCurrentChatList();state.newMessagesCount=0;
+   refreshChatMessagesDom({keepScroll:true});
+   refreshChatSidebarDom();
+   refreshChatHeaderDom();
+   syncChatComposerDom();
+   scheduleChatBackgroundSync();
+   requestAnimationFrame(()=>{const el=document.querySelector('#chatMessageScroll');if(el&&isChatNearBottom(el))el.scrollTop=el.scrollHeight;});
+ }catch(e){
+   chatMessages=chatMessages.filter(m=>m.id!==optimisticId);
+   state.chatError=e?.message||'Não foi possível enviar a mensagem.';
+   refreshChatMessagesDom({keepScroll:true});
+   toast(state.chatError);
+ }finally{state.sendingMessage=false;syncChatComposerDom();}
 }
-async function editSellerChatMessage(id){const value=$(`chatEdit_${id}`)?.value.trim()||'';if(!value)return toast('Digite sua mensagem.');if(textCharCount(value)>1000)return toast('A mensagem pode ter no máximo 1.000 caracteres.');const r=await sb.rpc('edit_seller_chat_message',{p_message_id:id,p_message:value});if(r.error)return toast(r.error.message||'Não foi possível editar a mensagem.');const edited=Array.isArray(r.data)?r.data[0]:r.data;if(edited)chatMessages=chatMessages.map(m=>m.id===id?{...m,...edited}:m);state.chatEditingMessageId=null;state.chatMessageMenuId=null;await loadSellerChats({reset:true,silent:true});render()}
-async function deleteSellerChatMessage(id){const r=await sb.rpc('delete_seller_chat_message',{p_message_id:id});if(r.error)return toast(r.error.message||'Não foi possível excluir a mensagem.');const deleted=Array.isArray(r.data)?r.data[0]:r.data;if(deleted)chatMessages=chatMessages.map(m=>m.id===id?{...m,...deleted}:m);state.chatMessageMenuId=null;await loadSellerChats({reset:true,silent:true});render();toast('Mensagem excluída.')}
+async function editSellerChatMessage(id){const value=$(`chatEdit_${id}`)?.value.trim()||'';if(!value)return toast('Digite sua mensagem.');if(textCharCount(value)>1000)return toast('A mensagem pode ter no máximo 1.000 caracteres.');const r=await sb.rpc('edit_seller_chat_message',{p_message_id:id,p_message:value});if(r.error)return toast(r.error.message||'Não foi possível editar a mensagem.');const edited=Array.isArray(r.data)?r.data[0]:r.data;if(edited){chatMessages=chatMessages.map(m=>m.id===id?{...m,...edited}:m);if(edited.chat_id)state.chatMessageCache[edited.chat_id]=(state.chatMessageCache[edited.chat_id]||[]).map(m=>m.id===id?{...m,...edited}:m);}state.chatEditingMessageId=null;state.chatMessageMenuId=null;refreshChatMessagesDom({keepScroll:true});scheduleChatBackgroundSync()}
+async function deleteSellerChatMessage(id){const r=await sb.rpc('delete_seller_chat_message',{p_message_id:id});if(r.error)return toast(r.error.message||'Não foi possível excluir a mensagem.');const deleted=Array.isArray(r.data)?r.data[0]:r.data;if(deleted){chatMessages=chatMessages.map(m=>m.id===id?{...m,...deleted}:m);if(deleted.chat_id)state.chatMessageCache[deleted.chat_id]=(state.chatMessageCache[deleted.chat_id]||[]).map(m=>m.id===id?{...m,...deleted}:m);}state.chatMessageMenuId=null;refreshChatMessagesDom({keepScroll:true});scheduleChatBackgroundSync();toast('Mensagem excluída.')}
 function openChatConfirm(action,id){state.chatMenuOpen=false;state.chatMessageMenuId=null;state.modal={type:'chatConfirm',action,id};render()}
 async function confirmChatAction(){const action=state.modal?.action,id=state.modal?.id;state.modal=null;render();if(action==='deleteMessage')return deleteSellerChatMessage(id);if(action==='deleteChat')return deleteSellerChat(id);if(action==='closeChat')return setSellerChatStatus(id,'closed');if(action==='reopenChat')return setSellerChatStatus(id,'open')}
 function toggleChatMenu(){state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatMenuOpen=!state.chatMenuOpen;render()}
 function toggleChatFilterMenu(){state.chatMenuOpen=false;state.chatMessageMenuId=null;state.chatFilterMenuOpen=!state.chatFilterMenuOpen;render()}
-async function setChatSection(section){if(!chatSectionsForCurrentRole().some(x=>x.id===section))return;state.chatSection=section;state.chatSelectedId=null;state.chatSupportDraft=false;state.chatFilter='all';state.chatSearch='';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;saveNavigation();await loadSellerChatSectionCounts({silent:true});await loadSellerChats({reset:true,silent:false});render()}
-async function setChatFilter(filter){if(!['all','unread','closed'].includes(filter))filter='all';state.chatFilter=filter;state.chatSelectedId=null;state.chatSupportDraft=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.chatNewMessages=0;await loadSellerChats({reset:true,silent:false});render()}
-function chatSearchChanged(value){
-  state.chatSearch=String(value||'');
-  clearTimeout(chatSearchTimer);
-  const serial=++chatSearchRequestSerial;
-  chatSearchTimer=setTimeout(async()=>{
-    if(serial!==chatSearchRequestSerial)return;
-    await loadSellerChats({reset:true,silent:true});
-    if(serial!==chatSearchRequestSerial)return;
-    refreshChatSidebarDom();
-  },220);
+function setChatSection(section){
+ if(!chatSectionsForCurrentRole().some(x=>x.id===section)||state.activeSection===section)return;
+ invalidateChatListRequests();
+ state.activeSection=section;
+ state.selectedConversationId=null;state.selectedConversation=null;state.supportDraft=false;
+ state.activeFilter='all';state.chatSearch='';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;state.composerValue='';chatMessages=[];
+ const cached=useCachedChatList();
+ if(!cached){sellerChats=[];state.chatOffset=0;state.chatTotal=0;state.chatHasMore=false;state.loadingConversations=true;}
+ saveNavigation();refreshChatTabsDom();refreshChatSidebarDom();syncChatShellDom();
+ void loadSellerChatSectionCounts({silent:true});
+ if(cached)void loadSellerChats({reset:true,silent:true});else void refreshCurrentChatList({silent:true,preserveList:true});
 }
-async function loadMoreSellerChats(){if(state.chatLoading||!state.chatHasMore)return;await loadSellerChats({reset:false,silent:false});render()}
-async function loadOlderChatMessages(){const first=chatMessages[0];if(!first||state.chatLoadingOlder||!state.chatHasMore)return;state.chatLoadingOlder=true;try{await loadSellerChatMessages(state.chatSelectedId,{prepend:true,before:first.created_at})}catch(e){toast(e?.message||'Não foi possível carregar mensagens anteriores.')}finally{state.chatLoadingOlder=false;render()}}
+function setChatFilter(filter){
+ if(!['all','unread','closed'].includes(filter))filter='all';
+ invalidateChatListRequests();
+ state.activeFilter=filter;
+ state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatEditingMessageId=null;state.newMessagesCount=0;
+ const cached=useCachedChatList();
+ if(!cached){sellerChats=[];state.chatOffset=0;state.chatTotal=0;state.chatHasMore=false;state.loadingConversations=true;}
+ refreshChatListHeadDom();refreshChatSidebarDom();
+ if(!state.selectedConversationId&&!state.supportDraft)syncChatShellDom();
+ if(cached)void loadSellerChats({reset:true,silent:true});else void refreshCurrentChatList({silent:true,preserveList:true});
+}
+function chatSearchChanged(value){
+ invalidateChatListRequests();
+ state.chatSearch=String(value||'');
+ clearTimeout(chatSearchTimer);
+ const serial=++chatSearchRequestSerial;
+ chatSearchTimer=setTimeout(async()=>{
+   if(serial!==chatSearchRequestSerial)return;
+   const cached=useCachedChatList();
+   if(!cached){sellerChats=[];state.chatOffset=0;state.chatTotal=0;state.chatHasMore=false;state.loadingConversations=true;}
+   refreshChatSidebarDom();
+   if(cached)await loadSellerChats({reset:true,silent:true});else await refreshCurrentChatList({silent:true,preserveList:true});
+   if(serial!==chatSearchRequestSerial)return;
+   refreshChatSidebarDom();
+ },180);
+}
+async function loadMoreSellerChats(){if(state.loadingConversations||!state.chatHasMore)return;await loadSellerChats({reset:false,silent:false});refreshChatSidebarDom();}
+async function loadOlderChatMessages(){const first=chatMessages[0];if(!first||state.loadingOlderMessages||!state.chatHasMore)return;state.loadingOlderMessages=true;try{await loadSellerChatMessages(state.selectedConversationId,{prepend:true,before:first.created_at});refreshChatMessagesDom({keepScroll:true});}catch(e){toast(e?.message||'Não foi possível carregar mensagens anteriores.')}finally{state.loadingOlderMessages=false;const btn=document.querySelector('.chat-history-load button');if(btn)btn.textContent=state.loadingOlderMessages?'Carregando…':'Carregar mensagens anteriores';}}
 function isChatNearBottom(el){return !el||el.scrollHeight-el.scrollTop-el.clientHeight<90}
-async function handleChatScroll(){const el=document.querySelector('#chatMessageScroll');if(!el)return;if(isChatNearBottom(el)&&state.chatNewMessages>0){state.chatNewMessages=0;if(state.chatSelectedId)await markSellerChatRead(state.chatSelectedId,{rerender:false});syncChatNewMessagesDom()}}
-function jumpToChatBottom(){const el=document.querySelector('#chatMessageScroll');if(el)el.scrollTop=el.scrollHeight;state.chatNewMessages=0;if(state.chatSelectedId)markSellerChatRead(state.chatSelectedId,{rerender:false});syncChatNewMessagesDom();requestAnimationFrame(scrollChatToBottom)}
-function chatComposerKeydown(event,id){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();if(!state.chatSending)sendSellerChatMessage(id)}}
+async function handleChatScroll(){const el=document.querySelector('#chatMessageScroll');if(!el)return;if(isChatNearBottom(el)&&state.newMessagesCount>0){state.newMessagesCount=0;if(state.selectedConversationId)await markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom()}}
+function jumpToChatBottom(){const el=document.querySelector('#chatMessageScroll');if(el)el.scrollTop=el.scrollHeight;state.newMessagesCount=0;if(state.selectedConversationId)markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom();requestAnimationFrame(scrollChatToBottom)}
+function chatComposerKeydown(event,id){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();if(!state.sendingMessage)sendSellerChatMessage(id)}}
 function scrollChatToBottom(){const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=el.scrollHeight}
 function chatMessageRowContext(m){
   if(m?.sender_role==='admin'){
@@ -1436,26 +1734,26 @@ function formatChatDate(v){if(!v)return '';const d=new Date(v);if(Number.isNaN(d
 function formatChatFullDate(v){if(!v)return '';const d=new Date(v);return Number.isNaN(d.getTime())?'':d.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})}
 function chatSectionNav(){
  const sections=chatSectionsForCurrentRole();
- return `<nav class="chat-section-nav" aria-label="Seções do atendimento">${sections.map(x=>{const active=x.id===state.chatSection;const unread=chatSectionCount(x.id);return `<button type="button" class="chat-section-item ${active?'active':''}" aria-current="${active?'page':'false'}" onclick="setChatSection('${x.id}')"><span class="chat-section-icon">${icon(x.icon,'sm')}</span><span class="chat-section-label">${esc(x.label)}</span>${unread?`<span class="chat-section-count" aria-label="${unread} não lidas">${unread>99?'99+':unread}</span>`:''}</button>`}).join('')}</nav>`
+ return `<nav class="chat-section-nav" aria-label="Seções do atendimento">${sections.map(x=>{const active=x.id===state.activeSection;const unread=chatSectionCount(x.id);return `<button type="button" class="chat-section-item ${active?'active':''}" aria-current="${active?'page':'false'}" onclick="setChatSection('${x.id}')"><span class="chat-section-icon">${icon(x.icon,'sm')}</span><span class="chat-section-label">${esc(x.label)}</span>${unread?`<span class="chat-section-count" aria-label="${unread} não lidas">${unread>99?'99+':unread}</span>`:''}</button>`}).join('')}</nav>`
 }
-function chatFilterMenu(){if(!state.chatFilterMenuOpen)return '';return `<div class="chat-filter-popover" role="dialog" aria-label="Filtrar conversas"><div class="chat-filter-popover-title">Filtrar conversas</div>${['all','unread','closed'].map(f=>`<button type="button" class="chat-filter-option ${state.chatFilter===f?'active':''}" aria-pressed="${state.chatFilter===f}" onclick="setChatFilter('${f}')"><span class="chat-filter-radio">${state.chatFilter===f?icon('check','xs'):''}</span><span>${esc(chatFilterLabel(f))}</span></button>`).join('')}</div>`}
+function chatFilterMenu(){if(!state.chatFilterMenuOpen)return '';return `<div class="chat-filter-popover" role="dialog" aria-label="Filtrar conversas"><div class="chat-filter-popover-title">Filtrar conversas</div>${['all','unread','closed'].map(f=>`<button type="button" class="chat-filter-option ${state.activeFilter===f?'active':''}" aria-pressed="${state.activeFilter===f}" onclick="setChatFilter('${f}')"><span class="chat-filter-radio">${state.activeFilter===f?icon('check','xs'):''}</span><span>${esc(chatFilterLabel(f))}</span></button>`).join('')}</div>`}
 function sellerChatSidebar(){
- const rows=sellerChats,loading=state.chatLoading&&!rows.length,filteredEmpty=!loading&&!rows.length;
- const canStartSupport=['client','seller'].includes(profile?.role)&&state.chatSection==='support'&&state.chatFilter==='all'&&!state.chatSearch&&!currentSupportTicket();
+ const rows=sellerChats,loading=state.loadingConversations&&!rows.length,filteredEmpty=!loading&&!rows.length;
+ const canStartSupport=['client','seller'].includes(profile?.role)&&state.activeSection==='support'&&state.activeFilter==='all'&&!state.chatSearch&&!currentSupportTicket();
  return `<aside class="chat-list-panel" aria-label="Lista de conversas">
-  <div class="chat-list-head"><div class="chat-list-head-tools"><div class="chat-list-title-compact">Conversas</div></div><div class="chat-filter-control"><button type="button" class="iconbtn chat-filter-button ${state.chatFilter!=='all'?'has-filter':''}" onclick="toggleChatFilterMenu()" aria-label="Filtrar conversas" aria-expanded="${state.chatFilterMenuOpen?'true':'false'}">${icon('filter','sm')}${state.chatFilter!=='all'?'<span class="chat-filter-active-dot" aria-hidden="true"></span>':''}</button>${chatFilterMenu()}</div></div>
+  <div class="chat-list-head"><div class="chat-list-head-tools"><div class="chat-list-title-compact">Conversas</div></div><div class="chat-filter-control"><button type="button" class="iconbtn chat-filter-button ${state.activeFilter!=='all'?'has-filter':''}" onclick="toggleChatFilterMenu()" aria-label="Filtrar conversas" aria-expanded="${state.chatFilterMenuOpen?'true':'false'}">${icon('filter','sm')}${state.activeFilter!=='all'?'<span class="chat-filter-active-dot" aria-hidden="true"></span>':''}</button>${chatFilterMenu()}</div></div>
   <div class="chat-search-wrap"><span class="chat-search-icon">${icon('search','sm')}</span><input id="chatSearch" value="${esc(state.chatSearch||'')}" oninput="chatSearchChanged(this.value)" placeholder="Buscar conversas..." aria-label="Buscar conversas"></div>
   <div class="chat-list-scroll">
    ${canStartSupport?`<div class="chat-support-start-card"><div class="chat-support-start-icon">${icon('comment','lg')}</div><div class="chat-support-start-copy"><strong>Precisa de ajuda?</strong><span>Inicie um chamado com a Gestão para receber atendimento.</span></div><button type="button" class="primary" onclick="beginNewSupportTicket()">Iniciar Novo Chamado</button></div>`:''}
    ${loading?'<div class="chat-list-state"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>':''}
-   ${filteredEmpty?`<div class="chat-list-state"><div class="chat-empty-icon">${icon('comment','lg')}</div><strong>${state.chatSearch?'Nenhuma conversa corresponde à sua busca.':'Nenhuma conversa encontrada.'}</strong><span>${state.chatFilter!=='all'?'Tente outro filtro ou consulte Todas.':state.chatSearch?'Tente outro nome, termo ou conteúdo de mensagem.':state.chatSection==='support'&&['client','seller'].includes(profile?.role)?'Seu próximo chamado de suporte aparecerá aqui.':'As conversas desta seção aparecerão aqui.'}</span></div>`:''}
+   ${filteredEmpty?`<div class="chat-list-state"><div class="chat-empty-icon">${icon('comment','lg')}</div><strong>${state.chatSearch?'Nenhuma conversa corresponde à sua busca.':'Nenhuma conversa encontrada.'}</strong><span>${state.activeFilter!=='all'?'Tente outro filtro ou consulte Todas.':state.chatSearch?'Tente outro nome, termo ou conteúdo de mensagem.':state.activeSection==='support'&&['client','seller'].includes(profile?.role)?'Seu próximo chamado de suporte aparecerá aqui.':'As conversas desta seção aparecerão aqui.'}</span></div>`:''}
    ${rows.map(chatConversationRow).join('')}
-   ${state.chatHasMore?`<button type="button" class="chat-load-more" onclick="loadMoreSellerChats()">${state.chatLoading?'Carregando…':'Carregar mais conversas'}</button>`:''}
+   ${state.chatHasMore?`<button type="button" class="chat-load-more" onclick="loadMoreSellerChats()">${state.loadingConversations?'Carregando…':'Carregar mais conversas'}</button>`:''}
   </div>
  </aside>`
 }
 function chatConversationRow(c){
- const unread=Number(c.unread_count||0)>0,selected=c.id===state.chatSelectedId,other=chatOtherName(c),context=c.context_label||'';
+ const unread=Number(c.unread_count||0)>0,selected=c.id===state.selectedConversationId,other=chatOtherName(c),context=c.context_label||'';
  const adminSupport=profile?.role==='admin'&&isSupportChat(c);
  if(adminSupport){
   const queue=!c.assigned_agent_id&&c.status==='EM_ESPERA',mine=c.assigned_agent_id===session?.user?.id&&c.status==='EM_ANDAMENTO';
@@ -1470,26 +1768,31 @@ function chatConversationRow(c){
   <span class="chat-conversation-main"><span class="chat-conversation-top"><strong>${esc(other)}</strong>${c.last_message_at?`<time datetime="${esc(c.last_message_at)}">${esc(formatChatDate(c.last_message_at))}</time>`:''}</span><span class="chat-conversation-context">${esc(context)}</span><span class="chat-conversation-preview">${esc(chatListPreview(c))}</span><span class="chat-conversation-meta">${c.status==='EM_ESPERA'?'<span class="chat-status queue">Em espera</span>':c.status==='EM_ANDAMENTO'?'<span class="chat-status progress">Em andamento</span>':c.status==='closed'?`<span class="chat-status closed">Encerrada</span>`:''}${unread?`<span class="chat-unread-dot" aria-label="Não lida"></span>`:''}</span></span></button>`
 }
 function sellerChatConversationPane(chat){
- if(state.chatSupportDraft)return `<section class="chat-conversation-panel chat-support-draft-panel" aria-label="Novo chamado de suporte">
-  <header class="chat-conversation-head"><button type="button" class="chat-back-button" onclick="state.chatSelectedId=null;state.chatSupportDraft=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;saveNavigation();render()" aria-label="Voltar para conversas">${icon('arrowLeft')}</button><div class="chat-conversation-title"><strong>Novo Chamado</strong><span class="chat-conversation-context">Suporte Fios & Artes</span><span class="chat-status queue">Em espera após o primeiro envio</span></div></header>
+ if(state.supportDraft)return `<section class="chat-conversation-panel chat-support-draft-panel" aria-label="Novo chamado de suporte">
+  <header class="chat-conversation-head"><button type="button" class="chat-back-button" onclick="state.selectedConversationId=null;state.selectedConversation=null;state.supportDraft=false;state.composerValue='';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;saveNavigation();render()" aria-label="Voltar para conversas">${icon('arrowLeft')}</button><div class="chat-conversation-title"><strong>Novo Chamado</strong><span class="chat-conversation-context">Suporte Fios & Artes</span><span class="chat-status queue">Em espera após o primeiro envio</span></div></header>
   <div class="chat-support-draft-body"><div class="chat-empty-icon">${icon('comment','lg')}</div><h2>Como podemos ajudar?</h2><p>Escreva sua primeira mensagem. O chamado será criado automaticamente e enviado para a fila geral da Gestão.</p></div>
-  <div class="chat-composer-wrap"><form class="chat-composer" onsubmit="event.preventDefault();sendSellerChatMessage('')"><textarea id="chatMessage" maxlength="1000" placeholder="Descreva o que precisa de ajuda..." aria-label="Mensagem do chamado" rows="1" onkeydown="chatComposerKeydown(event,'')" ${state.chatSending?'disabled':''}></textarea><button type="submit" class="primary" aria-label="Enviar primeira mensagem" ${state.chatSending?'disabled':''}>${state.chatSending?'<span class="chat-send-loading" aria-hidden="true"></span>':icon('send','sm')}<span>Enviar</span></button></form></div>
+  <div class="chat-composer-wrap"><form class="chat-composer" onsubmit="event.preventDefault();sendSellerChatMessage('')"><textarea id="chatMessage" maxlength="1000" placeholder="Descreva o que precisa de ajuda..." aria-label="Mensagem do chamado" rows="1" oninput="chatComposerChanged(this.value)" onkeydown="chatComposerKeydown(event,'')" ${state.sendingMessage?'disabled':''}>${esc(state.composerValue||'')}</textarea><button type="submit" class="primary" aria-label="Enviar primeira mensagem" ${state.sendingMessage?'disabled':''}>${state.sendingMessage?'<span class="chat-send-loading" aria-hidden="true"></span>':icon('send','sm')}<span>Enviar</span></button></form></div>
  </section>`;
  if(!chat)return `<section class="chat-conversation-empty" aria-live="polite"><div class="chat-empty-icon">${icon('comment','lg')}</div><h2>Selecione uma conversa</h2><p>Escolha uma conversa à esquerda para começar a responder</p></section>`;
  const closed=chat.status==='closed',support=isSupportChat(chat),admin=profile?.role==='admin',queue=support&&admin&&!chat.assigned_agent_id&&chat.status==='EM_ESPERA',mine=support&&admin&&chat.assigned_agent_id===session?.user?.id&&chat.status==='EM_ANDAMENTO',context=chat.context_label||'';
  const canTransfer=support&&admin&&mine;
  return `<section class="chat-conversation-panel" aria-label="Conversa com ${esc(chatOtherName(chat))}">
-  <header class="chat-conversation-head"><button type="button" class="chat-back-button" onclick="state.chatSelectedId=null;state.chatSupportDraft=false;state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;saveNavigation();render()" aria-label="Voltar para conversas">${icon('arrowLeft')}</button><div class="chat-conversation-title"><strong>${esc(chatConversationHeaderName(chat))}</strong><span class="chat-conversation-context">${esc(context)}</span>${queue?'<span class="chat-status queue">Em espera · Fila geral</span>':mine?'<span class="chat-status progress">Em andamento · Você</span>':chat.status==='waiting_customer'?'<span class="chat-status waiting">Aguardando resposta</span>':chat.status==='closed'?'<span class="chat-status closed">Encerrada</span>':''}</div>${admin&&support&&queue?`<button type="button" class="primary chat-header-claim" onclick="claimSupportChat('${chat.id}')">Atender</button>`:`<div class="chat-conversation-actions"><button type="button" class="iconbtn" onclick="toggleChatMenu()" aria-label="Mais opções" aria-expanded="${state.chatMenuOpen?'true':'false'}">${icon('more')}</button>${state.chatMenuOpen?`<div class="chat-context-menu" role="menu">${canTransfer?`<button type="button" role="menuitem" onclick="openTransferSupportChat('${chat.id}')">${icon('transfer','sm')}<span>Transferir Chamado</span></button>`:''}<button type="button" role="menuitem" onclick="markSellerChatUnread('${chat.id}')">${icon('mail','sm')}<span>Marcar como não lida</span></button>${closed?`<button type="button" role="menuitem" onclick="openChatConfirm('reopenChat','${chat.id}')">${icon('rotate','sm')}<span>Reabrir conversa</span></button>`:`<button type="button" role="menuitem" onclick="openChatConfirm('closeChat','${chat.id}')">${icon('check','sm')}<span>Encerrar conversa</span></button>`}<button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteChat','${chat.id}')">${icon('trash','sm')}<span>Excluir conversa</span></button></div>`:''}</div>`}</header>
-  <div class="chat-message-scroll" id="chatMessageScroll" tabindex="0" aria-label="Histórico de mensagens" onscroll="handleChatScroll()">${state.chatHasMore?`<div class="chat-history-load"><button type="button" class="ghost" onclick="loadOlderChatMessages()">${state.chatLoadingOlder?'Carregando…':'Carregar mensagens anteriores'}</button></div>`:''}<div class="chat-message-list">${chatMessages.length?chatMessages.map(chatMessageBubble).join(''):'<div class="empty chat-history-empty">Nenhuma mensagem ainda.</div>'}</div></div>
-  ${state.chatNewMessages?`<button type="button" class="chat-new-messages" onclick="jumpToChatBottom()">${icon('arrowLeft','xs')} ${state.chatNewMessages} nova${state.chatNewMessages>1?'s':''} mensagem${state.chatNewMessages>1?'s':''}</button>`:''}
-  <div class="chat-composer-wrap">${queue?`<div class="chat-claim-banner"><div><strong>Chamado na fila geral</strong><span>Assuma este chamado para responder e tornar-se o único gestor com acesso.</span></div><button type="button" class="primary" onclick="claimSupportChat('${chat.id}')">Atender</button></div>`:''}${closed?`<div class="chat-closed-notice"><span>Esta conversa está encerrada. Reabra a conversa para enviar uma nova mensagem.</span><button type="button" class="secondary" onclick="openChatConfirm('reopenChat','${chat.id}')">Reabrir conversa</button></div>`:''}${!queue?`<form class="chat-composer" onsubmit="event.preventDefault();sendSellerChatMessage('${chat.id}')"><textarea id="chatMessage" maxlength="1000" placeholder="Digite uma mensagem..." aria-label="Mensagem" rows="1" onkeydown="chatComposerKeydown(event,'${chat.id}')" ${state.chatSending||closed?'disabled':''}></textarea><button type="submit" class="primary" aria-label="Enviar mensagem" ${state.chatSending||closed?'disabled':''}>${state.chatSending?'<span class="chat-send-loading" aria-hidden="true"></span>':icon('send','sm')}<span>Enviar</span></button></form>`:''}</div>
+  <header class="chat-conversation-head"><button type="button" class="chat-back-button" onclick="state.selectedConversationId=null;state.selectedConversation=null;state.supportDraft=false;state.composerValue='';state.chatMenuOpen=false;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;saveNavigation();render()" aria-label="Voltar para conversas">${icon('arrowLeft')}</button><div class="chat-conversation-title"><strong>${esc(chatConversationHeaderName(chat))}</strong><span class="chat-conversation-context">${esc(context)}</span>${queue?'<span class="chat-status queue">Em espera · Fila geral</span>':mine?'<span class="chat-status progress">Em andamento · Você</span>':chat.status==='waiting_customer'?'<span class="chat-status waiting">Aguardando resposta</span>':chat.status==='closed'?'<span class="chat-status closed">Encerrada</span>':''}</div>${admin&&support&&queue?`<button type="button" class="primary chat-header-claim" onclick="claimSupportChat('${chat.id}')">Atender</button>`:`<div class="chat-conversation-actions"><button type="button" class="iconbtn" onclick="toggleChatMenu()" aria-label="Mais opções" aria-expanded="${state.chatMenuOpen?'true':'false'}">${icon('more')}</button>${state.chatMenuOpen?`<div class="chat-context-menu" role="menu">${canTransfer?`<button type="button" role="menuitem" onclick="openTransferSupportChat('${chat.id}')">${icon('transfer','sm')}<span>Transferir Chamado</span></button>`:''}<button type="button" role="menuitem" onclick="markSellerChatUnread('${chat.id}')">${icon('mail','sm')}<span>Marcar como não lida</span></button>${closed?`<button type="button" role="menuitem" onclick="openChatConfirm('reopenChat','${chat.id}')">${icon('rotate','sm')}<span>Reabrir conversa</span></button>`:`<button type="button" role="menuitem" onclick="openChatConfirm('closeChat','${chat.id}')">${icon('check','sm')}<span>Encerrar conversa</span></button>`}<button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteChat','${chat.id}')">${icon('trash','sm')}<span>Excluir conversa</span></button></div>`:''}</div>`}</header>
+  <div class="chat-message-scroll" id="chatMessageScroll" tabindex="0" aria-label="Histórico de mensagens" onscroll="handleChatScroll()">${state.chatHasMore?`<div class="chat-history-load"><button type="button" class="ghost" onclick="loadOlderChatMessages()">${state.loadingOlderMessages?'Carregando…':'Carregar mensagens anteriores'}</button></div>`:''}<div class="chat-message-list">${state.loadingMessages&&!chatMessages.length?'<div class="chat-history-loading"><span class="loading-dot"></span><span>Carregando mensagens…</span></div>':chatMessages.length?chatMessages.map(chatMessageBubble).join(''):'<div class="empty chat-history-empty">Nenhuma mensagem ainda.</div>'}</div></div>
+  ${state.newMessagesCount?`<button type="button" class="chat-new-messages" onclick="jumpToChatBottom()">${icon('arrowLeft','xs')} ${state.newMessagesCount} nova${state.newMessagesCount>1?'s':''} mensagem${state.newMessagesCount>1?'s':''}</button>`:''}
+  <div class="chat-composer-wrap">${queue?`<div class="chat-claim-banner"><div><strong>Chamado na fila geral</strong><span>Assuma este chamado para responder e tornar-se o único gestor com acesso.</span></div><button type="button" class="primary" onclick="claimSupportChat('${chat.id}')">Atender</button></div>`:''}${closed?`<div class="chat-closed-notice"><span>Esta conversa está encerrada. Reabra a conversa para enviar uma nova mensagem.</span><button type="button" class="secondary" onclick="openChatConfirm('reopenChat','${chat.id}')">Reabrir conversa</button></div>`:''}${!queue?`<form class="chat-composer" onsubmit="event.preventDefault();sendSellerChatMessage('${chat.id}')"><textarea id="chatMessage" maxlength="1000" placeholder="Digite uma mensagem..." aria-label="Mensagem" rows="1" oninput="chatComposerChanged(this.value)" onkeydown="chatComposerKeydown(event,'${chat.id}')" ${state.sendingMessage||closed?'disabled':''}>${esc(state.composerValue||'')}</textarea><button type="submit" class="primary" aria-label="Enviar mensagem" ${state.sendingMessage||closed?'disabled':''}>${state.sendingMessage?'<span class="chat-send-loading" aria-hidden="true"></span>':icon('send','sm')}<span>Enviar</span></button></form>`:''}</div>
  </section>`
 }
-function chatMessageBubble(m){const mine=m.sender_id===session?.user?.id,editing=state.chatEditingMessageId===m.id,deleted=!!m.deleted_at;if(editing)return `<article class="chat-message ${mine?'mine':''}"><div class="chat-message-editing"><label class="sr-only" for="chatEdit_${m.id}">Editar mensagem</label><textarea id="chatEdit_${m.id}" maxlength="1000">${esc(m.message||'')}</textarea><div class="chat-message-edit-actions"><button type="button" class="secondary" onclick="cancelChatMessageEdit()">Cancelar</button><button type="button" class="primary" onclick="editSellerChatMessage('${m.id}')">Salvar</button></div></div></article>`;return `<article class="chat-message ${mine?'mine':''} ${m.sender_role==='admin'?'from-admin':''} ${deleted?'deleted':''}" oncontextmenu="openChatMessageMenu(event,'${m.id}')" ontouchstart="startChatMessagePress(event,'${m.id}')" ontouchend="cancelChatMessagePress()" ontouchcancel="cancelChatMessagePress()"><div class="chat-message-bubble"><div class="chat-message-meta"><span>${esc(chatSenderLabel(m))}</span><time datetime="${esc(m.created_at)}">${esc(formatChatFullDate(m.created_at))}</time></div><div class="chat-message-content">${deleted?`<span class="chat-deleted-label">${icon('trash','xs')}Mensagem excluída</span>`:esc(m.message||'')}</div>${m.edited_at&&!deleted?`<span class="chat-edited">editada</span>`:''}${mine&&!deleted?`<button type="button" class="chat-message-actions" onclick="openChatMessageMenu(event,'${m.id}')" aria-label="Ações da mensagem">${icon('more')}</button>`:''}</div>${state.chatMessageMenuId===m.id?`<div class="chat-message-menu" role="menu"><button type="button" role="menuitem" onclick="beginChatMessageEdit('${m.id}')">${icon('edit','sm')}<span>Editar mensagem</span></button><button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteMessage','${m.id}')">${icon('trash','sm')}<span>Excluir mensagem</span></button></div>`:''}</article>`}
+function chatMessageBubble(m){
+ const mine=m.sender_id===session?.user?.id,editing=state.chatEditingMessageId===m.id,deleted=!!m.deleted_at,pending=!!m.pending;
+ if(editing)return `<article class="chat-message ${mine?'mine':''}"><div class="chat-message-editing"><label class="sr-only" for="chatEdit_${m.id}">Editar mensagem</label><textarea id="chatEdit_${m.id}" maxlength="1000">${esc(m.message||'')}</textarea><div class="chat-message-edit-actions"><button type="button" class="secondary" onclick="cancelChatMessageEdit()">Cancelar</button><button type="button" class="primary" onclick="editSellerChatMessage('${m.id}')">Salvar</button></div></div></article>`;
+ const stamp=pending?'Enviando…':formatChatFullDate(m.created_at);
+ return `<article class="chat-message ${mine?'mine':''} ${m.sender_role==='admin'?'from-admin':''} ${deleted?'deleted':''} ${pending?'pending':''}" oncontextmenu="openChatMessageMenu(event,'${m.id}')" ontouchstart="startChatMessagePress(event,'${m.id}')" ontouchend="cancelChatMessagePress()" ontouchcancel="cancelChatMessagePress()"><div class="chat-message-bubble"><div class="chat-message-meta"><span>${esc(chatSenderLabel(m))}</span><time datetime="${esc(m.created_at)}">${esc(stamp)}</time></div><div class="chat-message-content">${deleted?`<span class="chat-deleted-label">${icon('trash','xs')}Mensagem excluída</span>`:esc(m.message||'')}</div>${m.edited_at&&!deleted&&!pending?`<span class="chat-edited">editada</span>`:''}${mine&&!deleted&&!pending?`<button type="button" class="chat-message-actions" onclick="openChatMessageMenu(event,'${m.id}')" aria-label="Ações da mensagem">${icon('more')}</button>`:''}</div>${state.chatMessageMenuId===m.id?`<div class="chat-message-menu" role="menu"><button type="button" role="menuitem" onclick="beginChatMessageEdit('${m.id}')">${icon('edit','sm')}<span>Editar mensagem</span></button><button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteMessage','${m.id}')">${icon('trash','sm')}<span>Excluir mensagem</span></button></div>`:''}</article>`;
+}
 function sellerChatsPage(){
  if(!session)return `<div class="panel"><div class="empty"><h2>Entre para acessar o Atendimento</h2><button type="button" class="primary" onclick="openAuth('login')">Entrar</button></div></div>`;
  if(!['client','seller'].includes(profile?.role))return `<div class="notice">Acesso restrito a clientes e vendedores.</div>`;
- const chat=chatCurrent(),selected=!!chat||state.chatSupportDraft;
+ const chat=chatCurrent(),selected=!!chat||state.supportDraft;
  return `<div class="chat-page ${selected?'with-chat':''}">
   <div class="chat-page-head"><div><h1>Atendimento</h1><p>Gerencie suas conversas de compra, venda e suporte.</p></div></div>
   <div class="chat-section-tabs">${chatSectionNav()}</div>
@@ -1935,8 +2238,8 @@ async function openNotification(id){
   return openProduct(d.product_id);
  }
  if(['seller_chat_message','support_message'].includes(n.type) && d.chat_id){
-  if(profile?.role==='admin'){state.chatSection=d.conversation_type==='seller_support'?'sellers':d.conversation_type==='management_internal'?'management':'clients';state.chatSelectedId=d.chat_id;go('supportCenter');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;}
-  state.chatSection=d.conversation_type==='seller_customer'?'sellers':'support';state.chatSelectedId=d.chat_id;go('sellerChats');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;
+  if(profile?.role==='admin'){state.activeSection=d.conversation_type==='seller_support'?'sellers':d.conversation_type==='management_internal'?'management':'clients';state.selectedConversationId=d.chat_id;go('supportCenter');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;}
+  state.activeSection=d.conversation_type==='seller_customer'?'sellers':'support';state.selectedConversationId=d.chat_id;go('sellerChats');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;
  }
  if(profile?.role==='admin'){
   if(n.type==='new_user'){state.adminTab='users';saveNavigation();return go('admin');}
@@ -2052,8 +2355,8 @@ async function openNotification(id){
   return openProduct(d.product_id);
  }
  if(['seller_chat_message','support_message'].includes(n.type) && d.chat_id){
-  if(profile?.role==='admin'){state.chatSection=d.conversation_type==='seller_support'?'sellers':d.conversation_type==='management_internal'?'management':'clients';state.chatSelectedId=d.chat_id;go('supportCenter');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;}
-  state.chatSection=d.conversation_type==='seller_customer'?'sellers':'support';state.chatSelectedId=d.chat_id;go('sellerChats');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;
+  if(profile?.role==='admin'){state.activeSection=d.conversation_type==='seller_support'?'sellers':d.conversation_type==='management_internal'?'management':'clients';state.selectedConversationId=d.chat_id;go('supportCenter');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;}
+  state.activeSection=d.conversation_type==='seller_customer'?'sellers':'support';state.selectedConversationId=d.chat_id;go('sellerChats');setTimeout(()=>openSellerChatById(d.chat_id).catch(()=>{}),0);return;
  }
  if(profile?.role==='admin'){
   if(n.type==='new_user'){state.adminTab='users';saveNavigation();return go('admin');}
