@@ -611,6 +611,33 @@ html[data-theme="dark"] .chat-claim-row-button{color:#fff}
  .chat-support-start-card{margin-inline:0}.chat-support-draft-body{padding:22px 16px}.chat-transfer-modal{margin:0 10px}
 }
 </style>
+
+<style>
+/* V4.39.0 — ações de mensagem em portal fixo, sem cobrir a lista lateral e com colisão inteligente */
+.chat-message{max-width:78%}
+.chat-message-line{position:relative;display:flex;align-items:flex-start;gap:5px;min-width:0}
+.chat-message.mine .chat-message-line{flex-direction:row-reverse}
+.chat-message-line .chat-message-bubble{min-width:0;flex:1 1 auto}
+.chat-message-actions{position:absolute;top:2px;right:-38px;width:30px;height:30px;display:grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--muted);opacity:0;pointer-events:none;transition:opacity .12s ease,transform .12s ease;z-index:3}
+.chat-message.mine .chat-message-actions{right:auto;left:-38px}
+.chat-message:hover .chat-message-actions,
+.chat-message:focus-within .chat-message-actions{opacity:1;pointer-events:auto}
+.chat-message-actions:hover{background:var(--surface);color:var(--text)}
+.chat-message-menu-portal{position:fixed!important;z-index:10000!important;left:0;top:0;right:auto;bottom:auto;min-width:210px;max-width:min(260px,calc(100vw - 16px));box-sizing:border-box;}
+.chat-message-menu-portal.open-right{transform-origin:left top}
+.chat-message-menu-portal.open-down{transform-origin:left top}
+.chat-message-menu-portal.open-up{transform-origin:left bottom}
+.chat-context-menu,.chat-filter-popover,.chat-message-menu{z-index:1000}
+.chat-filter-control,.chat-conversation-actions{z-index:101}
+@media ((max-width:880px) and (orientation:portrait)), (max-width:600px){
+  .chat-message{max-width:92%}
+  .chat-message-line{gap:6px;align-items:flex-start}
+  .chat-message-actions,
+  .chat-message.mine .chat-message-actions{position:static;flex:0 0 30px;width:30px;height:30px;margin:1px 0 0;opacity:1;pointer-events:auto;border-radius:9px;transform:none}
+  .chat-message:not(.mine) .chat-message-actions{order:2}
+  .chat-message.mine .chat-message-actions{order:0}
+}
+</style>
 </head>
 <body><div id="app"><div class="loading">Carregando Fios & Artes…</div></div>
 
@@ -943,7 +970,7 @@ function toggleTheme(){
   toast(themeMode==='dark'?'Tema escuro ativado.':'Tema claro ativado.');
 }
 applyTheme();
-let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,selectedConversationId:null,selectedConversation:null,activeSection:'sellers',activeFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,loadingConversations:false,loadingMessages:false,chatError:'',chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatEditingMessageId:null,loadingOlderMessages:false,chatSectionCounts:{},newMessagesCount:0,supportDraft:false,composerValue:'',sendingMessage:false,chatTransferAgents:[],chatTransferLoading:false,chatSectionCache:{},chatMessageCache:{},chatFetchSerial:0,chatConversationFetchSerial:0,chatMessagesFetchSerial:0,chatBackgroundFetchSerial:0};
+let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,selectedConversationId:null,selectedConversation:null,activeSection:'sellers',activeFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,loadingConversations:false,loadingMessages:false,chatError:'',chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatMessageMenuRequestSerial:0,chatEditingMessageId:null,loadingOlderMessages:false,chatSectionCounts:{},newMessagesCount:0,supportDraft:false,composerValue:'',sendingMessage:false,chatTransferAgents:[],chatTransferLoading:false,chatSectionCache:{},chatMessageCache:{},chatFetchSerial:0,chatConversationFetchSerial:0,chatMessagesFetchSerial:0,chatBackgroundFetchSerial:0};
 let changingPassword=false;
 function serializableModal(){
   if(state.modal==='auth')return 'auth';
@@ -1206,6 +1233,34 @@ function refreshChatSidebarDom(){
   currentScroll.replaceWith(nextScroll);
   requestAnimationFrame(()=>{const next=document.querySelector('.chat-list-scroll');if(next)next.scrollTop=top});
 }
+function refreshChatTransientMenusDom(){
+  refreshChatListHeadDom();
+  refreshChatMessagesDom({keepScroll:true});
+  refreshChatHeaderDom();
+}
+function closeChatFloatingMenus({keepFilter=false,keepChat=false,keepMessage=false}={}){
+  let changed=false;
+  let messageChanged=false;
+  let shellChanged=false;
+  if(!keepFilter&&state.chatFilterMenuOpen){state.chatFilterMenuOpen=false;changed=true;shellChanged=true;}
+  if(!keepChat&&state.chatMenuOpen){state.chatMenuOpen=false;changed=true;shellChanged=true;}
+  if(!keepMessage&&state.chatMessageMenuId){state.chatMessageMenuId=null;state.chatMessageMenuRequestSerial=(Number(state.chatMessageMenuRequestSerial)||0)+1;changed=true;messageChanged=true;}
+  if(!changed)return;
+  if(messageChanged)removeChatMessageMenuDom();
+  if(shellChanged)refreshChatTransientMenusDom();
+}
+function handleChatOutsidePointer(event){
+  if(!(state.chatFilterMenuOpen||state.chatMenuOpen||state.chatMessageMenuId))return;
+  const target=event.target;
+  if(!(target instanceof Element))return;
+  const inFilter=!!target.closest('.chat-filter-control');
+  const inChatMenu=!!target.closest('.chat-conversation-actions');
+  const inMessageMenu=!!target.closest('.chat-message-menu,.chat-message-actions');
+  if(inFilter){closeChatFloatingMenus({keepFilter:true});return;}
+  if(inChatMenu){closeChatFloatingMenus({keepChat:true});return;}
+  if(inMessageMenu){closeChatFloatingMenus({keepMessage:true});return;}
+  closeChatFloatingMenus();
+}
 function syncChatNewMessagesDom(){
   const pane=document.querySelector('.chat-conversation-panel');if(!pane)return;
   let button=pane.querySelector('.chat-new-messages');
@@ -1219,7 +1274,7 @@ function refreshChatMessagesDom({keepScroll=true}={}){
   const scroll=document.querySelector('.chat-message-scroll');const wasNear=scroll?isChatNearBottom(scroll):true;const oldTop=scroll?.scrollTop||0;
   list.innerHTML=chatMessages.length?chatMessages.map(chatMessageBubble).join(''):'<div class="empty chat-history-empty">Nenhuma mensagem ainda.</div>';
   syncChatNewMessagesDom();
-  requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(!el)return;if(wasNear)el.scrollTop=el.scrollHeight;else if(keepScroll)el.scrollTop=oldTop});
+  requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(!el)return;if(wasNear)el.scrollTop=el.scrollHeight;else if(keepScroll)el.scrollTop=oldTop;if(state.chatMessageMenuId)positionChatMessageMenu(state.chatMessageMenuId)});
 }
 function refreshChatHeaderDom(){
   const chat=chatCurrent(),host=document.querySelector('.chat-conversation-panel');if(!chat||!host)return;
@@ -1360,7 +1415,12 @@ async function refreshCurrentChatList({silent=true,preserveList=true}={}){
     console.error('refreshCurrentChatList',e);
     if(!preserveList){sellerChats=[];state.chatTotal=0;state.chatOffset=0;state.chatHasMore=false;}
     if(!silent)toast(e?.message||'Não foi possível atualizar as conversas.');
-  }finally{if(requestId===state.chatBackgroundFetchSerial)state.loadingConversations=false;}
+  }finally{
+    if(requestId===state.chatBackgroundFetchSerial){
+      state.loadingConversations=false;
+      if(state.page==='sellerChats'||state.page==='supportCenter')refreshChatSidebarDom();
+    }
+  }
 }
 function scheduleChatBackgroundSync(){
   Promise.resolve().then(()=>refreshCurrentChatList({silent:true,preserveList:true})).then(()=>loadSellerChatSectionCounts({silent:true})).catch(()=>{});
@@ -1406,7 +1466,12 @@ async function loadSellerChats({reset=true,silent=false}={}){
   console.error('loadSellerChats',e);
   if(!silent)toast(e?.message||'Não foi possível carregar as conversas.');
   if(reset&&requestId===state.chatFetchSerial&&snapshot.page===state.page&&snapshot.section===state.activeSection&&snapshot.filter===state.activeFilter&&snapshot.search===state.chatSearch){sellerChats=[];state.chatTotal=0;state.chatOffset=0;state.chatHasMore=false;}
- }finally{if(requestId===state.chatFetchSerial)state.loadingConversations=false;}
+ }finally{
+  if(requestId===state.chatFetchSerial){
+    state.loadingConversations=false;
+    if(state.page==='sellerChats'||state.page==='supportCenter')refreshChatSidebarDom();
+  }
+}
 }
 async function loadSellerChatById(id){const r=await sb.rpc('get_seller_chat',{p_chat_id:id});if(r.error)throw r.error;const chat=Array.isArray(r.data)?r.data[0]:r.data;if(!chat)throw new Error('Conversa não encontrada ou sem permissão.');return chat}
 async function loadSellerChatMessages(id,{prepend=false,before=null}={}){
@@ -1440,7 +1505,105 @@ function chatStatusClass(status){if(status==='EM_ESPERA')return 'queue';if(statu
 function isSupportChat(c){return !!c&&['customer_support','seller_support'].includes(c.conversation_type)}
 function isSupportActive(c){return isSupportChat(c)&&['EM_ESPERA','EM_ANDAMENTO'].includes(c.status)}
 function currentSupportTicket(){return sellerChats.find(isSupportActive)||null}
-function openChatMessageMenu(event,id){event?.preventDefault?.();event?.stopPropagation?.();const m=chatMessages.find(x=>x.id===id);if(!m||m.sender_id!==session?.user?.id||m.deleted_at)return;state.chatMenuOpen=false;state.chatMessageMenuId=state.chatMessageMenuId===id?null:id;render()}
+function chatMessageMenuMarkup(id,{canEdit=false,canDelete=false,loading=false}={}){
+ if(loading)return `<div class="chat-message-menu chat-message-menu-portal" role="status" aria-live="polite" data-chat-message-menu="${esc(id)}"><div style="padding:10px 11px;color:var(--muted);font-size:.76rem;font-weight:720">Verificando opções…</div></div>`;
+ const items=[];
+ if(canEdit)items.push(`<button type="button" role="menuitem" onclick="beginChatMessageEdit('${id}')">${icon('edit','sm')}<span>Editar mensagem</span></button>`);
+ if(canDelete)items.push(`<button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteMessage','${id}')">${icon('trash','sm')}<span>Excluir mensagem</span></button>`);
+ if(!items.length)return '';
+ return `<div class="chat-message-menu chat-message-menu-portal" role="menu" data-chat-message-menu="${esc(id)}">${items.join('')}</div>`;
+}
+function removeChatMessageMenuDom(){
+ document.querySelectorAll('.chat-message-menu-portal,.chat-message-menu').forEach(el=>el.remove());
+}
+function positionChatMessageMenu(id){
+ const article=document.querySelector(`.chat-message[data-chat-message-id="${CSS.escape(String(id))}"]`);
+ const menu=document.querySelector(`.chat-message-menu-portal[data-chat-message-menu="${CSS.escape(String(id))}"]`);
+ if(!article||!menu)return;
+ const anchor=article.querySelector('.chat-message-actions')||article;
+ const anchorRect=anchor.getBoundingClientRect();
+ const scroll=document.querySelector('#chatMessageScroll');
+ const scrollRect=scroll?.getBoundingClientRect();
+ const main=document.querySelector('.chat-main-pane');
+ const mainRect=main?.getBoundingClientRect();
+ const composer=document.querySelector('.chat-composer-wrap');
+ const composerRect=composer?.getBoundingClientRect();
+ const safeLeft=Math.max((mainRect?.left??scrollRect?.left??8)+8,8);
+ const safeRight=Math.min((mainRect?.right??scrollRect?.right??window.innerWidth)-8,window.innerWidth-8);
+ const safeTop=Math.max((scrollRect?.top??8)+8,8);
+ const safeBottom=Math.min((scrollRect?.bottom??window.innerHeight)-8,composerRect?.top?composerRect.top-8:window.innerHeight-8,window.innerHeight-8);
+ const gap=6;
+ const menuRect=menu.getBoundingClientRect();
+ const menuWidth=Math.min(menuRect.width||210,Math.max(120,safeRight-safeLeft));
+ const menuHeight=Math.min(menuRect.height||90,Math.max(1,safeBottom-safeTop));
+ const mobile=window.matchMedia?.('(max-width:880px) and (orientation:portrait), (max-width:600px)')?.matches;
+ let left,top;
+ menu.classList.remove('open-right','open-down','open-up');
+ if(mobile){
+   left=Math.min(Math.max(anchorRect.right-menuWidth,safeLeft),Math.max(safeLeft,safeRight-menuWidth));
+   const downTop=anchorRect.bottom+gap;
+   const upTop=anchorRect.top-gap-menuHeight;
+   if(downTop+menuHeight<=safeBottom){top=downTop;}
+   else if(upTop>=safeTop){top=upTop;menu.classList.add('open-up');}
+   else {top=Math.max(safeTop,safeBottom-menuHeight);menu.classList.add('open-up');}
+ }else{
+   const rightLeft=anchorRect.right+gap;
+   if(rightLeft+menuWidth<=safeRight){left=rightLeft;top=Math.min(Math.max(anchorRect.top,safeTop),Math.max(safeTop,safeBottom-menuHeight));menu.classList.add('open-right');}
+   else{
+     left=Math.min(Math.max(anchorRect.left,safeLeft),Math.max(safeLeft,safeRight-menuWidth));
+     const downTop=anchorRect.bottom+gap;
+     top=Math.min(Math.max(downTop,safeTop),Math.max(safeTop,safeBottom-menuHeight));
+     menu.classList.add('open-down');
+   }
+ }
+ menu.style.left=`${Math.round(left)}px`;
+ menu.style.top=`${Math.round(top)}px`;
+}
+async function openChatMessageMenu(event,id){
+ event?.preventDefault?.();event?.stopPropagation?.();
+ const m=chatMessages.find(x=>x.id===id);
+ if(!m||m.sender_id!==session?.user?.id||m.deleted_at)return;
+ const same=state.chatMessageMenuId===id;
+ const closeHeaderMenu=state.chatMenuOpen;
+ state.chatMenuOpen=false;
+ state.chatMessageMenuRequestSerial=(Number(state.chatMessageMenuRequestSerial)||0)+1;
+ const requestId=state.chatMessageMenuRequestSerial;
+ state.chatMessageMenuId=same?null:id;
+ removeChatMessageMenuDom();
+ if(closeHeaderMenu)refreshChatHeaderDom();
+ if(same)return;
+ const article=document.querySelector(`.chat-message[data-chat-message-id="${CSS.escape(String(id))}"]`);
+ if(!article)return;
+ const portal=document.createElement('div');
+ portal.innerHTML=chatMessageMenuMarkup(id,{loading:true});
+ const menu=portal.firstElementChild;
+ if(!menu)return;
+ menu.addEventListener('click',event=>event.stopPropagation());
+ document.body.appendChild(menu);
+ requestAnimationFrame(()=>positionChatMessageMenu(id));
+ try{
+   const r=await sb.rpc('get_seller_chat_message_actions',{p_message_id:id});
+   if(requestId!==state.chatMessageMenuRequestSerial||state.chatMessageMenuId!==id)return;
+   if(r.error)throw r.error;
+   const row=Array.isArray(r.data)?r.data[0]:r.data;
+   if(!row||(!row.can_edit&&!row.can_delete)){
+     state.chatMessageMenuId=null;
+     removeChatMessageMenuDom();
+     return;
+   }
+   const html=chatMessageMenuMarkup(id,{canEdit:!!row.can_edit,canDelete:!!row.can_delete});
+   if(!html){state.chatMessageMenuId=null;removeChatMessageMenuDom();return;}
+   menu.outerHTML=html;
+   const current=document.querySelector(`.chat-message-menu-portal[data-chat-message-menu="${CSS.escape(String(id))}"]`);
+   current?.addEventListener('click',event=>event.stopPropagation());
+   requestAnimationFrame(()=>positionChatMessageMenu(id));
+ }catch(error){
+   if(requestId!==state.chatMessageMenuRequestSerial||state.chatMessageMenuId!==id)return;
+   state.chatMessageMenuId=null;
+   removeChatMessageMenuDom();
+   toast(error?.message||'Não foi possível verificar as opções desta mensagem.');
+ }
+}
 function startChatMessagePress(event,id){if(window.matchMedia&&window.matchMedia('(hover:hover)').matches)return;clearTimeout(chatMessagePressTimer);chatMessagePressTimer=setTimeout(()=>openChatMessageMenu(event,id),520)}
 function cancelChatMessagePress(){clearTimeout(chatMessagePressTimer);chatMessagePressTimer=null}
 function beginChatMessageEdit(id){state.chatMessageMenuId=null;state.chatEditingMessageId=id;render();requestAnimationFrame(()=>{const el=$(`chatEdit_${id}`);if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}})}
@@ -1658,8 +1821,8 @@ async function editSellerChatMessage(id){const value=$(`chatEdit_${id}`)?.value.
 async function deleteSellerChatMessage(id){const r=await sb.rpc('delete_seller_chat_message',{p_message_id:id});if(r.error)return toast(r.error.message||'Não foi possível excluir a mensagem.');const deleted=Array.isArray(r.data)?r.data[0]:r.data;if(deleted){chatMessages=chatMessages.map(m=>m.id===id?{...m,...deleted}:m);if(deleted.chat_id)state.chatMessageCache[deleted.chat_id]=(state.chatMessageCache[deleted.chat_id]||[]).map(m=>m.id===id?{...m,...deleted}:m);}state.chatMessageMenuId=null;refreshChatMessagesDom({keepScroll:true});scheduleChatBackgroundSync();toast('Mensagem excluída.')}
 function openChatConfirm(action,id){state.chatMenuOpen=false;state.chatMessageMenuId=null;state.modal={type:'chatConfirm',action,id};render()}
 async function confirmChatAction(){const action=state.modal?.action,id=state.modal?.id;state.modal=null;render();if(action==='deleteMessage')return deleteSellerChatMessage(id);if(action==='deleteChat')return deleteSellerChat(id);if(action==='closeChat')return setSellerChatStatus(id,'closed');if(action==='reopenChat')return setSellerChatStatus(id,'open')}
-function toggleChatMenu(){state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatMenuOpen=!state.chatMenuOpen;render()}
-function toggleChatFilterMenu(){state.chatMenuOpen=false;state.chatMessageMenuId=null;state.chatFilterMenuOpen=!state.chatFilterMenuOpen;render()}
+function toggleChatMenu(){const next=!state.chatMenuOpen;state.chatFilterMenuOpen=false;state.chatMessageMenuId=null;state.chatMenuOpen=next;refreshChatTransientMenusDom()}
+function toggleChatFilterMenu(){const next=!state.chatFilterMenuOpen;state.chatMenuOpen=false;state.chatMessageMenuId=null;state.chatFilterMenuOpen=next;refreshChatTransientMenusDom()}
 function setChatSection(section){
  if(!chatSectionsForCurrentRole().some(x=>x.id===section)||state.activeSection===section)return;
  invalidateChatListRequests();
@@ -1701,7 +1864,7 @@ function chatSearchChanged(value){
 async function loadMoreSellerChats(){if(state.loadingConversations||!state.chatHasMore)return;await loadSellerChats({reset:false,silent:false});refreshChatSidebarDom();}
 async function loadOlderChatMessages(){const first=chatMessages[0];if(!first||state.loadingOlderMessages||!state.chatHasMore)return;state.loadingOlderMessages=true;try{await loadSellerChatMessages(state.selectedConversationId,{prepend:true,before:first.created_at});refreshChatMessagesDom({keepScroll:true});}catch(e){toast(e?.message||'Não foi possível carregar mensagens anteriores.')}finally{state.loadingOlderMessages=false;const btn=document.querySelector('.chat-history-load button');if(btn)btn.textContent=state.loadingOlderMessages?'Carregando…':'Carregar mensagens anteriores';}}
 function isChatNearBottom(el){return !el||el.scrollHeight-el.scrollTop-el.clientHeight<90}
-async function handleChatScroll(){const el=document.querySelector('#chatMessageScroll');if(!el)return;if(isChatNearBottom(el)&&state.newMessagesCount>0){state.newMessagesCount=0;if(state.selectedConversationId)await markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom()}}
+async function handleChatScroll(){const el=document.querySelector('#chatMessageScroll');if(!el)return;if(isChatNearBottom(el)&&state.newMessagesCount>0){state.newMessagesCount=0;if(state.selectedConversationId)await markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom()}if(state.chatMessageMenuId)requestAnimationFrame(()=>positionChatMessageMenu(state.chatMessageMenuId))}
 function jumpToChatBottom(){const el=document.querySelector('#chatMessageScroll');if(el)el.scrollTop=el.scrollHeight;state.newMessagesCount=0;if(state.selectedConversationId)markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom();requestAnimationFrame(scrollChatToBottom)}
 function chatComposerKeydown(event,id){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();if(!state.sendingMessage)sendSellerChatMessage(id)}}
 function scrollChatToBottom(){const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=el.scrollHeight}
@@ -1712,7 +1875,7 @@ function chatMessageRowContext(m){
   }
   return m?.sender_role==='seller'?'Vendedor':'Cliente';
 }
-function chatConfirmModal(){const a=state.modal?.action;const cfg={deleteMessage:{title:'Excluir mensagem?',text:'Esta mensagem será removida da conversa.',confirm:'Excluir'},deleteChat:{title:'Excluir conversa?',text:'Todo o histórico desta conversa será excluído. Essa ação não poderá ser desfeita.',confirm:'Excluir'},closeChat:{title:'Encerrar conversa?',text:'A conversa será mantida no histórico e ficará disponível em “Encerradas”.',confirm:'Encerrar'},reopenChat:{title:'Reabrir conversa?',text:'A conversa voltará a ficar ativa.',confirm:'Reabrir'}}[a]||{};return `<div class="modalback chat-confirm-back"><div class="modal chat-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="chatConfirmTitle"><div class="sectionhead"><div><div class="eyebrow">Atendimento</div><h2 id="chatConfirmTitle">${esc(cfg.title||'Confirmar ação')}</h2></div><button type="button" class="iconbtn" onclick="state.modal=null;render()" aria-label="Fechar">${icon('x')}</button></div><p class="chat-confirm-text">${esc(cfg.text||'Confirme esta ação.')}</p><div class="actions chat-confirm-actions"><button type="button" class="secondary" onclick="state.modal=null;render()">Cancelar</button><button type="button" class="danger" onclick="confirmChatAction()">${esc(cfg.confirm||'Confirmar')}</button></div></div></div>`}
+function chatConfirmModal(){const a=state.modal?.action;const cfg={deleteMessage:{title:'Excluir mensagem?',text:'Esta mensagem será removida da conversa.',confirm:'Excluir'},deleteChat:{title:'Excluir conversa?',text:'Todo o histórico desta conversa será excluído. Essa ação não poderá ser desfeita.',confirm:'Excluir'},closeChat:{title:'Encerrar conversa?',text:'A conversa será mantida no histórico e ficará disponível em “Encerradas”.',confirm:'Encerrar'},reopenChat:{title:'Reabrir conversa?',text:'A conversa voltará a ficar ativa.',confirm:'Reabrir'}}[a]||{};return `<div class="modalback chat-confirm-back" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal chat-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="chatConfirmTitle"><div class="sectionhead"><div><div class="eyebrow">Atendimento</div><h2 id="chatConfirmTitle">${esc(cfg.title||'Confirmar ação')}</h2></div><button type="button" class="iconbtn" onclick="state.modal=null;render()" aria-label="Fechar">${icon('x')}</button></div><p class="chat-confirm-text">${esc(cfg.text||'Confirme esta ação.')}</p><div class="actions chat-confirm-actions"><button type="button" class="secondary" onclick="state.modal=null;render()">Cancelar</button><button type="button" class="danger" onclick="confirmChatAction()">${esc(cfg.confirm||'Confirmar')}</button></div></div></div>`}
 
 
 function chatSectionLabel(section){return chatSectionsForCurrentRole().find(x=>x.id===section)?.label||'Conversas'}
@@ -1787,7 +1950,9 @@ function chatMessageBubble(m){
  const mine=m.sender_id===session?.user?.id,editing=state.chatEditingMessageId===m.id,deleted=!!m.deleted_at,pending=!!m.pending;
  if(editing)return `<article class="chat-message ${mine?'mine':''}"><div class="chat-message-editing"><label class="sr-only" for="chatEdit_${m.id}">Editar mensagem</label><textarea id="chatEdit_${m.id}" maxlength="1000">${esc(m.message||'')}</textarea><div class="chat-message-edit-actions"><button type="button" class="secondary" onclick="cancelChatMessageEdit()">Cancelar</button><button type="button" class="primary" onclick="editSellerChatMessage('${m.id}')">Salvar</button></div></div></article>`;
  const stamp=pending?'Enviando…':formatChatFullDate(m.created_at);
- return `<article class="chat-message ${mine?'mine':''} ${m.sender_role==='admin'?'from-admin':''} ${deleted?'deleted':''} ${pending?'pending':''}" oncontextmenu="openChatMessageMenu(event,'${m.id}')" ontouchstart="startChatMessagePress(event,'${m.id}')" ontouchend="cancelChatMessagePress()" ontouchcancel="cancelChatMessagePress()"><div class="chat-message-bubble"><div class="chat-message-meta"><span>${esc(chatSenderLabel(m))}</span><time datetime="${esc(m.created_at)}">${esc(stamp)}</time></div><div class="chat-message-content">${deleted?`<span class="chat-deleted-label">${icon('trash','xs')}Mensagem excluída</span>`:esc(m.message||'')}</div>${m.edited_at&&!deleted&&!pending?`<span class="chat-edited">editada</span>`:''}${mine&&!deleted&&!pending?`<button type="button" class="chat-message-actions" onclick="openChatMessageMenu(event,'${m.id}')" aria-label="Ações da mensagem">${icon('more')}</button>`:''}</div>${state.chatMessageMenuId===m.id?`<div class="chat-message-menu" role="menu"><button type="button" role="menuitem" onclick="beginChatMessageEdit('${m.id}')">${icon('edit','sm')}<span>Editar mensagem</span></button><button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteMessage','${m.id}')">${icon('trash','sm')}<span>Excluir mensagem</span></button></div>`:''}</article>`;
+ const actions=mine&&!deleted&&!pending?`<button type="button" class="chat-message-actions" onclick="openChatMessageMenu(event,'${m.id}')" aria-label="Ações da mensagem">${icon('more')}</button>`:'';
+ const bubble=`<div class="chat-message-bubble"><div class="chat-message-meta"><span>${esc(chatSenderLabel(m))}</span><time datetime="${esc(m.created_at)}">${esc(stamp)}</time></div><div class="chat-message-content">${deleted?`<span class="chat-deleted-label">${icon('trash','xs')}Mensagem excluída</span>`:esc(m.message||'')}</div>${m.edited_at&&!deleted&&!pending?`<span class="chat-edited">editada</span>`:''}</div>`;
+ return `<article class="chat-message ${mine?'mine':''} ${m.sender_role==='admin'?'from-admin':''} ${deleted?'deleted':''} ${pending?'pending':''}" data-chat-message-id="${esc(m.id)}" oncontextmenu="openChatMessageMenu(event,'${m.id}')" ontouchstart="startChatMessagePress(event,'${m.id}')" ontouchend="cancelChatMessagePress()" ontouchcancel="cancelChatMessagePress()"><div class="chat-message-line">${mine?actions+bubble:bubble+actions}</div>${state.chatMessageMenuId===m.id?chatMessageMenuMarkup(m.id):''}</article>`;
 }
 function sellerChatsPage(){
  if(!session)return `<div class="panel"><div class="empty"><h2>Entre para acessar o Atendimento</h2><button type="button" class="primary" onclick="openAuth('login')">Entrar</button></div></div>`;
@@ -2784,6 +2949,7 @@ loadSupabaseLibrary().then(()=>{initSupabase();return bootstrap()}).then(()=>{
   $('app').innerHTML=header()+`<main class="container"><div class="panel connection-error"><div class="empty"><div class="empty-icon">${icon('craft','lg')}</div><h2>Não foi possível iniciar a conexão</h2><p>${esc(err?.message||'Verifique a internet e tente novamente.')}</p><button class="primary" onclick="location.reload()">Tentar novamente</button></div></div></main><footer>Fios & Artes · Marketplace artesanal</footer>`;
 });
 window.addEventListener('keydown',event=>{if(event.key==='Escape'&&state.modal?.type==='sellerFilters'){event.preventDefault();closeSellerFilterSheet();}});
+document.addEventListener('pointerdown',handleChatOutsidePointer,true);
 window.addEventListener('focus',()=>verifyAccountOnReturn());
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')verifyAccountOnReturn();});
 setInterval(()=>{if(document.visibilityState==='visible')verifyAccountOnReturn();},30000);
