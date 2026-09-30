@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.36.0">
+<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.40.1">
 <link rel="manifest" href="/loja-atelie/manifest.json?v=4">
 <link rel="icon" type="image/png" sizes="16x16" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-16.png?v=1">
 <link rel="icon" type="image/png" sizes="32x32" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-32.png?v=1">
@@ -383,9 +383,9 @@ html[data-theme="dark"] .chat-message.mine .chat-message-bubble{background:#3b31
 .chat-closed-notice{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;font-size:.82rem;color:#625866}.chat-closed-notice button{padding:9px 12px;font-size:.75rem}
 .chat-confirm-back{align-items:center;padding:18px}.chat-confirm-modal{width:min(470px,100%);border-radius:20px;max-height:none}.chat-confirm-text{margin:0 0 18px;color:var(--muted);line-height:1.55}.chat-confirm-actions{justify-content:flex-end}.chat-confirm-actions button{min-width:100px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media ((max-width:880px) and (orientation:portrait)), (max-width:600px){.chat-container{padding-top:10px}.chat-page-head{align-items:flex-start}.chat-workspace{grid-template-columns:1fr;border-radius:18px}.chat-list-panel{border-right:0}.chat-main-pane{display:none}.chat-workspace.has-selection .chat-list-panel{display:none}.chat-workspace.has-selection .chat-main-pane{display:block}.chat-back-button{display:grid;place-items:center}.chat-message{max-width:88%}.chat-message-actions{opacity:1}.chat-message-editing{width:min(100%,76vw)}}
+@media ((max-width:880px) and (orientation:portrait)), (max-width:600px){.chat-container{padding-top:10px}.chat-page-head{align-items:flex-start}.chat-workspace{grid-template-columns:1fr;border-radius:18px}.chat-list-panel{border-right:0}.chat-main-pane{display:none}.chat-workspace.has-selection .chat-list-panel{display:none}.chat-workspace.has-selection .chat-main-pane{display:block}.chat-back-button{display:grid;place-items:center}.chat-message{max-width:88%}.chat-message-editing{width:min(100%,76vw)}}
 @media(max-width:600px){.chat-page-head{flex-direction:column;gap:8px}.chat-page-actions{width:100%;align-items:stretch}.chat-page-actions>*{flex:1 1 auto}
-.chat-page-head .chat-back-area{align-self:flex-start}.chat-workspace{height:calc(100dvh - 151px);min-height:480px;border-radius:16px}.chat-list-head{padding:13px 12px 9px}.chat-list-scroll{padding-left:5px;padding-right:5px}.chat-conversation-head{padding:10px}.chat-message-scroll{padding:12px 10px 8px}.chat-message{max-width:92%}.chat-message-actions{display:grid;right:-4px;top:-13px;width:30px;height:30px;border-radius:50%;opacity:1}.chat-message.mine .chat-message-actions{left:-4px;right:auto}.chat-message-menu{left:auto;right:-3px;top:37px}.chat-message.mine .chat-message-menu{left:auto;right:-3px}.chat-composer-wrap{padding:9px 9px calc(9px + env(safe-area-inset-bottom,0px))}.chat-composer{grid-template-columns:minmax(0,1fr) auto;gap:7px}.chat-composer textarea{min-height:48px}.chat-composer button{min-width:52px;padding:0 12px}.chat-composer button span{display:none}.chat-closed-notice{align-items:stretch;flex-direction:column}.chat-closed-notice button{width:100%}.chat-context-menu{right:-2px}}
+.chat-page-head .chat-back-area{align-self:flex-start}.chat-workspace{height:calc(100dvh - 151px);min-height:480px;border-radius:16px}.chat-list-head{padding:13px 12px 9px}.chat-list-scroll{padding-left:5px;padding-right:5px}.chat-conversation-head{padding:10px}.chat-message-scroll{padding:12px 10px 8px}.chat-message{max-width:92%}.chat-message.mine .chat-message-actions{left:-4px;right:auto}.chat-message-menu{left:auto;right:-3px;top:37px}.chat-message.mine .chat-message-menu{left:auto;right:-3px}.chat-composer-wrap{padding:9px 9px calc(9px + env(safe-area-inset-bottom,0px))}.chat-composer{grid-template-columns:minmax(0,1fr) auto;gap:7px}.chat-composer textarea{min-height:48px}.chat-composer button{min-width:52px;padding:0 12px}.chat-composer button span{display:none}.chat-closed-notice{align-items:stretch;flex-direction:column}.chat-closed-notice button{width:100%}.chat-context-menu{right:-2px}}
 @media(prefers-reduced-motion:reduce){.chat-message-scroll{scroll-behavior:auto}.chat-message-actions{transition:none}}
 </style>
 
@@ -613,7 +613,7 @@ html[data-theme="dark"] .chat-claim-row-button{color:#fff}
 </style>
 
 <style>
-/* V4.39.0 — ações de mensagem em portal fixo, sem cobrir a lista lateral e com colisão inteligente */
+/* V4.37.0 — Central de Suporte: empty-state loading, click-outside e ações de mensagem sem sobreposição */
 .chat-message{max-width:78%}
 .chat-message-line{position:relative;display:flex;align-items:flex-start;gap:5px;min-width:0}
 .chat-message.mine .chat-message-line{flex-direction:row-reverse}
@@ -623,19 +623,41 @@ html[data-theme="dark"] .chat-claim-row-button{color:#fff}
 .chat-message:hover .chat-message-actions,
 .chat-message:focus-within .chat-message-actions{opacity:1;pointer-events:auto}
 .chat-message-actions:hover{background:var(--surface);color:var(--text)}
-.chat-message-menu-portal{position:fixed!important;z-index:10000!important;left:0;top:0;right:auto;bottom:auto;min-width:210px;max-width:min(260px,calc(100vw - 16px));box-sizing:border-box;}
-.chat-message-menu-portal.open-right{transform-origin:left top}
-.chat-message-menu-portal.open-down{transform-origin:left top}
-.chat-message-menu-portal.open-up{transform-origin:left bottom}
-.chat-context-menu,.chat-filter-popover,.chat-message-menu{z-index:1000}
+.chat-message.mine .chat-message-bubble{touch-action:pan-y}
+.chat-message-menu{top:36px;right:auto;left:calc(100% + 3px);z-index:100}
+.chat-message.mine .chat-message-menu{left:auto;right:calc(100% + 3px)}
+.chat-context-menu,.chat-filter-popover,.chat-message-menu{z-index:100}
 .chat-filter-control,.chat-conversation-actions{z-index:101}
 @media ((max-width:880px) and (orientation:portrait)), (max-width:600px){
   .chat-message{max-width:92%}
   .chat-message-line{gap:6px;align-items:flex-start}
   .chat-message-actions,
-  .chat-message.mine .chat-message-actions{position:static;flex:0 0 30px;width:30px;height:30px;margin:1px 0 0;opacity:1;pointer-events:auto;border-radius:9px;transform:none}
-  .chat-message:not(.mine) .chat-message-actions{order:2}
-  .chat-message.mine .chat-message-actions{order:0}
+  .chat-message.mine .chat-message-actions{position:absolute;opacity:0!important;pointer-events:none!important;visibility:hidden!important;transform:none}
+  .chat-message-menu,
+  .chat-message.mine .chat-message-menu{left:auto;right:0;top:calc(100% + 5px)}
+}
+</style>
+<style>
+/* V4.40.3 — ações do chat: permissões estritas e interação desktop/touch */
+.chat-message-menu-portal{position:fixed!important;z-index:10000!important;left:0;top:0;right:auto;bottom:auto;min-width:210px;max-width:min(260px,calc(100vw - 16px));box-sizing:border-box}
+.chat-message-menu-portal.open-right{transform-origin:left top}
+.chat-message-menu-portal.open-down{transform-origin:left top}
+.chat-message-menu-portal.open-up{transform-origin:left bottom}
+.chat-message-menu-loading{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;box-sizing:border-box;padding:10px 11px;color:var(--muted);font-size:.8rem;font-weight:700;line-height:1.25;cursor:default;user-select:none}.chat-message-menu-empty{display:flex;align-items:center;gap:9px;width:100%;box-sizing:border-box;padding:10px 11px;color:var(--muted);font-size:.8rem;font-weight:700;line-height:1.25;cursor:default;user-select:none}
+.chat-message-menu-empty .icon{width:17px;height:17px;flex:none}
+</style>
+<style>
+/* V4.40.3 — ações do chat: hover no desktop e toque/long press no touch */
+.chat-message.mine .chat-message-bubble{touch-action:pan-y;user-select:text;-webkit-user-select:text}
+.chat-message.mine .chat-message-actions{opacity:0!important;pointer-events:none!important;visibility:hidden}
+@media (hover:hover) and (pointer:fine){
+  .chat-message.mine:hover .chat-message-actions,
+  .chat-message.mine:focus-within .chat-message-actions{opacity:1!important;pointer-events:auto!important;visibility:visible}
+}
+@media (hover:none), (pointer:coarse){
+  .chat-message.mine .chat-message-actions,
+  .chat-message.mine:hover .chat-message-actions,
+  .chat-message.mine:focus-within .chat-message-actions{opacity:0!important;pointer-events:none!important;visibility:hidden!important}
 }
 </style>
 </head>
@@ -970,7 +992,7 @@ function toggleTheme(){
   toast(themeMode==='dark'?'Tema escuro ativado.':'Tema claro ativado.');
 }
 applyTheme();
-let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,selectedConversationId:null,selectedConversation:null,activeSection:'sellers',activeFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,loadingConversations:false,loadingMessages:false,chatError:'',chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatMessageMenuRequestSerial:0,chatEditingMessageId:null,loadingOlderMessages:false,chatSectionCounts:{},newMessagesCount:0,supportDraft:false,composerValue:'',sendingMessage:false,chatTransferAgents:[],chatTransferLoading:false,chatSectionCache:{},chatMessageCache:{},chatFetchSerial:0,chatConversationFetchSerial:0,chatMessagesFetchSerial:0,chatBackgroundFetchSerial:0};
+let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,selectedConversationId:null,selectedConversation:null,activeSection:'sellers',activeFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,loadingConversations:false,loadingMessages:false,chatError:'',chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatMessageMenuRequestSerial:0,chatMessageActionFlags:{},chatMessageActionFetchSerial:0,chatEditingMessageId:null,loadingOlderMessages:false,chatSectionCounts:{},newMessagesCount:0,supportDraft:false,composerValue:'',sendingMessage:false,chatTransferAgents:[],chatTransferLoading:false,chatSectionCache:{},chatMessageCache:{},chatFetchSerial:0,chatConversationFetchSerial:0,chatMessagesFetchSerial:0,chatBackgroundFetchSerial:0};
 let changingPassword=false;
 function serializableModal(){
   if(state.modal==='auth')return 'auth';
@@ -1092,6 +1114,12 @@ function fullUserName(u){const name=String(u?.name||'').trim(),surname=String(u?
 function sellerPublicName(s){const custom=String(s?.seller_display_name||'').trim();if(custom)return custom;return String(s?.name||'Vendedor').trim()||'Vendedor';}
 function sellerPublicContact(s){const custom=String(s?.seller_whatsapp||'').replace(/\D/g,'');if(custom)return custom;return String(s?.whatsapp||'').replace(/\D/g,'');}
 function sellerIsFollowed(sid){return !!sid && followedSellers.includes(sid);}
+function followedSellerProfiles(){
+ const seen=new Set();
+ return followedSellers.map(id=>String(id)).filter(id=>{if(seen.has(id))return false;seen.add(id);return true}).map(id=>sellers[id]).filter(s=>s&&s.role==='seller'&&s.status==='active');
+}
+function followedSellerCount(){return followedSellerProfiles().length}
+
 const discountPct=p=>{const price=Number(p?.price||0),sale=Number(p?.sale_price||0);if(price>0&&sale>0&&sale<price)return Math.round(((price-sale)/price)*10000)/100;return 0};
 const salePrice=p=>{const price=Number(p?.price||0),sale=Number(p?.sale_price||0);return sale>0&&sale<price?sale:price};
 function productCategoriesFor(id){return productCategoryMap[id]||[];}
@@ -1240,14 +1268,10 @@ function refreshChatTransientMenusDom(){
 }
 function closeChatFloatingMenus({keepFilter=false,keepChat=false,keepMessage=false}={}){
   let changed=false;
-  let messageChanged=false;
-  let shellChanged=false;
-  if(!keepFilter&&state.chatFilterMenuOpen){state.chatFilterMenuOpen=false;changed=true;shellChanged=true;}
-  if(!keepChat&&state.chatMenuOpen){state.chatMenuOpen=false;changed=true;shellChanged=true;}
-  if(!keepMessage&&state.chatMessageMenuId){state.chatMessageMenuId=null;state.chatMessageMenuRequestSerial=(Number(state.chatMessageMenuRequestSerial)||0)+1;changed=true;messageChanged=true;}
-  if(!changed)return;
-  if(messageChanged)removeChatMessageMenuDom();
-  if(shellChanged)refreshChatTransientMenusDom();
+  if(!keepFilter&&state.chatFilterMenuOpen){state.chatFilterMenuOpen=false;changed=true;}
+  if(!keepChat&&state.chatMenuOpen){state.chatMenuOpen=false;changed=true;}
+  if(!keepMessage&&state.chatMessageMenuId){state.chatMessageMenuId=null;changed=true;}
+  if(changed)refreshChatTransientMenusDom();
 }
 function handleChatOutsidePointer(event){
   if(!(state.chatFilterMenuOpen||state.chatMenuOpen||state.chatMessageMenuId))return;
@@ -1274,7 +1298,7 @@ function refreshChatMessagesDom({keepScroll=true}={}){
   const scroll=document.querySelector('.chat-message-scroll');const wasNear=scroll?isChatNearBottom(scroll):true;const oldTop=scroll?.scrollTop||0;
   list.innerHTML=chatMessages.length?chatMessages.map(chatMessageBubble).join(''):'<div class="empty chat-history-empty">Nenhuma mensagem ainda.</div>';
   syncChatNewMessagesDom();
-  requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(!el)return;if(wasNear)el.scrollTop=el.scrollHeight;else if(keepScroll)el.scrollTop=oldTop;if(state.chatMessageMenuId)positionChatMessageMenu(state.chatMessageMenuId)});
+  requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(!el)return;if(wasNear)el.scrollTop=el.scrollHeight;else if(keepScroll)el.scrollTop=oldTop;syncChatMessageMenuDom()});
 }
 function refreshChatHeaderDom(){
   const chat=chatCurrent(),host=document.querySelector('.chat-conversation-panel');if(!chat||!host)return;
@@ -1303,7 +1327,10 @@ async function handleChatRealtimeMessage(payload,kind){
     if(selectedChat)state.selectedConversation={...selectedChat,last_message_at:kind==='INSERT'?(m.created_at||selectedChat.last_message_at):selectedChat.last_message_at,last_message_preview:kind==='INSERT'?(m.deleted_at?'Mensagem excluída':m.message):selectedChat.last_message_preview};
     if(kind==='INSERT'&&near){state.newMessagesCount=0;void markSellerChatRead(m.chat_id,{rerender:false});}
     else if(kind==='INSERT')state.newMessagesCount=Math.max(1,Number(state.newMessagesCount||0)+1);
-    if(kind==='INSERT'){refreshChatMessagesDom({keepScroll:true});}
+    if(kind==='INSERT'){
+      delete (state.chatMessageActionFlags||{})[m.id];
+      refreshChatMessagesDom({keepScroll:true});
+    }
   }
 
   // Reconcile the list in the background without clearing the in-memory list or the open conversation.
@@ -1491,7 +1518,7 @@ async function loadSellerChatMessages(id,{prepend=false,before=null}={}){
   const map=new Map(chatMessages.map(m=>[m.id,m]));rows.forEach(m=>map.set(m.id,m));
   chatMessages=[...map.values()].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
   const total=Number(r.data?.[0]?.total_count||0);state.chatHasMore=chatMessages.length<total;
-  if(!prepend)state.chatMessageCache[id]=chatMessages.slice();
+  if(!prepend){state.chatMessageCache[id]=chatMessages.slice();}
   if(prepend)requestAnimationFrame(()=>{const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=Math.max(0,el.scrollHeight-prevHeight)});
   return chatMessages;
  }catch(e){
@@ -1505,51 +1532,96 @@ function chatStatusClass(status){if(status==='EM_ESPERA')return 'queue';if(statu
 function isSupportChat(c){return !!c&&['customer_support','seller_support'].includes(c.conversation_type)}
 function isSupportActive(c){return isSupportChat(c)&&['EM_ESPERA','EM_ANDAMENTO'].includes(c.status)}
 function currentSupportTicket(){return sellerChats.find(isSupportActive)||null}
-function chatMessageMenuMarkup(id,{canEdit=false,canDelete=false,loading=false}={}){
- if(loading)return `<div class="chat-message-menu chat-message-menu-portal" role="status" aria-live="polite" data-chat-message-menu="${esc(id)}"><div style="padding:10px 11px;color:var(--muted);font-size:.76rem;font-weight:720">Verificando opções…</div></div>`;
+async function resolveChatMessageActionFlags(id){
+ const m=chatMessages.find(x=>x.id===id);
+ if(!m||m.sender_id!==session?.user?.id||m.deleted_at||m.pending)throw new Error('Mensagem inválida.');
+ try{
+   const part=await sb.from('seller_chat_participants').select('user_id,last_read_at').eq('chat_id',m.chat_id);
+   if(part.error)throw part.error;
+   const recipients=(Array.isArray(part.data)?part.data:[]).filter(p=>p?.user_id&&p.user_id!==session?.user?.id);
+   if(!recipients.length)throw new Error('Nenhum destinatário encontrado para este chat.');
+   const recipientIds=new Set(recipients.map(p=>String(p.user_id)));
+   const replied=chatMessages.some(r=>
+     r.chat_id===m.chat_id &&
+     r.sender_id!==session?.user?.id &&
+     recipientIds.has(String(r.sender_id)) &&
+     !r.pending &&
+     !r.deleted_at &&
+     new Date(r.created_at)>new Date(m.created_at)
+   );
+   const read=recipients.some(p=>p.last_read_at&&new Date(p.last_read_at)>=new Date(m.created_at));
+   return {can_edit:!read&&!replied,can_delete:!replied};
+ }catch(localError){
+   const r=await sb.rpc('get_seller_chat_message_actions',{p_message_id:id});
+   if(r.error)throw r.error;
+   const row=Array.isArray(r.data)?r.data[0]:r.data;
+   if(!row||typeof row!=='object')throw new Error('O servidor não retornou o estado das opções da mensagem.');
+   return {can_edit:row.can_edit===true,can_delete:row.can_delete===true};
+ }
+}
+
+function chatMessageMenuMarkup(id,flags){
+ const resolved=flags&&typeof flags==='object'&&!flags.error;
+ const failed=!!(flags&&flags.error);
+ const canEdit=resolved&&flags.can_edit===true;
+ const canDelete=resolved&&flags.can_delete===true;
  const items=[];
- if(canEdit)items.push(`<button type="button" role="menuitem" onclick="beginChatMessageEdit('${id}')">${icon('edit','sm')}<span>Editar mensagem</span></button>`);
- if(canDelete)items.push(`<button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteMessage','${id}')">${icon('trash','sm')}<span>Excluir mensagem</span></button>`);
- if(!items.length)return '';
+ if(canEdit)items.push(`<button type="button" role="menuitem" onclick="beginChatMessageEdit('${id}')">${icon('edit','sm')}<span>Editar</span></button>`);
+ if(canDelete)items.push(`<button type="button" role="menuitem" class="destructive" onclick="openChatConfirm('deleteMessage','${id}')">${icon('trash','sm')}<span>Excluir</span></button>`);
+ if(resolved&&!items.length)items.push(`<div class="chat-message-menu-empty" role="menuitem" aria-disabled="true"><span>Sem opções para esta mensagem</span></div>`);
+ if(!resolved&&!failed)items.push(`<div class="chat-message-menu-loading" role="status" aria-live="polite">Carregando opções…</div>`);
+ if(failed)items.push(`<div class="chat-message-menu-empty" role="menuitem" aria-disabled="true"><span>Não foi possível verificar as opções</span></div>`);
  return `<div class="chat-message-menu chat-message-menu-portal" role="menu" data-chat-message-menu="${esc(id)}">${items.join('')}</div>`;
 }
 function removeChatMessageMenuDom(){
- document.querySelectorAll('.chat-message-menu-portal,.chat-message-menu').forEach(el=>el.remove());
+ document.querySelectorAll('.chat-message-menu-portal').forEach(el=>el.remove());
+}
+function syncChatMessageMenuDom(){
+ removeChatMessageMenuDom();
+ const id=state.chatMessageMenuId;
+ if(!id)return;
+ const m=chatMessages.find(x=>x.id===id);
+ if(!m||m.sender_id!==session?.user?.id||m.deleted_at||m.pending)return;
+ const flags=Object.prototype.hasOwnProperty.call(state.chatMessageActionFlags||{},id)
+   ? state.chatMessageActionFlags[id]
+   : null;
+ document.body.insertAdjacentHTML('beforeend',chatMessageMenuMarkup(id,flags));
+ const current=document.querySelector(`.chat-message-menu-portal[data-chat-message-menu="${CSS.escape(String(id))}"]`);
+ current?.addEventListener('click',event=>event.stopPropagation());
+ requestAnimationFrame(()=>positionChatMessageMenu(id));
 }
 function positionChatMessageMenu(id){
  const article=document.querySelector(`.chat-message[data-chat-message-id="${CSS.escape(String(id))}"]`);
  const menu=document.querySelector(`.chat-message-menu-portal[data-chat-message-menu="${CSS.escape(String(id))}"]`);
  if(!article||!menu)return;
- const anchor=article.querySelector('.chat-message-actions')||article;
+ const anchor=article.querySelector('.chat-message-bubble')||article;
  const anchorRect=anchor.getBoundingClientRect();
- const scroll=document.querySelector('#chatMessageScroll');
- const scrollRect=scroll?.getBoundingClientRect();
- const main=document.querySelector('.chat-main-pane');
- const mainRect=main?.getBoundingClientRect();
- const composer=document.querySelector('.chat-composer-wrap');
- const composerRect=composer?.getBoundingClientRect();
+ const scroll=document.querySelector('#chatMessageScroll'),scrollRect=scroll?.getBoundingClientRect();
+ const main=document.querySelector('.chat-main-pane'),mainRect=main?.getBoundingClientRect();
+ const composer=document.querySelector('.chat-composer-wrap'),composerRect=composer?.getBoundingClientRect();
  const safeLeft=Math.max((mainRect?.left??scrollRect?.left??8)+8,8);
  const safeRight=Math.min((mainRect?.right??scrollRect?.right??window.innerWidth)-8,window.innerWidth-8);
  const safeTop=Math.max((scrollRect?.top??8)+8,8);
  const safeBottom=Math.min((scrollRect?.bottom??window.innerHeight)-8,composerRect?.top?composerRect.top-8:window.innerHeight-8,window.innerHeight-8);
- const gap=6;
- const menuRect=menu.getBoundingClientRect();
+ const gap=6,menuRect=menu.getBoundingClientRect();
  const menuWidth=Math.min(menuRect.width||210,Math.max(120,safeRight-safeLeft));
  const menuHeight=Math.min(menuRect.height||90,Math.max(1,safeBottom-safeTop));
- const mobile=window.matchMedia?.('(max-width:880px) and (orientation:portrait), (max-width:600px)')?.matches;
+ const mobile=window.matchMedia?.('(hover:none), (pointer:coarse)')?.matches || window.matchMedia?.('(max-width:880px) and (orientation:portrait), (max-width:600px)')?.matches;
  let left,top;
  menu.classList.remove('open-right','open-down','open-up');
  if(mobile){
    left=Math.min(Math.max(anchorRect.right-menuWidth,safeLeft),Math.max(safeLeft,safeRight-menuWidth));
-   const downTop=anchorRect.bottom+gap;
-   const upTop=anchorRect.top-gap-menuHeight;
-   if(downTop+menuHeight<=safeBottom){top=downTop;}
-   else if(upTop>=safeTop){top=upTop;menu.classList.add('open-up');}
-   else {top=Math.max(safeTop,safeBottom-menuHeight);menu.classList.add('open-up');}
+   const downTop=anchorRect.bottom+gap,upTop=anchorRect.top-gap-menuHeight;
+   if(downTop+menuHeight<=safeBottom)top=downTop;
+   else if(upTop>=safeTop){top=upTop;menu.classList.add('open-up')}
+   else{top=Math.max(safeTop,safeBottom-menuHeight);menu.classList.add('open-up')}
  }else{
    const rightLeft=anchorRect.right+gap;
-   if(rightLeft+menuWidth<=safeRight){left=rightLeft;top=Math.min(Math.max(anchorRect.top,safeTop),Math.max(safeTop,safeBottom-menuHeight));menu.classList.add('open-right');}
-   else{
+   if(rightLeft+menuWidth<=safeRight){
+     left=rightLeft;
+     top=Math.min(Math.max(anchorRect.top,safeTop),Math.max(safeTop,safeBottom-menuHeight));
+     menu.classList.add('open-right');
+   }else{
      left=Math.min(Math.max(anchorRect.left,safeLeft),Math.max(safeLeft,safeRight-menuWidth));
      const downTop=anchorRect.bottom+gap;
      top=Math.min(Math.max(downTop,safeTop),Math.max(safeTop,safeBottom-menuHeight));
@@ -1562,50 +1634,67 @@ function positionChatMessageMenu(id){
 async function openChatMessageMenu(event,id){
  event?.preventDefault?.();event?.stopPropagation?.();
  const m=chatMessages.find(x=>x.id===id);
- if(!m||m.sender_id!==session?.user?.id||m.deleted_at)return;
+ if(!m||m.sender_id!==session?.user?.id||m.deleted_at||m.pending)return;
  const same=state.chatMessageMenuId===id;
- const closeHeaderMenu=state.chatMenuOpen;
  state.chatMenuOpen=false;
  state.chatMessageMenuRequestSerial=(Number(state.chatMessageMenuRequestSerial)||0)+1;
  const requestId=state.chatMessageMenuRequestSerial;
  state.chatMessageMenuId=same?null:id;
- removeChatMessageMenuDom();
- if(closeHeaderMenu)refreshChatHeaderDom();
- if(same)return;
- const article=document.querySelector(`.chat-message[data-chat-message-id="${CSS.escape(String(id))}"]`);
- if(!article)return;
- const portal=document.createElement('div');
- portal.innerHTML=chatMessageMenuMarkup(id,{loading:true});
- const menu=portal.firstElementChild;
- if(!menu)return;
- menu.addEventListener('click',event=>event.stopPropagation());
- document.body.appendChild(menu);
- requestAnimationFrame(()=>positionChatMessageMenu(id));
+ if(same){removeChatMessageMenuDom();return;}
+
+ // Abre imediatamente. As permissões são calculadas de forma independente e substituem o conteúdo.
+ delete (state.chatMessageActionFlags||{})[id];
+ syncChatMessageMenuDom();
+
  try{
-   const r=await sb.rpc('get_seller_chat_message_actions',{p_message_id:id});
+   const flags=await resolveChatMessageActionFlags(id);
    if(requestId!==state.chatMessageMenuRequestSerial||state.chatMessageMenuId!==id)return;
-   if(r.error)throw r.error;
-   const row=Array.isArray(r.data)?r.data[0]:r.data;
-   if(!row||(!row.can_edit&&!row.can_delete)){
-     state.chatMessageMenuId=null;
-     removeChatMessageMenuDom();
-     return;
+   state.chatMessageActionFlags={...(state.chatMessageActionFlags||{}),[id]:flags};
+   syncChatMessageMenuDom();
+ }catch(e){
+   if(requestId===state.chatMessageMenuRequestSerial&&state.chatMessageMenuId===id){
+     state.chatMessageActionFlags={...(state.chatMessageActionFlags||{}),[id]:{error:true}};
+     syncChatMessageMenuDom();
    }
-   const html=chatMessageMenuMarkup(id,{canEdit:!!row.can_edit,canDelete:!!row.can_delete});
-   if(!html){state.chatMessageMenuId=null;removeChatMessageMenuDom();return;}
-   menu.outerHTML=html;
-   const current=document.querySelector(`.chat-message-menu-portal[data-chat-message-menu="${CSS.escape(String(id))}"]`);
-   current?.addEventListener('click',event=>event.stopPropagation());
-   requestAnimationFrame(()=>positionChatMessageMenu(id));
- }catch(error){
-   if(requestId!==state.chatMessageMenuRequestSerial||state.chatMessageMenuId!==id)return;
-   state.chatMessageMenuId=null;
-   removeChatMessageMenuDom();
-   toast(error?.message||'Não foi possível verificar as opções desta mensagem.');
+   console.error('openChatMessageMenu',e);
  }
 }
-function startChatMessagePress(event,id){if(window.matchMedia&&window.matchMedia('(hover:hover)').matches)return;clearTimeout(chatMessagePressTimer);chatMessagePressTimer=setTimeout(()=>openChatMessageMenu(event,id),520)}
-function cancelChatMessagePress(){clearTimeout(chatMessagePressTimer);chatMessagePressTimer=null}
+let chatMessageTouchStart=null;
+function isTouchMessagePointer(event){
+ const type=String(event?.pointerType||'').toLowerCase();
+ return type==='touch'||type==='pen'||(window.matchMedia&&!window.matchMedia('(hover:hover) and (pointer:fine)').matches);
+}
+function pointerPoint(event){
+ const t=event?.changedTouches?.[0]||event?.touches?.[0];
+ return {x:Number(event?.clientX??t?.clientX??0),y:Number(event?.clientY??t?.clientY??0)};
+}
+function startChatMessagePress(event,id){
+ if(!isTouchMessagePointer(event))return;
+ const point=pointerPoint(event);
+ chatMessageTouchStart={x:point.x,y:point.y,time:Date.now(),id,long:false};
+ clearTimeout(chatMessagePressTimer);
+ chatMessagePressTimer=setTimeout(()=>{
+   if(chatMessageTouchStart?.id===id){
+     chatMessageTouchStart.long=true;
+     openChatMessageMenu(null,id);
+   }
+ },520);
+}
+function moveChatMessagePress(event){
+ const start=chatMessageTouchStart;if(!start)return;
+ const point=pointerPoint(event);
+ if(Math.hypot(point.x-start.x,point.y-start.y)>12){
+   clearTimeout(chatMessagePressTimer);chatMessagePressTimer=null;chatMessageTouchStart=null;
+ }
+}
+function cancelChatMessagePress(event){
+ clearTimeout(chatMessagePressTimer);chatMessagePressTimer=null;
+ const start=chatMessageTouchStart;if(!start)return;
+ const point=pointerPoint(event);
+ const moved=Math.hypot(point.x-start.x,point.y-start.y)>12;
+ if(!start.long&&!moved&&start.id)openChatMessageMenu(null,start.id);
+ chatMessageTouchStart=null;
+}
 function beginChatMessageEdit(id){state.chatMessageMenuId=null;state.chatEditingMessageId=id;render();requestAnimationFrame(()=>{const el=$(`chatEdit_${id}`);if(el){el.focus();el.setSelectionRange(el.value.length,el.value.length)}})}
 function cancelChatMessageEdit(){state.chatEditingMessageId=null;render()}
 function chatOtherName(c){return c?.other_user_name||'Cliente'}
@@ -1864,7 +1953,7 @@ function chatSearchChanged(value){
 async function loadMoreSellerChats(){if(state.loadingConversations||!state.chatHasMore)return;await loadSellerChats({reset:false,silent:false});refreshChatSidebarDom();}
 async function loadOlderChatMessages(){const first=chatMessages[0];if(!first||state.loadingOlderMessages||!state.chatHasMore)return;state.loadingOlderMessages=true;try{await loadSellerChatMessages(state.selectedConversationId,{prepend:true,before:first.created_at});refreshChatMessagesDom({keepScroll:true});}catch(e){toast(e?.message||'Não foi possível carregar mensagens anteriores.')}finally{state.loadingOlderMessages=false;const btn=document.querySelector('.chat-history-load button');if(btn)btn.textContent=state.loadingOlderMessages?'Carregando…':'Carregar mensagens anteriores';}}
 function isChatNearBottom(el){return !el||el.scrollHeight-el.scrollTop-el.clientHeight<90}
-async function handleChatScroll(){const el=document.querySelector('#chatMessageScroll');if(!el)return;if(isChatNearBottom(el)&&state.newMessagesCount>0){state.newMessagesCount=0;if(state.selectedConversationId)await markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom()}if(state.chatMessageMenuId)requestAnimationFrame(()=>positionChatMessageMenu(state.chatMessageMenuId))}
+async function handleChatScroll(){const el=document.querySelector('#chatMessageScroll');if(!el)return;if(isChatNearBottom(el)&&state.newMessagesCount>0){state.newMessagesCount=0;if(state.selectedConversationId)await markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom()}}
 function jumpToChatBottom(){const el=document.querySelector('#chatMessageScroll');if(el)el.scrollTop=el.scrollHeight;state.newMessagesCount=0;if(state.selectedConversationId)markSellerChatRead(state.selectedConversationId,{rerender:false});syncChatNewMessagesDom();requestAnimationFrame(scrollChatToBottom)}
 function chatComposerKeydown(event,id){if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();if(!state.sendingMessage)sendSellerChatMessage(id)}}
 function scrollChatToBottom(){const el=document.querySelector('.chat-message-scroll');if(el)el.scrollTop=el.scrollHeight}
@@ -1950,9 +2039,11 @@ function chatMessageBubble(m){
  const mine=m.sender_id===session?.user?.id,editing=state.chatEditingMessageId===m.id,deleted=!!m.deleted_at,pending=!!m.pending;
  if(editing)return `<article class="chat-message ${mine?'mine':''}"><div class="chat-message-editing"><label class="sr-only" for="chatEdit_${m.id}">Editar mensagem</label><textarea id="chatEdit_${m.id}" maxlength="1000">${esc(m.message||'')}</textarea><div class="chat-message-edit-actions"><button type="button" class="secondary" onclick="cancelChatMessageEdit()">Cancelar</button><button type="button" class="primary" onclick="editSellerChatMessage('${m.id}')">Salvar</button></div></div></article>`;
  const stamp=pending?'Enviando…':formatChatFullDate(m.created_at);
- const actions=mine&&!deleted&&!pending?`<button type="button" class="chat-message-actions" onclick="openChatMessageMenu(event,'${m.id}')" aria-label="Ações da mensagem">${icon('more')}</button>`:'';
- const bubble=`<div class="chat-message-bubble"><div class="chat-message-meta"><span>${esc(chatSenderLabel(m))}</span><time datetime="${esc(m.created_at)}">${esc(stamp)}</time></div><div class="chat-message-content">${deleted?`<span class="chat-deleted-label">${icon('trash','xs')}Mensagem excluída</span>`:esc(m.message||'')}</div>${m.edited_at&&!deleted&&!pending?`<span class="chat-edited">editada</span>`:''}</div>`;
- return `<article class="chat-message ${mine?'mine':''} ${m.sender_role==='admin'?'from-admin':''} ${deleted?'deleted':''} ${pending?'pending':''}" data-chat-message-id="${esc(m.id)}" oncontextmenu="openChatMessageMenu(event,'${m.id}')" ontouchstart="startChatMessagePress(event,'${m.id}')" ontouchend="cancelChatMessagePress()" ontouchcancel="cancelChatMessagePress()"><div class="chat-message-line">${mine?actions+bubble:bubble+actions}</div>${state.chatMessageMenuId===m.id?chatMessageMenuMarkup(m.id):''}</article>`;
+ const perms=state.chatMessageActionFlags?.[m.id]||{can_edit:false,can_delete:false};
+ const actions=mine&&!deleted&&!pending?`<button type="button" class="chat-message-actions" onclick="openChatMessageMenu(event,'${m.id}')" aria-label="Ações da mensagem" aria-haspopup="menu" aria-expanded="${state.chatMessageMenuId===m.id?'true':'false'}">${icon('more')}</button>`:'';
+ const touchHandlers=mine&&!deleted&&!pending?`onpointerdown="startChatMessagePress(event,'${m.id}')" onpointermove="moveChatMessagePress(event)" onpointerup="cancelChatMessagePress(event)" onpointercancel="cancelChatMessagePress(event)"`:'';
+ const bubbleHtml=`<div class="chat-message-bubble" ${touchHandlers}><div class="chat-message-meta"><span>${esc(chatSenderLabel(m))}</span><time datetime="${esc(m.created_at)}">${esc(stamp)}</time></div><div class="chat-message-content">${deleted?`<span class="chat-deleted-label">${icon('trash','xs')}Mensagem excluída</span>`:esc(m.message||'')}</div>${m.edited_at&&!deleted&&!pending?`<span class="chat-edited">editada</span>`:''}</div>`;
+ return `<article class="chat-message ${mine?'mine':''} ${m.sender_role==='admin'?'from-admin':''} ${deleted?'deleted':''} ${pending?'pending':''}" data-chat-message-id="${esc(m.id)}"><div class="chat-message-line">${mine?actions+bubbleHtml:bubbleHtml+actions}</div></article>`;
 }
 function sellerChatsPage(){
  if(!session)return `<div class="panel"><div class="empty"><h2>Entre para acessar o Atendimento</h2><button type="button" class="primary" onclick="openAuth('login')">Entrar</button></div></div>`;
@@ -2032,7 +2123,7 @@ function drawerLink(page,ico,label,extra=''){const active=state.page===page?' ac
 function header(){const name=profile?.name||session?.user?.email?.split('@')[0]||'Conta';const unread=notifications.filter(n=>!n.read_at).length;return `<header class="top"><nav class="nav"><button class="iconbtn menu-btn" aria-label="Abrir menu" onclick="openDrawer()">${icon('menu')}</button><button class="logo" onclick="go('home')"><span class="logo-mark">${icon('craft','sm')}</span><span class="logo-text">Fios & Artes</span></button><div class="spacer"></div><button class="iconbtn hide-sm" aria-label="Catálogo" onclick="go('products')">${icon('grid')}</button><button class="iconbtn" aria-label="Sacola" onclick="go('cart')">${icon('bag')}<span class="badge">${cartCount()}</span></button>${session?`<button class="iconbtn notification-bell" aria-label="Notificações${unread?`: ${unread} nova(s)`:''}" onclick="go('notifications')">${icon('bell')}${unread?`<span class="notification-count-badge" aria-label="${unread} nova(s)">${unread>9?'9+':unread}</span>`:''}</button><button class="nav-account" onclick="go('account')">${icon('user')}<span class="account-name">${esc(name)}</span></button>`:`<button class="primary" onclick="openAuth()">Entrar</button>`}</nav></header>${drawer()}`}
 function drawer(){
  const logged=session;
- return `<div class="drawer-back ${state.drawer?'open':''}" onclick="if(event.target===this)closeDrawer()"><aside class="drawer"><div class="drawer-head"><button class="iconbtn drawer-close" onclick="closeDrawer()" aria-label="Fechar menu">${icon('x')}</button><div class="drawer-brand"><span class="logo-mark">${icon('craft','sm')}</span><span>Fios & Artes</span></div></div>${logged?`<div class="drawer-user"><strong>${esc(profile?.name||'Conta')}</strong></div>`:`<div class="drawer-user"><strong>Bem-vindo</strong><small>Entre para acessar sua conta e recursos.</small></div>`}<div class="drawer-section">Navegação</div>${drawerLink('home','home','Início')}${drawerLink('products','layoutGrid','Catálogo')}${drawerLink('favorites','heart','Favoritos')}${drawerLink('cart','bag',`Sacola (${cartCount()})`)}${logged?`${drawerLink('followedSellers','store',`Vendedores que sigo${followedSellers.length?` (${followedSellers.length})`:''}`)}${drawerLink('notifications','bell',`Notificações${notifications.filter(n=>!n.read_at).length?` (${notifications.filter(n=>!n.read_at).length})`:''}`)}${drawerLink('account','user','Meu perfil')}${profile?.role==='seller'?drawerLink('seller','store','Área do vendedor'):''}${profile?.role==='admin'?drawerLink('supportCenter','comment','Central de Suporte'):drawerLink('sellerChats','comment','Atendimento')}${profile?.role==='admin'?drawerLink('admin','shield','Gestão'):''}`:`<button class="drawer-link" onclick="closeDrawer();openAuth()">${icon('user')}<span>Entrar / criar conta</span></button>`}<div class="drawer-section">Conta</div><button class="drawer-theme" type="button" onclick="toggleTheme()">${icon(themeMode==='dark'?'sun':'moon')}<span>${themeMode==='dark'?'Mudar para tema claro':'Mudar para tema escuro'}</span><span class="theme-state">${themeMode==='dark'?'Atual: escuro':'Atual: claro'}</span></button>${logged?`<div class="small" style="padding:8px 4px">Gerencie seus dados e acesso pelo Meu perfil.</div>`:`<div class="small" style="padding:8px 4px">Você pode navegar sem conta. Para comprar, comentar e favoritar em outros dispositivos, crie uma conta.</div>`}</aside></div>`
+ return `<div class="drawer-back ${state.drawer?'open':''}" onclick="if(event.target===this)closeDrawer()"><aside class="drawer"><div class="drawer-head"><button class="iconbtn drawer-close" onclick="closeDrawer()" aria-label="Fechar menu">${icon('x')}</button><div class="drawer-brand"><span class="logo-mark">${icon('craft','sm')}</span><span>Fios & Artes</span></div></div>${logged?`<div class="drawer-user"><strong>${esc(profile?.name||'Conta')}</strong></div>`:`<div class="drawer-user"><strong>Bem-vindo</strong><small>Entre para acessar sua conta e recursos.</small></div>`}<div class="drawer-section">Navegação</div>${drawerLink('home','home','Início')}${drawerLink('products','layoutGrid','Catálogo')}${drawerLink('favorites','heart','Favoritos')}${drawerLink('cart','bag',`Sacola (${cartCount()})`)}${logged?`${drawerLink('followedSellers','store',`Vendedores que sigo${followedSellerCount()?` (${followedSellerCount()})`:''}`)}${drawerLink('notifications','bell',`Notificações${notifications.filter(n=>!n.read_at).length?` (${notifications.filter(n=>!n.read_at).length})`:''}`)}${drawerLink('account','user','Meu perfil')}${profile?.role==='seller'?drawerLink('seller','store','Área do vendedor'):''}${profile?.role==='admin'?drawerLink('supportCenter','comment','Central de Suporte'):drawerLink('sellerChats','comment','Atendimento')}${profile?.role==='admin'?drawerLink('admin','shield','Gestão'):''}`:`<button class="drawer-link" onclick="closeDrawer();openAuth()">${icon('user')}<span>Entrar / criar conta</span></button>`}<div class="drawer-section">Conta</div><button class="drawer-theme" type="button" onclick="toggleTheme()">${icon(themeMode==='dark'?'sun':'moon')}<span>${themeMode==='dark'?'Mudar para tema claro':'Mudar para tema escuro'}</span><span class="theme-state">${themeMode==='dark'?'Atual: escuro':'Atual: claro'}</span></button>${logged?`<div class="small" style="padding:8px 4px">Gerencie seus dados e acesso pelo Meu perfil.</div>`:`<div class="small" style="padding:8px 4px">Você pode navegar sem conta. Para comprar, comentar e favoritar em outros dispositivos, crie uma conta.</div>`}</aside></div>`
 }
 
 function home(){const active=products.filter(p=>p.featured===true&&p.active&&publicationStatus(p)==='published'&&moderationStatus(p)==='approved'&&p.stock>0).sort((a,b)=>new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at));return `<section class="hero"><div class="brandline">${icon('store','sm')}<b>Artesanal • feito à mão • direto com o vendedor</b></div><h1>Peças feitas à mão para encantar.</h1><p>Encontre amigurumis, crochê e peças artesanais, monte sua sacola e combine a compra diretamente com o vendedor.</p><div class="actions"><button class="primary" onclick="go('products')">Ver catálogo completo</button>${session?'':`<button class="secondary" onclick="openAuth('signup')">Criar conta</button>`}</div></section><div class="sectionhead"><div><h2>Destaques</h2><div class="small">Produtos em destaque</div></div></div><div class="grid">${active.slice(0,8).map(productCard).join('')||'<div class="empty">Nenhum produto publicado ainda.</div>'}</div>`}
@@ -2312,7 +2403,7 @@ async function adminPage(){
  const adminNav=`<div class="admin-sticky"><div class="admin-sticky-inner">${summary}${tabs}</div></div>`;
  if(state.adminTab==='manual')return adminNav+`<div class="panel admin-manual"><div class="eyebrow">Área exclusiva</div><h2>Manual da Gestão</h2><p class="small">Funções disponíveis somente para o administrador responsável pelos bastidores da plataforma.</p><div class="manual-grid"><article><h3>Usuários</h3><ul><li>Consultar usuários por nível.</li><li>Ver detalhes e contatos.</li><li>Aprovar vendedores.</li><li>Suspender ou reativar contas.</li><li>Excluir usuários.</li></ul></article><article><h3>Catálogo</h3><ul><li>Destacar produtos na página inicial.</li><li>Suspender produtos que violem políticas ou termos.</li><li>Analisar e aprovar/reprovar correções feitas pelos vendedores.</li><li>Criar novos produtos administrativos quando necessário.</li></ul></article><article><h3>Categorias</h3><ul><li>Criar e renomear categorias.</li><li>Ativar ou desativar categorias.</li><li>Excluir categorias sem produtos.</li><li>Aprovar novas categorias.</li></ul></article><article><h3>Comentários</h3><ul><li>Analisar denúncias de comentários.</li><li>Ignorar denúncias ou remover comentários em desacordo com as Diretrizes da Comunidade.</li></ul></article></div><div class="notice"><b>Área restrita:</b> Gestão é uma função administrativa. Vendedores e clientes não possuem acesso.</div></div>`;
  if(state.adminTab==='requests')return adminNav+`<div class="panel"><h2>Solicitações de vendedor</h2>${adminRequestsHtml(requests,users)}</div>`;
- if(state.adminTab==='users')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Usuários</h2><div class="small">Classificados por nível. Abra <b>Detalhes</b> para consultar os dados e administrar a conta.</div></div></div>${[['admin','Gestão','shield'],['seller','Vendedores','store'],['client','Clientes','user']].map(([role,label,ico])=>{const group=users.filter(u=>u.role===role);return `<section class="user-level"><div class="user-level-head">${icon(ico,'sm')}<div><h3>${label}</h3><span class="small">${group.length} usuário(s)</span></div></div><div class="list">${group.map(u=>`<div class="row"><div><b>${esc(fullUserName(u))}</b><div><span class="status ${u.status==='active'?'ok':'off'}">${u.status==='active'?'Ativo':'Suspenso'}</span></div></div>${u.id!==profile.id?`<div class="actions"><button type="button" class="admin-user-message-btn" title="Abrir conversa de suporte com ${esc(fullUserName(u))}" aria-label="Abrir conversa de suporte com ${esc(fullUserName(u))}" onclick="openAdminUserConversation('${u.id}','${u.role}')">${icon('comment','sm')} Mensagem</button><button type="button" class="admin-user-notify-btn" title="Enviar notificação para ${esc(fullUserName(u))}" aria-label="Enviar notificação para ${esc(fullUserName(u))}" onclick="openUserNotification('${u.id}')">${icon('bell','sm')}</button><button class="secondary user-detail-btn" onclick="openUserDetails('${u.id}')">${icon('user','sm')} Detalhes</button></div>`:`<div class="small">Sua conta</div>`}</div>`).join('')||'<div class="empty">Nenhum usuário neste nível.</div>'}</div></section>`}).join('')}</div>`;
+ if(state.adminTab==='users')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Usuários</h2><div class="small">Classificados por nível. Abra <b>Detalhes</b> para consultar os dados e administrar a conta.</div></div></div>${[['admin','Gestão','shield'],['seller','Vendedores','store'],['client','Clientes','user']].map(([role,label,ico])=>{const group=users.filter(u=>u.role===role);return `<section class="user-level"><div class="user-level-head">${icon(ico,'sm')}<div><h3>${label}</h3><span class="small">${group.length} usuário(s)</span></div></div><div class="list">${group.map(u=>`<div class="row"><div><b>${esc(fullUserName(u))}</b><div><span class="status ${u.status==='active'?'ok':'off'}">${u.status==='active'?'Ativo':'Suspenso'}</span></div></div>${u.id!==profile.id?`<div class="actions"><button type="button" class="admin-user-notify-btn" title="Enviar notificação para ${esc(fullUserName(u))}" aria-label="Enviar notificação para ${esc(fullUserName(u))}" onclick="openUserNotification('${u.id}')">${icon('bell','sm')}</button><button class="secondary user-detail-btn" onclick="openUserDetails('${u.id}')">${icon('user','sm')} Detalhes</button></div>`:`<div class="small">Sua conta</div>`}</div>`).join('')||'<div class="empty">Nenhum usuário neste nível.</div>'}</div></section>`}).join('')}</div>`;
  if(state.adminTab==='categories')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Categorias</h2><div class="small">Crie, renomeie, ative/desative e exclua categorias sem quebrar produtos.</div></div></div><div class="inline-form" style="margin-bottom:15px"><div class="field"><label>Nova categoria</label><input id="adminCatName" placeholder="Ex.: Enfeites"></div><button class="primary" onclick="saveCategory()">Criar categoria</button></div><div class="category-admin">${allCategories.map(c=>`<div class="category-line"><div class="cat-info"><b>${esc(c.name)}</b><div class="small">/${esc(c.slug)} · ${c.active?'ativa':'desativada'}${products.some(p=>productCategoriesFor(p.id).includes(c.id))?' · possui produtos':''}</div></div><div class="cat-actions"><button class="mini" onclick="renameCategory('${c.id}')">Renomear</button><button class="mini ${c.active?'danger':'ok'}" onclick="toggleCategory('${c.id}',${!c.active})">${c.active?'Desativar':'Ativar'}</button><button class="mini danger" onclick="deleteCategory('${c.id}')">Excluir</button></div></div>`).join('')}</div><div class="sectionhead"><div><h3>Solicitações de vendedores</h3></div></div><div class="list">${catRequests.map(r=>{const u=users.find(x=>x.id===r.user_id);return `<div class="row"><div><b>${esc(r.name)}</b><div class="small">Solicitada por ${esc(u?.name||'Vendedor')} · ${new Date(r.requested_at).toLocaleString('pt-BR')}</div></div><div class="actions"><button class="primary" onclick="reviewCategoryRequest('${r.id}',true)">Aprovar</button><button class="danger" onclick="reviewCategoryRequest('${r.id}',false)">Recusar</button></div></div>`}).join('')||'<div class="empty">Nenhuma solicitação de categoria pendente.</div>'}</div></div>`;
  if(state.adminTab==='announcements')return adminNav+`<div class="panel admin-announcements"><div class="sectionhead"><div><span class="eyebrow">Comunicação</span><h2>Anúncios</h2><div class="small">Envie uma mensagem para todos ou exclusivamente para os vendedores.</div></div></div><div class="notice"><b>Público do anúncio:</b> escolha quem receberá a notificação. Um anúncio para vendedores nunca é enviado aos clientes.</div><div class="field"><label>Destinatários</label><select id="adminAnnouncementAudience"><option value="all">Todos os usuários</option><option value="sellers">Somente vendedores</option></select></div><div class="field"><label>Título</label><input id="adminAnnouncementTitle" data-char-limit="60" data-char-counter="adminAnnouncementTitleCounter" oninput="syncLimitedField(this)" placeholder="Ex.: Manutenção programada">${characterCounter('adminAnnouncementTitleCounter','',TEXT_LIMITS.announcementTitle)}</div><div class="field"><label>Mensagem</label><textarea id="adminAnnouncementMessage" data-char-limit="600" data-char-counter="adminAnnouncementMessageCounter" oninput="syncLimitedField(this)" placeholder="Escreva o aviso que os destinatários deverão receber."></textarea>${characterCounter('adminAnnouncementMessageCounter','',TEXT_LIMITS.announcementMessage)}</div><button type="button" class="primary" onclick="sendAdminAnnouncement()">Enviar anúncio</button></div>`;
  if(state.adminTab==='products')return adminNav+`<div class="panel"><div class="sectionhead"><div><h2>Produtos</h2><div class="small">A Gestão não edita produtos de vendedores. Pode destacar, suspender e analisar correções.</div></div></div>${adminProductsHtml(products)}</div>`;
@@ -2330,7 +2421,7 @@ async function toggleSellerFollow(sid){
 }
 function followedSellersPage(){
  if(!session)return `<div class="panel"><div class="empty"><h2>Entre para ver seus vendedores</h2><button class="primary" onclick="openAuth('login')">Entrar</button></div></div>`;
- const list=followedSellers.map(id=>sellers[id]).filter(s=>s&&s.role==='seller'&&s.status==='active');
+ const list=followedSellerProfiles();
  return `<div class="sectionhead"><div><h2>Vendedores que sigo</h2><div class="small">Acesse rapidamente as lojas que você escolheu acompanhar.</div></div><button class="ghost" onclick="go('products')">Explorar catálogo</button></div>${list.length?`<div class="seller-follow-list">${list.map(s=>{const count=products.filter(p=>p.seller_id===s.id&&isProductPurchasable(p)).length;return `<div class="seller-follow-item"><div class="seller-follow-identity"><div class="seller-follow-avatar">${icon('store','sm')}</div><div><h3>${esc(sellerPublicName(s))}</h3><div class="small">${count} produto(s) disponível(is)</div></div></div><div class="actions"><button class="secondary" onclick="openSellerShop('${s.id}')">Ver loja</button><button class="ghost" onclick="toggleSellerFollow('${s.id}')">Deixar de seguir</button></div></div>`}).join('')}</div>`:`<div class="panel seller-following-empty"><div class="empty"><h3>Você ainda não segue nenhum vendedor</h3><p>Abra a página de um vendedor e toque em “Seguir vendedor” para criar seu atalho.</p><button class="primary" onclick="go('products')">Explorar vendedores</button></div></div>`}`
 }
 
@@ -2447,7 +2538,7 @@ async function toggleSellerFollow(sid){
 }
 function followedSellersPage(){
  if(!session)return `<div class="panel"><div class="empty"><h2>Entre para ver seus vendedores</h2><button class="primary" onclick="openAuth('login')">Entrar</button></div></div>`;
- const list=followedSellers.map(id=>sellers[id]).filter(s=>s&&s.role==='seller'&&s.status==='active');
+ const list=followedSellerProfiles();
  return `<div class="sectionhead"><div><h2>Vendedores que sigo</h2><div class="small">Acesse rapidamente as lojas que você escolheu acompanhar.</div></div><button class="ghost" onclick="go('products')">Explorar catálogo</button></div>${list.length?`<div class="seller-follow-list">${list.map(s=>{const count=products.filter(p=>p.seller_id===s.id&&isProductPurchasable(p)).length;return `<div class="seller-follow-item"><div class="seller-follow-identity"><div class="seller-follow-avatar">${icon('store','sm')}</div><div><h3>${esc(sellerPublicName(s))}</h3><div class="small">${count} produto(s) disponível(is)</div></div></div><div class="actions"><button class="secondary" onclick="openSellerShop('${s.id}')">Ver loja</button><button class="ghost" onclick="toggleSellerFollow('${s.id}')">Deixar de seguir</button></div></div>`}).join('')}</div>`:`<div class="panel seller-following-empty"><div class="empty"><h3>Você ainda não segue nenhum vendedor</h3><p>Abra a página de um vendedor e toque em “Seguir vendedor” para criar seu atalho.</p><button class="primary" onclick="go('products')">Explorar vendedores</button></div></div>`}`
 }
 
@@ -2587,7 +2678,7 @@ function authModal(){
  return `<div class="modalback" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal"><div class="sectionhead"><div><h2>${signup?'Criar conta':'Entrar'}</h2><div class="small">Acesse sua conta para comprar, comentar e gerenciar seus dados.</div></div><button class="iconbtn" onclick="state.modal=null;render()">✕</button></div>${signup?`<div class="formgrid"><div class="field"><label>Nome <span class="required-mark">*</span></label><input id="authName" autocomplete="given-name" placeholder="Seu nome"></div><div class="field"><label>Sobrenome <span class="required-mark">*</span></label><input id="authSurname" autocomplete="family-name" placeholder="Seu sobrenome"></div></div><div class="field"><label>WhatsApp <span class="required-mark">*</span></label><input id="authWa" inputmode="numeric" autocomplete="tel" placeholder="Insira seu WhatsApp"></div><div class="field"><label>Data de nascimento <span class="required-mark">*</span></label><input id="authBirth" type="date" max="${maxBirth}" autocomplete="bday"></div><div class="field"><label>Sexo <span class="required-mark">*</span></label><select id="authGender"><option value="">Selecione</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option></select></div>`:''}${state.authUnconfirmed&&!signup?`<div class="notice"><b>E-mail ainda não confirmado.</b><br>Confira sua caixa de entrada, Spam e Promoções. Se não recebeu o link, você pode reenviar a confirmação abaixo.<button type="button" class="ghost" style="width:100%;margin-top:10px" onclick="resendConfirmation()">Reenviar confirmação</button></div>`:''}<div class="field"><label>E-mail <span class="required-mark">*</span></label><input id="authEmail" type="email" autocomplete="email" placeholder="Insira seu e-mail"></div>${passwordField('authPass','Senha','Insira sua senha','current-password')}<button class="primary" style="width:100%" onclick="submitAuth()">${signup?'Criar conta':'Entrar'}</button>${!signup?`<button class="ghost" style="width:100%;margin-top:8px" onclick="state.authMode='forgot';state.authUnconfirmed=false;render()">Recuperar acesso</button>`:''}<div class="divider"></div><button class="ghost" style="width:100%" onclick="switchAuthMode(state.authMode==='signup'?'login':'signup')">${signup?'Já tenho uma conta':'Ainda não tenho conta'}</button></div></div>`}
 function openUserNotification(id){if(profile?.role!=='admin')return;const u=window.__adminUsers?.find(x=>x.id===id);if(!u)return toast('Usuário não encontrado.');state.modal={type:'userNotification',user:u};render();setTimeout(()=>{$('adminUserNotificationTitle')?.focus()},0)}
 function userNotificationModal(u){const self=u?.id===profile?.id;return `<div class="modalback" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal"><div class="sectionhead"><div><div class="eyebrow">Comunicação individual</div><h2>Notificar usuário</h2><div class="small">Enviar uma mensagem diretamente para <b>${esc(u?.name||'Usuário')}</b>.</div></div><button type="button" class="iconbtn" aria-label="Fechar notificação" onclick="state.modal=null;render()">${icon('x')}</button></div><div class="notice" style="margin-bottom:14px"><b>Destinatário:</b> ${esc(u?.name||'Usuário')}${u?.email?` · ${esc(u.email)}`:''}</div><div class="field"><label>Título <span class="required-mark">*</span></label><input id="adminUserNotificationTitle" data-char-limit="60" data-char-counter="adminUserNotificationTitleCounter" oninput="syncLimitedField(this)" placeholder="Ex.: Atualização da sua conta">${characterCounter('adminUserNotificationTitleCounter','',TEXT_LIMITS.userNotificationTitle)}</div><div class="field"><label>Mensagem <span class="required-mark">*</span></label><textarea id="adminUserNotificationMessage" data-char-limit="500" data-char-counter="adminUserNotificationMessageCounter" oninput="syncLimitedField(this)" placeholder="Escreva a mensagem que este usuário deverá receber."></textarea>${characterCounter('adminUserNotificationMessageCounter','',TEXT_LIMITS.userNotificationMessage)}</div><div class="actions" style="margin-top:14px"><button type="button" class="secondary" onclick="state.modal=null;render()">Cancelar</button><button type="button" class="primary" onclick="sendUserNotification('${u?.id||''}')" ${self?'disabled':''}>Enviar notificação</button></div></div></div>`}
-function userDetailsModal(u){const self=u?.id===profile?.id;const suspended=u?.status!=='active';return `<div class="modalback" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal"><div class="sectionhead"><div><div class="eyebrow">Detalhes do usuário</div><h2>${esc(fullUserName(u))}</h2></div><button type="button" class="iconbtn" aria-label="Fechar detalhes" onclick="state.modal=null;render()">${icon('x')}</button></div><div class="detail-list"><div><span>Nível</span><b>${u?.role==='admin'?'Gestão':u?.role==='seller'?'Vendedor':'Cliente'}</b></div><div><span>Nome</span><b>${esc(u?.name||'Não informado')}</b></div><div><span>Sobrenome</span><b>${esc(u?.surname||'Não informado')}</b></div><div><span>Status</span><b>${suspended?'Suspenso':'Ativo'}</b></div><div><span>E-mail</span><b>${esc(u?.email||'Não informado')}</b></div><div><span>WhatsApp</span><b>${esc(u?.whatsapp||'Não informado')}</b></div><div><span>Data de nascimento</span><b>${u?.birth_date?new Date(u.birth_date+'T00:00:00').toLocaleDateString('pt-BR'):'Não informado'}</b></div><div><span>Sexo</span><b>${u?.gender==='masculino'?'Masculino':u?.gender==='feminino'?'Feminino':'Não informado'}</b></div><div><span>Cadastro</span><b>${u?.created_at?new Date(u.created_at).toLocaleString('pt-BR'):'Não informado'}</b></div></div><div class="actions user-detail-actions" style="margin-top:16px">${u?.email?`<a class="secondary contact-link" href="mailto:${esc(u.email)}">${icon('mail','sm')} Enviar e-mail</a>`:''}${u?.whatsapp?`<a class="secondary contact-link" href="https://wa.me/${u.whatsapp.replace(/\D/g,'')}" target="_blank" rel="noopener">${icon('phone','sm')} WhatsApp</a>`:''}${!self?`<button class="secondary" onclick="toggleUser('${u.id}','${suspended?'active':'suspended'}');state.modal=null;">${suspended?'Reativar':'Suspender'}</button><button class="danger" onclick="state.modal=null;deleteUser('${u.id}')">Excluir</button>`:''}</div></div></div>`}
+function userDetailsModal(u){const self=u?.id===profile?.id;const suspended=u?.status!=='active';return `<div class="modalback" onclick="if(event.target===this){state.modal=null;render()}"><div class="modal"><div class="sectionhead"><div><div class="eyebrow">Detalhes do usuário</div><h2>${esc(fullUserName(u))}</h2></div><button type="button" class="iconbtn" aria-label="Fechar detalhes" onclick="state.modal=null;render()">${icon('x')}</button></div><div class="detail-list"><div><span>Nível</span><b>${u?.role==='admin'?'Gestão':u?.role==='seller'?'Vendedor':'Cliente'}</b></div><div><span>Nome</span><b>${esc(u?.name||'Não informado')}</b></div><div><span>Sobrenome</span><b>${esc(u?.surname||'Não informado')}</b></div><div><span>Status</span><b>${suspended?'Suspenso':'Ativo'}</b></div><div><span>E-mail</span><b>${esc(u?.email||'Não informado')}</b></div><div><span>WhatsApp</span><b>${esc(u?.whatsapp||'Não informado')}</b></div><div><span>Data de nascimento</span><b>${u?.birth_date?new Date(u.birth_date+'T00:00:00').toLocaleDateString('pt-BR'):'Não informado'}</b></div><div><span>Sexo</span><b>${u?.gender==='masculino'?'Masculino':u?.gender==='feminino'?'Feminino':'Não informado'}</b></div><div><span>Cadastro</span><b>${u?.created_at?new Date(u.created_at).toLocaleString('pt-BR'):'Não informado'}</b></div></div><div class="actions user-detail-actions" style="margin-top:16px">${!self?`<button type="button" class="secondary" onclick="state.modal=null;openAdminUserConversation('${u.id}','${u.role}')">${icon('comment','sm')} Enviar mensagem</button>`:''}${u?.email?`<a class="secondary contact-link" href="mailto:${esc(u.email)}">${icon('mail','sm')} Enviar e-mail</a>`:''}${u?.whatsapp?`<a class="secondary contact-link" href="https://wa.me/${u.whatsapp.replace(/\D/g,'')}" target="_blank" rel="noopener">${icon('phone','sm')} WhatsApp</a>`:''}${!self?`<button class="secondary" onclick="toggleUser('${u.id}','${suspended?'active':'suspended'}');state.modal=null;">${suspended?'Reativar':'Suspender'}</button><button class="danger" onclick="state.modal=null;deleteUser('${u.id}')">Excluir</button>`:''}</div></div></div>`}
 function limitProductCategories(input){const checked=[...document.querySelectorAll('input[name="pfCats"]:checked')];if(checked.length>3){input.checked=false;return toast('Você pode escolher no máximo 3 categorias.');}}
 function productForm(id){
  const p=id?getProduct(id):null,admin=profile?.role==='admin',sellerId=p?.seller_id||'',sellerOptions=activeSellers.map(v=>`<option value="${v.id}" ${sellerId===v.id?'selected':''}>${esc(fullUserName(v))}</option>`).join('');
