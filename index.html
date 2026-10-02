@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.40.1">
+<meta name="theme-color" content="#F4EDE4"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Fios & Artes"><meta name="application-version" content="4.41.0">
 <link rel="manifest" href="/loja-atelie/manifest.json?v=4">
 <link rel="icon" type="image/png" sizes="16x16" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-16.png?v=1">
 <link rel="icon" type="image/png" sizes="32x32" href="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-32.png?v=1">
@@ -660,6 +660,80 @@ html[data-theme="dark"] .chat-claim-row-button{color:#fff}
   .chat-message.mine:focus-within .chat-message-actions{opacity:0!important;pointer-events:none!important;visibility:hidden!important}
 }
 </style>
+
+<style>
+/* V4.41.0 — confirmação de e-mail com página de marca */
+body.email-confirmation-mode{
+  min-height:100vh;
+  display:block;
+  background:
+    radial-gradient(circle at 12% 0%,rgba(118,83,168,.12),transparent 35%),
+    radial-gradient(circle at 92% 12%,rgba(214,173,137,.14),transparent 30%),
+    linear-gradient(180deg,#fbf8f4 0%,#f5eee7 100%);
+}
+#app.email-confirmation-app{min-height:100vh}
+.email-confirmation-shell{min-height:100vh;padding:22px 14px 26px;display:flex;flex-direction:column}
+.email-confirmation-wrap{width:min(760px,100%);margin:auto}
+.email-confirmation-brand{display:flex;align-items:center;justify-content:center;gap:11px;color:#3d3340;text-decoration:none;margin:2px 0 18px}
+.email-confirmation-brand img{width:48px;height:48px;border-radius:15px;border:1px solid #ded4cb;background:#f1ebe4;box-shadow:0 7px 18px rgba(73,52,39,.08)}
+.email-confirmation-brand strong{display:block;font-size:1.08rem;line-height:1.1;letter-spacing:-.02em}
+.email-confirmation-brand span{display:block;margin-top:3px;font-size:.75rem;color:#7b7075}
+.email-confirmation-card{overflow:hidden;border:1px solid #e1d7cf;border-radius:28px;background:rgba(255,253,249,.98);box-shadow:0 22px 70px rgba(73,52,39,.12)}
+.email-confirmation-banner{position:relative;overflow:hidden;padding:31px 30px 29px;background:linear-gradient(135deg,#684794 0%,#7653a8 52%,#8f6bb7 100%);color:#fff}
+.email-confirmation-banner:before{content:"";position:absolute;right:-80px;top:-85px;width:230px;height:230px;border:30px solid rgba(255,255,255,.10);border-radius:50%}
+.email-confirmation-banner:after{content:"";position:absolute;right:40px;bottom:-84px;width:160px;height:160px;border:16px solid rgba(255,255,255,.10);border-radius:50%}
+.email-confirmation-banner>*{position:relative;z-index:1}
+.email-confirmation-eyebrow{font-size:.72rem;line-height:1.2;letter-spacing:.13em;text-transform:uppercase;font-weight:900;color:#eee5f8}
+.email-confirmation-title{margin:7px 0 0;font-size:clamp(2rem,7vw,3.2rem);line-height:.98;letter-spacing:-.04em}
+.email-confirmation-subtitle{max-width:610px;margin:12px 0 0;color:#f6effb;font-size:.98rem;line-height:1.62}
+.email-confirmation-thread{display:flex;align-items:center;gap:7px;margin-top:22px}
+.email-confirmation-thread span{display:block;width:10px;height:10px;border-radius:50%;background:#e2d3ee}
+.email-confirmation-thread i{display:block;width:34px;height:2px;border-radius:99px;background:#ddccea}
+.email-confirmation-content{padding:30px}
+.email-confirmation-icon{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:#eee6f4;color:#7653a8;margin-bottom:14px}
+.email-confirmation-icon .icon{width:29px;height:29px}
+.email-confirmation-icon.success-icon{background:#eaf3ed;color:#4f7b62}
+.email-confirmation-icon.error-icon{background:#f5e5e2;color:#96514c}
+.email-confirmation-content h2{margin:0;color:#33283a;font-size:1.55rem;letter-spacing:-.025em}
+.email-confirmation-content p{margin:9px 0 0;color:#6c6267;line-height:1.7}
+.email-confirmation-note{margin-top:21px;padding:16px 17px;border:1px solid #e5ddd5;border-radius:17px;background:#fbf7f2}
+.email-confirmation-note strong{display:block;color:#4d4148;font-size:.88rem}
+.email-confirmation-note span{display:block;margin-top:5px;color:#786e72;font-size:.82rem;line-height:1.55}
+.email-confirmation-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+.email-confirmation-actions .primary,
+.email-confirmation-actions .secondary{min-height:45px}
+.email-confirmation-actions .primary{box-shadow:0 9px 20px rgba(118,83,168,.19)}
+.email-confirmation-form{margin-top:20px;padding-top:19px;border-top:1px solid #e8dfd7}
+.email-confirmation-form-label{display:block;font-size:.83rem;font-weight:850;color:#4b4147;margin-bottom:7px}
+.email-confirmation-form input{width:100%;min-height:46px;padding:12px 13px;border:1px solid #ded4cc;border-radius:13px;background:#fffdfa;color:#322834;outline:none}
+.email-confirmation-form input:focus{border-color:#7653a8;box-shadow:0 0 0 3px rgba(118,83,168,.12)}
+.email-confirmation-message{margin-top:12px;padding:11px 13px;border-radius:12px;font-size:.81rem;line-height:1.5}
+.email-confirmation-message.ok{background:#edf4ee;border:1px solid #cadfd0;color:#45654f}
+.email-confirmation-message.error{background:#f8ece9;border:1px solid #ead3ce;color:#8a4843}
+.email-confirmation-help{margin-top:17px;color:#8a7f84;font-size:.76rem;line-height:1.55}
+.email-confirmation-footer{max-width:760px;margin:15px auto 0;text-align:center;color:#91878b;font-size:.72rem;line-height:1.55}
+.email-confirmation-footer strong{color:#6e6368}
+.email-confirmation-mini-banner{margin-top:24px;padding:17px 18px;border-radius:18px;border:1px solid #ded4cb;background:linear-gradient(135deg,#f3ece5,#f0e9f4);display:flex;align-items:center;gap:14px}
+.email-confirmation-mini-banner .mini-art{width:44px;height:44px;border-radius:14px;background:#fffdf9;border:1px solid #e5ddd5;display:grid;place-items:center;flex:none;color:#7653a8}
+.email-confirmation-mini-banner .mini-art .icon{width:22px;height:22px}
+.email-confirmation-mini-banner strong{display:block;font-size:.86rem;color:#4c4148}
+.email-confirmation-mini-banner span{display:block;margin-top:3px;font-size:.76rem;line-height:1.5;color:#786e72}
+.email-confirmation-legal{padding:0 2px;margin-top:12px;text-align:center;font-size:.69rem;color:#9a9094}
+@media(max-width:560px){
+  .email-confirmation-shell{padding:14px 10px 19px}
+  .email-confirmation-brand{margin-bottom:13px}
+  .email-confirmation-brand img{width:42px;height:42px;border-radius:13px}
+  .email-confirmation-banner{padding:25px 20px 24px}
+  .email-confirmation-title{font-size:2.25rem}
+  .email-confirmation-subtitle{font-size:.91rem}
+  .email-confirmation-content{padding:23px 19px}
+  .email-confirmation-content h2{font-size:1.35rem}
+  .email-confirmation-actions{display:grid;grid-template-columns:1fr}
+  .email-confirmation-actions button{width:100%}
+  .email-confirmation-mini-banner{align-items:flex-start}
+}
+</style>
+
 </head>
 <body><div id="app"><div class="loading">Carregando Fios & Artes…</div></div>
 
@@ -667,6 +741,7 @@ html[data-theme="dark"] .chat-claim-row-button{color:#fff}
 const SUPABASE_URL='https://oaunxthttdojugbgvmfy.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_VbrYNxLUaIykocAcJ9Bd6g_gyTmDmpI';
 const APP_URL='https://zuppja.github.io/loja-atelie/';
+const PENDING_CONFIRMATION_EMAIL='fios-e-artes-pending-confirmation-email-v1';
 const AUTH_DIAGNOSTIC={
  unauthorized:/email address not authorized|not authorized/i,
  rate:/rate limit|rate_limit|email rate|too many requests/i,
@@ -992,7 +1067,7 @@ function toggleTheme(){
   toast(themeMode==='dark'?'Tema escuro ativado.':'Tema claro ativado.');
 }
 applyTheme();
-let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,selectedConversationId:null,selectedConversation:null,activeSection:'sellers',activeFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,loadingConversations:false,loadingMessages:false,chatError:'',chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatMessageMenuRequestSerial:0,chatMessageActionFlags:{},chatMessageActionFetchSerial:0,chatEditingMessageId:null,loadingOlderMessages:false,chatSectionCounts:{},newMessagesCount:0,supportDraft:false,composerValue:'',sendingMessage:false,chatTransferAgents:[],chatTransferLoading:false,chatSectionCache:{},chatMessageCache:{},chatFetchSerial:0,chatConversationFetchSerial:0,chatMessagesFetchSerial:0,chatBackgroundFetchSerial:0};
+let session=null, profile=null, categories=[], products=[], images=[], productCategoryMap={}, sellers={}, activeSellers=[], cart=[], favorites=[], followedSellers=[], mySellerRequest=null, notifications=[], sellerChats=[], chatMessages=[], editingSellerInfo=false, sellerStockPending=new Set(), LOW_STOCK_LIMIT=4, chatRealtimeChannel=null, chatSearchTimer=null, chatSearchRequestSerial=0, chatMessagePressTimer=null, state={page:'home',category:'Todos',sellerCategory:'Todos',search:'',selected:null,sellerId:null,modal:null,adminTab:'requests',authMode:'login',authUnconfirmed:false,drawer:false,recoveryReady:false,emailConfirmation:null,accessRecovered:false,confirmedNotice:false,sellerSearch:'',sellerTab:'all',sellerStockFilter:'all',sellerCategoryFilter:'all',sellerSort:'recent',sellerFilterModal:false,selectedConversationId:null,selectedConversation:null,activeSection:'sellers',activeFilter:'all',chatSearch:'',chatOffset:0,chatTotal:0,loadingConversations:false,loadingMessages:false,chatError:'',chatHasMore:false,chatMenuOpen:false,chatFilterMenuOpen:false,chatMessageMenuId:null,chatMessageMenuRequestSerial:0,chatMessageActionFlags:{},chatMessageActionFetchSerial:0,chatEditingMessageId:null,loadingOlderMessages:false,chatSectionCounts:{},newMessagesCount:0,supportDraft:false,composerValue:'',sendingMessage:false,chatTransferAgents:[],chatTransferLoading:false,chatSectionCache:{},chatMessageCache:{},chatFetchSerial:0,chatConversationFetchSerial:0,chatMessagesFetchSerial:0,chatBackgroundFetchSerial:0};
 let changingPassword=false;
 function serializableModal(){
   if(state.modal==='auth')return 'auth';
@@ -2714,6 +2789,7 @@ async function submitAuth(){
   if(birthdayNotReached)age--;
   if(!Number.isFinite(birthDate.getTime())||age<16)return toast('É necessário ter pelo menos 16 anos para criar uma conta.');
   if(pass.length<6)return toast('Use uma senha com pelo menos 6 caracteres.');
+  rememberPendingConfirmationEmail(email);
   const r=await sb.auth.signUp({email,password:pass,options:{data:{name,whatsapp:wa,birth_date:birth,gender},emailRedirectTo:APP_URL}});
   if(r.error)return toast(authEmailError(r.error));
   state.modal=null;
@@ -2725,7 +2801,7 @@ async function submitAuth(){
   session=r.data.session;await loadProfile();state.modal=null;await refresh();toast('Login realizado.');
  }
 }
-async function resendConfirmation(){const email=$('authEmail')?.value.trim().toLowerCase();if(!email)return toast('Informe o e-mail.');const r=await sb.auth.resend({type:'signup',email,options:{emailRedirectTo:APP_URL}});if(r.error)return toast(authEmailError(r.error,'Não foi possível reenviar a confirmação.'));toast('Novo e-mail de confirmação enviado. Verifique também Spam, Promoções e Lixeira.');}
+async function resendConfirmation(){const email=$('authEmail')?.value.trim().toLowerCase();if(!email)return toast('Informe o e-mail.');rememberPendingConfirmationEmail(email);const r=await sb.auth.resend({type:'signup',email,options:{emailRedirectTo:APP_URL}});if(r.error)return toast(authEmailError(r.error,'Não foi possível reenviar a confirmação.'));toast('Novo e-mail de confirmação enviado. Verifique também Spam, Promoções e Lixeira.');}
 async function sendRecovery(){const email=$('authEmail')?.value.trim().toLowerCase();if(!email)return toast('Informe seu e-mail.');const r=await sb.auth.resetPasswordForEmail(email,{redirectTo:APP_URL});if(r.error)return toast(authEmailError(r.error,'Não foi possível solicitar a recuperação.'));state.modal=null;render();toast('Se o e-mail existir, enviaremos um link para recuperar o acesso. Verifique também Spam, Promoções e Lixeira.');}
 async function forceLocalSignOut(message='Sua conta não está mais disponível. Você foi desconectado da Fios & Artes.') {
   if(notificationChannel){try{await sb.removeChannel(notificationChannel)}catch(err){console.error('remove notification channel',err)}notificationChannel=null;}
@@ -2919,12 +2995,139 @@ function resetProductModalScroll(){
   if(el)el.scrollTop=0;
  });
 }
+
+function rememberPendingConfirmationEmail(email){
+ try{
+   const value=String(email||'').trim().toLowerCase();
+   if(value)localStorage.setItem(PENDING_CONFIRMATION_EMAIL,value);
+ }catch{}
+}
+function getPendingConfirmationEmail(){
+ try{return String(localStorage.getItem(PENDING_CONFIRMATION_EMAIL)||'').trim().toLowerCase()}catch{return ''}
+}
+function clearPendingConfirmationEmail(){try{localStorage.removeItem(PENDING_CONFIRMATION_EMAIL)}catch{}}
+function authHashParams(){
+ const raw=String(location.hash||'').replace(/^#/,'');
+ return new URLSearchParams(raw);
+}
+function friendlyAuthConfirmationError(code,description){
+ const c=String(code||'').toLowerCase();
+ const d=String(description||'').toLowerCase();
+ if(c==='otp_expired'||/expired|expirou|invalid.*(otp|token)|token.*(expired|invalid)|link.*(expired|expir)/i.test(`${c} ${d}`)){
+   return 'Este link de confirmação expirou ou já foi utilizado. Solicite um novo e-mail de confirmação para continuar.';
+ }
+ return 'Não foi possível concluir a confirmação com este link. Solicite um novo e-mail de confirmação e tente novamente.';
+}
+function exitEmailConfirmation(openLogin=false){
+ state.emailConfirmation=null;
+ state.recoveryReady=false;
+ state.modal=null;
+ state.authMode='login';
+ state.authUnconfirmed=false;
+ state.drawer=false;
+ state.page='home';
+ state.selected=null;
+ history.replaceState({},document.title,location.pathname+location.search);
+ render();
+ if(openLogin)setTimeout(()=>openAuth('login'),0);
+}
+function emailConfirmationIcon(success,error){
+ const name=success?'check':error?'x':'mail';
+ return `<div class="email-confirmation-icon ${success?'success-icon':''} ${error?'error-icon':''}" aria-hidden="true">${icon(name,'lg')}</div>`;
+}
+function emailConfirmationPage(){
+ const info=state.emailConfirmation||{};
+ const error=info.status==='error';
+ const success=!error;
+ const signup=info.kind==='signup';
+ const title=error?'Não foi possível confirmar seu e-mail':(signup?'E-mail confirmado!':'Novo e-mail confirmado!');
+ const subtitle=error
+   ?'O link recebido não pôde concluir a confirmação desta vez. Você ainda pode solicitar um novo link diretamente por aqui.'
+   :(signup?'Sua conta na Fios & Artes está pronta. O próximo passo é entrar para continuar sua experiência.':'Seu novo endereço de e-mail foi confirmado com sucesso.');
+ const email=String(info.email||getPendingConfirmationEmail()||'');
+ const primaryLabel=session?(signup?'Continuar para a Fios & Artes':'Continuar'):'Entrar na Fios & Artes';
+ const primaryAction=session?"exitEmailConfirmation(false)":"exitEmailConfirmation(true)";
+ const resendBlock=error?`<div class="email-confirmation-form">
+   <label class="email-confirmation-form-label" for="emailConfirmationEmail">E-mail para receber um novo link</label>
+   <input id="emailConfirmationEmail" type="email" autocomplete="email" value="${esc(email)}" placeholder="voce@exemplo.com">
+   ${info.resendMessage?`<div class="email-confirmation-message ok" role="status">${esc(info.resendMessage)}</div>`:''}
+   ${info.resendError?`<div class="email-confirmation-message error" role="alert">${esc(info.resendError)}</div>`:''}
+   <div class="email-confirmation-actions">
+     <button type="button" class="primary" onclick="resendConfirmationFromPage()">Enviar novo link</button>
+     <button type="button" class="secondary" onclick="exitEmailConfirmation(true)">Voltar para entrar</button>
+   </div>
+ </div>`:'';
+ document.title=error?'Confirmação de e-mail · Fios & Artes':signup?'E-mail confirmado · Fios & Artes':'E-mail atualizado · Fios & Artes';
+ document.body.classList.add('email-confirmation-mode');
+ return `<div class="email-confirmation-shell">
+   <div class="email-confirmation-wrap">
+     <div class="email-confirmation-brand" aria-label="Fios & Artes">
+       <img src="https://oaunxthttdojugbgvmfy.supabase.co/storage/v1/object/public/brand/fios-artes-icon-180.png?v=1" width="48" height="48" alt="Fios & Artes">
+       <div><strong>Fios &amp; Artes</strong><span>Marketplace artesanal</span></div>
+     </div>
+     <section class="email-confirmation-card" aria-labelledby="emailConfirmationTitle">
+       <div class="email-confirmation-banner">
+         <div class="email-confirmation-eyebrow">Fios &amp; Artes · Segurança da conta</div>
+         <h1 id="emailConfirmationTitle" class="email-confirmation-title">${esc(title)}</h1>
+         <p class="email-confirmation-subtitle">${esc(subtitle)}</p>
+         <div class="email-confirmation-thread" aria-hidden="true"><span></span><i></i><span></span><i></i><span></span></div>
+       </div>
+       <div class="email-confirmation-content">
+         ${emailConfirmationIcon(success&&!error,error)}
+         <h2>${error?'Vamos resolver isso':(signup?'Tudo certo por aqui.':'Atualização concluída.')}</h2>
+         <p>${error
+           ?'Confira o endereço digitado e use o botão abaixo para receber um novo link de confirmação.'
+           :(signup?'Seu endereço de e-mail foi validado e a confirmação foi concluída. Agora você pode acessar a loja com a sua conta.':'O novo endereço de e-mail foi validado. Você pode continuar normalmente na sua conta.')}</p>
+         ${!error?`<div class="email-confirmation-note">
+           <strong>${session?'Sua sessão está disponível neste dispositivo.':'Próximo passo'}</strong>
+           <span>${session?'Você pode continuar diretamente para a Fios & Artes.':'Entre com o e-mail e a senha usados no cadastro para acessar sua conta.'}</span>
+         </div>`:`<div class="email-confirmation-message error" role="alert">${esc(info.message||'Não foi possível concluir a confirmação com este link.')}</div>`}
+         ${resendBlock}
+         ${!error?`<div class="email-confirmation-actions">
+           <button type="button" class="primary" onclick="${primaryAction}">${primaryLabel}</button>
+           <button type="button" class="secondary" onclick="exitEmailConfirmation(false)">Voltar ao início</button>
+         </div>
+         <div class="email-confirmation-mini-banner">
+           <div class="mini-art" aria-hidden="true">${icon('craft','sm')}</div>
+           <div><strong>Feito à mão, pensado com carinho.</strong><span>Obrigado por fazer parte da Fios &amp; Artes.</span></div>
+         </div>`:''}
+         <div class="email-confirmation-help">${error?'Ainda não recebeu o novo link? Verifique também Spam, Promoções e Lixeira.':'Você chegou a esta página por um link seguro enviado pelo Supabase Auth após a confirmação da sua conta.'}</div>
+       </div>
+     </section>
+     <div class="email-confirmation-footer"><strong>Fios &amp; Artes</strong> · Marketplace artesanal · © 2026</div>
+     <div class="email-confirmation-legal">Esta página não exibe nem solicita sua senha. Nunca compartilhe seu código ou link de confirmação com outras pessoas.</div>
+   </div>
+ </div>`;
+}
+async function resendConfirmationFromPage(){
+ const email=$('emailConfirmationEmail')?.value.trim().toLowerCase()||'';
+ if(!email)return toast('Informe o e-mail.');
+ const r=await sb.auth.resend({type:'signup',email,options:{emailRedirectTo:APP_URL}});
+ if(r.error){
+   state.emailConfirmation={...(state.emailConfirmation||{status:'error',kind:'signup'}),status:'error',email,resendError:authEmailError(r.error,'Não foi possível reenviar a confirmação.'),resendMessage:''};
+   render();
+   return;
+ }
+ rememberPendingConfirmationEmail(email);
+ state.emailConfirmation={...(state.emailConfirmation||{status:'error',kind:'signup'}),status:'error',email,resendError:'',resendMessage:'Novo link de confirmação enviado. Verifique sua caixa de entrada, Spam, Promoções e Lixeira.'};
+ render();
+}
+
 function recoveryPage(){return `<section class="panel recovery-page" style="max-width:720px;margin:30px auto"><div class="profile-hero" style="margin-bottom:18px"><div class="profile-avatar">${icon('lock','lg')}</div><div><div class="eyebrow">Recuperação de acesso</div><h1 style="margin:2px 0 3px">Definir nova senha</h1><p class="small">Escolha uma nova senha para voltar a acessar sua conta com segurança.</p></div></div><div class="notice">Use pelo menos 6 caracteres. Esta senha será salva somente na sua conta.</div>${passwordField('recoveryPass','Nova senha','Mínimo de 6 caracteres','new-password')}${passwordField('recoveryPass2','Confirmar nova senha','Repita a nova senha','new-password')}<button type="button" class="primary" style="width:100%" onclick="saveRecoveryPassword()">Salvar nova senha</button></section>`}
 async function saveRecoveryPassword(){if(!session)return toast('A sessão de recuperação não está disponível. Solicite um novo link.');const a=$('recoveryPass')?.value||'',b=$('recoveryPass2')?.value||'';if(a.length<6)return toast('Use uma senha com pelo menos 6 caracteres.');if(a!==b)return toast('As senhas não conferem.');const r=await sb.auth.updateUser({password:a});if(r.error)return toast(r.error.message||'Não foi possível alterar a senha.');state.recoveryReady=false;history.replaceState({},document.title,location.pathname+location.search);state.page='account';render();toast('Senha alterada com sucesso. Você já pode entrar normalmente.')}
 
 function render(){
   const token=++renderToken;
   syncModalScrollLock();
+  if(state.emailConfirmation){
+    document.body.classList.add('email-confirmation-mode');
+    const app=$('app');
+    app.classList.add('email-confirmation-app');
+    app.innerHTML=emailConfirmationPage();
+    return;
+  }
+  document.body.classList.remove('email-confirmation-mode');
+  $('app')?.classList.remove('email-confirmation-app');
   if(state.recoveryReady){ $('app').innerHTML=header()+`<main class="container">${recoveryPage()}</main><footer>Fios & Artes · Marketplace artesanal</footer>`; bindFormDraftPersistence(); return; }
   let body=state.page==='home'?home():state.page==='products'?productsPage():state.page==='detail'?detail():state.page==='cart'?cartPage():state.page==='favorites'?favoritesPage():state.page==='followedSellers'?followedSellersPage():state.page==='notifications'?notificationsPage():state.page==='account'?account():state.page==='seller'?sellerPage():state.page==='sellerPreview'?sellerPreviewPage():state.page==='sellerShop'?sellerShopPage():state.page==='sellerChats'?sellerChatsPage():state.page==='supportCenter'?supportCenterPage():state.page==='admin'?adminPage():home();
   const chatPage=state.page==='sellerChats'||state.page==='supportCenter';
@@ -2949,24 +3152,39 @@ async function openProductForm(id=''){
   setTimeout(()=>{wireProductForm();resetProductModalScroll()},0);
 }
 async function handleRecovery(){
- const rawHash=String(location.hash||'').replace(/^#/,'');
- const params=new URLSearchParams(rawHash);
+ const params=authHashParams();
  const type=params.get('type');
+ const errorCode=params.get('error_code')||params.get('error');
+ const errorDescription=params.get('error_description')||'';
+ if((type==='signup'||type==='email_change') && (errorCode||errorDescription)){
+   const email=getPendingConfirmationEmail();
+   state.emailConfirmation={status:'error',kind:type,email,resendMessage:'',resendError:'',message:friendlyAuthConfirmationError(errorCode,errorDescription)};
+   history.replaceState({},document.title,location.pathname+location.search);
+   state.modal=null;state.authMode='login';state.authUnconfirmed=false;state.recoveryReady=false;
+   render();
+   return true;
+ }
  if(type==='recovery'){
   const s=await sb.auth.getSession();
-  if(!s.data.session){state.recoveryReady=false;render();return toast('O link de recuperação expirou ou não pôde ser validado. Solicite um novo link.');}
+  if(!s.data.session){state.recoveryReady=false;render();return true}
   session=s.data.session;await loadProfile();
-  state.recoveryReady=true;state.accessRecovered=false;state.modal=null;state.confirmedNotice=false;
+  state.recoveryReady=true;state.accessRecovered=false;state.modal=null;state.emailConfirmation=null;
   render();
-  return;
+  return true;
  }
  if(type==='signup' || type==='email_change'){
   const signup=type==='signup';
+  const confirmedSessionResult=await sb.auth.getSession();
+  const confirmedSession=!!confirmedSessionResult.data.session;
+  if(confirmedSession)session=confirmedSessionResult.data.session;
   history.replaceState({},document.title,location.pathname+location.search);
+  clearPendingConfirmationEmail();
+  state.emailConfirmation={status:'success',kind:type,sessionAvailable:confirmedSession};
   state.modal=null;state.authMode='login';state.authUnconfirmed=false;state.recoveryReady=false;state.confirmedNotice=false;
   render();
-  setTimeout(()=>toast(signup?'E-mail confirmado com sucesso. Agora você pode entrar.':'E-mail atualizado com sucesso.'),50);
+  return true;
  }
+ return false;
 }
 
 
@@ -2985,8 +3203,8 @@ async function bootstrap(){
   // Carrega a tela restaurada antes de começar a escutar eventos de autenticação.
   // O Supabase pode emitir INITIAL_SESSION/SIGNED_IN durante a inicialização;
   // registrar o listener antes do primeiro refresh criava uma corrida de renders.
-  await handleRecovery();
-  await refresh();
+  const authFlowHandled=await handleRecovery();
+  if(!authFlowHandled)await refresh();
   await subscribeNotifications();
   await subscribeProducts();
   await subscribeSellerChats();
@@ -3004,15 +3222,13 @@ async function bootstrap(){
         await subscribeSellerChats();
         await loadSellerChats({reset:true,silent:true});
         if(event==='PASSWORD_RECOVERY'){
-          state.recoveryReady=true;state.accessRecovered=false;state.modal=null;state.confirmedNotice=false;
+          state.recoveryReady=true;state.accessRecovered=false;state.modal=null;state.emailConfirmation=null;state.confirmedNotice=false;
           render();
           return;
         }
-        const type=new URLSearchParams(String(location.hash||'').replace(/^#/,'')).get('type');
-        if(event==='SIGNED_IN' && (type==='signup'||type==='email_change')){
-          await handleRecovery();
-          return;
-        }
+        const authFlowHandled=await handleRecovery();
+        if(authFlowHandled)return;
+        if(state.emailConfirmation)return;
         await refresh();
       }catch(err){console.error('auth refresh',err);}
     },0);
@@ -3020,7 +3236,7 @@ async function bootstrap(){
   window.__authSubscription=authListener?.data?.subscription||null;
 }
 
-window.go=go;window.render=render;window.subscribeSellerChats=subscribeSellerChats;window.loadSellerChats=loadSellerChats;window.loadSellerChatSectionCounts=loadSellerChatSectionCounts;window.openSellerChat=openSellerChat;window.openSupportChat=openSupportChat;window.openAdminUserConversation=openAdminUserConversation;window.openSellerChatById=openSellerChatById;window.sendSellerChatMessage=sendSellerChatMessage;window.editSellerChatMessage=editSellerChatMessage;window.deleteSellerChatMessage=deleteSellerChatMessage;window.markSellerChatRead=markSellerChatRead;window.markSellerChatUnread=markSellerChatUnread;window.setSellerChatStatus=setSellerChatStatus;window.deleteSellerChat=deleteSellerChat;window.toggleChatMenu=toggleChatMenu;window.openChatMessageMenu=openChatMessageMenu;window.startChatMessagePress=startChatMessagePress;window.cancelChatMessagePress=cancelChatMessagePress;window.beginChatMessageEdit=beginChatMessageEdit;window.cancelChatMessageEdit=cancelChatMessageEdit;window.openChatConfirm=openChatConfirm;window.confirmChatAction=confirmChatAction;window.chatSearchChanged=chatSearchChanged;window.setChatSection=setChatSection;window.toggleChatFilterMenu=toggleChatFilterMenu;window.setChatFilter=setChatFilter;window.loadMoreSellerChats=loadMoreSellerChats;window.loadOlderChatMessages=loadOlderChatMessages;window.handleChatScroll=handleChatScroll;window.jumpToChatBottom=jumpToChatBottom;window.chatComposerKeydown=chatComposerKeydown;window.toggleSellerProductMenu=toggleSellerProductMenu;window.toggleCommentMenu=toggleCommentMenu;window.closeCommentMenus=closeCommentMenus;window.openCommentEdit=openCommentEdit;window.saveEditedComment=saveEditedComment;window.deleteOwnComment=deleteOwnComment;window.reportComment=reportComment;window.ignoreCommentReport=ignoreCommentReport;window.removeReportedComment=removeReportedComment;window.toggleSellerFollow=toggleSellerFollow;window.saveSellerInfo=saveSellerInfo;window.openUserNotification=openUserNotification;window.sendUserNotification=sendUserNotification;window.openSellerShop=openSellerShop;window.openSellerPreview=openSellerPreview;window.getComments=getComments;window.handleProductImageSelection=handleProductImageSelection;window.removeProductImage=removeProductImage;window.toggleFavorite=toggleFavorite;window.favoritesPage=favoritesPage;window.requestCategory=requestCategory;window.reviewCategoryRequest=reviewCategoryRequest;window.saveCategory=saveCategory;window.renameCategory=renameCategory;window.toggleCategory=toggleCategory;window.deleteCategory=deleteCategory;window.quickStock=quickStock;window.sellerCatalogSearch=sellerCatalogSearch;window.setSellerTab=setSellerTab;window.setSellerStockFilter=setSellerStockFilter;window.setSellerCategoryFilter=setSellerCategoryFilter;window.setSellerSort=setSellerSort;window.clearSellerCatalogFilters=clearSellerCatalogFilters;window.openSellerFilterSheet=openSellerFilterSheet;window.closeSellerFilterSheet=closeSellerFilterSheet;window.applySellerFilterSheet=applySellerFilterSheet;window.clearSellerMobileFilters=clearSellerMobileFilters;window.clearSellerStockFilter=clearSellerStockFilter;window.clearSellerCategoryFilter=clearSellerCategoryFilter;window.openSellerCategories=openSellerCategories;window.setSellerPublication=setSellerPublication;window.duplicateSellerProduct=duplicateSellerProduct;window.closeDrawer=closeDrawer;window.toggleTheme=toggleTheme;window.updateFileName=updateFileName;window.syncLimitedField=syncLimitedField;window.normalizeMoneyInput=normalizeMoneyInput;window.normalizeStockInput=normalizeStockInput;window.searchProducts=searchProducts;window.saveNavigation=saveNavigation;window.openAuth=openAuth;window.switchAuthMode=switchAuthMode;window.submitAuth=submitAuth;window.resendConfirmation=resendConfirmation;window.sendRecovery=sendRecovery;window.togglePassword=togglePassword;window.saveProfilePassword=saveProfilePassword;window.logout=logout;window.saveProfile=saveProfile;window.requestSeller=requestSeller;window.reviewRequest=reviewRequest;window.openSellerRequestForm=openSellerRequestForm;window.openSellerReject=openSellerReject;window.submitSellerReject=submitSellerReject;window.openProductSuspend=openProductSuspend;window.openProductReviewReject=openProductReviewReject;window.submitProductDecision=submitProductDecision;window.reviewProduct=reviewProduct;window.reactivateProduct=reactivateProduct;window.saveRecoveryPassword=saveRecoveryPassword;window.toggleUser=toggleUser;window.deleteUser=deleteUser;window.openProductForm=openProductForm;window.saveProduct=saveProduct;window.deleteProduct=deleteProduct;window.adminDeleteProduct=adminDeleteProduct;window.addCart=addCart;window.changeQty=changeQty;window.openWhatsAppSeller=openWhatsAppSeller;window.openWhatsAppSingle=openWhatsAppSingle;window.postComment=postComment;window.openProduct=openProduct;window.openNotification=openNotification;window.markNotificationRead=markNotificationRead;window.sendAdminAnnouncement=sendAdminAnnouncement;window.markNotificationsRead=markNotificationsRead;window.clearNotifications=clearNotifications;
+window.go=go;window.render=render;window.subscribeSellerChats=subscribeSellerChats;window.loadSellerChats=loadSellerChats;window.loadSellerChatSectionCounts=loadSellerChatSectionCounts;window.openSellerChat=openSellerChat;window.openSupportChat=openSupportChat;window.openAdminUserConversation=openAdminUserConversation;window.openSellerChatById=openSellerChatById;window.sendSellerChatMessage=sendSellerChatMessage;window.editSellerChatMessage=editSellerChatMessage;window.deleteSellerChatMessage=deleteSellerChatMessage;window.markSellerChatRead=markSellerChatRead;window.markSellerChatUnread=markSellerChatUnread;window.setSellerChatStatus=setSellerChatStatus;window.deleteSellerChat=deleteSellerChat;window.toggleChatMenu=toggleChatMenu;window.openChatMessageMenu=openChatMessageMenu;window.startChatMessagePress=startChatMessagePress;window.cancelChatMessagePress=cancelChatMessagePress;window.beginChatMessageEdit=beginChatMessageEdit;window.cancelChatMessageEdit=cancelChatMessageEdit;window.openChatConfirm=openChatConfirm;window.confirmChatAction=confirmChatAction;window.chatSearchChanged=chatSearchChanged;window.setChatSection=setChatSection;window.toggleChatFilterMenu=toggleChatFilterMenu;window.setChatFilter=setChatFilter;window.loadMoreSellerChats=loadMoreSellerChats;window.loadOlderChatMessages=loadOlderChatMessages;window.handleChatScroll=handleChatScroll;window.jumpToChatBottom=jumpToChatBottom;window.chatComposerKeydown=chatComposerKeydown;window.toggleSellerProductMenu=toggleSellerProductMenu;window.toggleCommentMenu=toggleCommentMenu;window.closeCommentMenus=closeCommentMenus;window.openCommentEdit=openCommentEdit;window.saveEditedComment=saveEditedComment;window.deleteOwnComment=deleteOwnComment;window.reportComment=reportComment;window.ignoreCommentReport=ignoreCommentReport;window.removeReportedComment=removeReportedComment;window.toggleSellerFollow=toggleSellerFollow;window.saveSellerInfo=saveSellerInfo;window.openUserNotification=openUserNotification;window.sendUserNotification=sendUserNotification;window.openSellerShop=openSellerShop;window.openSellerPreview=openSellerPreview;window.getComments=getComments;window.handleProductImageSelection=handleProductImageSelection;window.removeProductImage=removeProductImage;window.toggleFavorite=toggleFavorite;window.favoritesPage=favoritesPage;window.requestCategory=requestCategory;window.reviewCategoryRequest=reviewCategoryRequest;window.saveCategory=saveCategory;window.renameCategory=renameCategory;window.toggleCategory=toggleCategory;window.deleteCategory=deleteCategory;window.quickStock=quickStock;window.sellerCatalogSearch=sellerCatalogSearch;window.setSellerTab=setSellerTab;window.setSellerStockFilter=setSellerStockFilter;window.setSellerCategoryFilter=setSellerCategoryFilter;window.setSellerSort=setSellerSort;window.clearSellerCatalogFilters=clearSellerCatalogFilters;window.openSellerFilterSheet=openSellerFilterSheet;window.closeSellerFilterSheet=closeSellerFilterSheet;window.applySellerFilterSheet=applySellerFilterSheet;window.clearSellerMobileFilters=clearSellerMobileFilters;window.clearSellerStockFilter=clearSellerStockFilter;window.clearSellerCategoryFilter=clearSellerCategoryFilter;window.openSellerCategories=openSellerCategories;window.setSellerPublication=setSellerPublication;window.duplicateSellerProduct=duplicateSellerProduct;window.closeDrawer=closeDrawer;window.toggleTheme=toggleTheme;window.updateFileName=updateFileName;window.syncLimitedField=syncLimitedField;window.normalizeMoneyInput=normalizeMoneyInput;window.normalizeStockInput=normalizeStockInput;window.searchProducts=searchProducts;window.saveNavigation=saveNavigation;window.openAuth=openAuth;window.switchAuthMode=switchAuthMode;window.submitAuth=submitAuth;window.resendConfirmation=resendConfirmation;window.resendConfirmationFromPage=resendConfirmationFromPage;window.sendRecovery=sendRecovery;window.togglePassword=togglePassword;window.saveProfilePassword=saveProfilePassword;window.logout=logout;window.saveProfile=saveProfile;window.requestSeller=requestSeller;window.reviewRequest=reviewRequest;window.openSellerRequestForm=openSellerRequestForm;window.openSellerReject=openSellerReject;window.submitSellerReject=submitSellerReject;window.openProductSuspend=openProductSuspend;window.openProductReviewReject=openProductReviewReject;window.submitProductDecision=submitProductDecision;window.reviewProduct=reviewProduct;window.reactivateProduct=reactivateProduct;window.saveRecoveryPassword=saveRecoveryPassword;window.toggleUser=toggleUser;window.deleteUser=deleteUser;window.openProductForm=openProductForm;window.saveProduct=saveProduct;window.deleteProduct=deleteProduct;window.adminDeleteProduct=adminDeleteProduct;window.addCart=addCart;window.changeQty=changeQty;window.openWhatsAppSeller=openWhatsAppSeller;window.openWhatsAppSingle=openWhatsAppSingle;window.postComment=postComment;window.openProduct=openProduct;window.openNotification=openNotification;window.markNotificationRead=markNotificationRead;window.sendAdminAnnouncement=sendAdminAnnouncement;window.markNotificationsRead=markNotificationsRead;window.clearNotifications=clearNotifications;
 window.__fiosBootUiReady=false;
 $('app').innerHTML=header()+`<main class="container"><div class="loading">Carregando…</div></main>`;
 window.__fiosBootUiReady=true;
